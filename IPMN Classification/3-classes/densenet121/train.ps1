@@ -1,0 +1,5 @@
+foreach ($t in 1, 2) {
+    foreach ($f in 0, 1, 2, 3, 4) {
+        python train.py -s 42 --t $t --f $f
+    }
+}
