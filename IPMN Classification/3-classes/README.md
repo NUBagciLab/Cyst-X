@@ -14,3 +14,7 @@ To test model with cross validation:
     python ./fold_test.py --t 2
 It will also output the results for LaTeX.
 Please revise the --data-path to your data path.
+
+Trained models and logs are available at
+
+    https://drive.google.com/drive/folders/1_zfXdrfqUuXvqayq8wJaqqbnuTjq1ByT?usp=sharing
