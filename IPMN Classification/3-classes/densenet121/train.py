@@ -83,6 +83,7 @@ if __name__ == "__main__":
         
     device = torch.device(args.device)
     n_center = 7
+    n_class = 3
     image_lists = []
     label_lists = []
     train_ds = []
@@ -98,7 +99,7 @@ if __name__ == "__main__":
     train_dataloader = DataLoader(torch.utils.data.ConcatDataset(train_ds), batch_size=args.batch_size, shuffle=True, num_workers=args.workers)
     test_dataloader = DataLoader(torch.utils.data.ConcatDataset(test_ds), batch_size=args.batch_size, shuffle=False, num_workers=args.workers)
     
-    model = get_model(out_channels = 3)
+    model = get_model(out_channels = n_class)
     model.to(device)
     loss_fn = nn.CrossEntropyLoss()
     optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr)
