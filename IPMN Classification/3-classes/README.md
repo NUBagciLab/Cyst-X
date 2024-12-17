@@ -12,5 +12,5 @@ To test model with cross validation:
 
     python ./fold_test.py
     python ./fold_test.py --t 2
-It will also output the results for LaTex.
+It will also output the results for LaTeX.
 Please revise the --data-path to your data path.
