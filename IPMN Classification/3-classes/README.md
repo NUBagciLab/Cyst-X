@@ -1,1 +1,15 @@
+To train model with cross validation:
+On Linux: 
 
+    chmod +x ./train.sh
+    CUDA_VISIBLE_DEVICES=0 ./train.sh
+
+On Windows:
+
+    ./train.ps1
+
+To test model with cross validation:
+
+    python ./fold_test.py
+It will also output the results for LaTex.
+Please revise the --data-path to your data path.
