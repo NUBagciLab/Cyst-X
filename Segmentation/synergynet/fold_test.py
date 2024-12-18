@@ -16,7 +16,6 @@ if __name__ == "__main__":
     parser.add_argument("--device", default="cuda", type=str, help="device (Use cuda or cpu Default: cuda)")
     parser.add_argument("-b", "--batch-size", default=8, type=int, help="batch size")
     parser.add_argument("-j", "--workers", default=0, type=int, metavar="N", help="number of data loading workers (default: 8)")
-    parser.add_argument("-f", "--fold", default=0, type=int, help="fold id for cross validation  (must be 0 to 4)")
     parser.add_argument("--resume", default="model_dice.pth", type=str, help="path of checkpoint")
     args = parser.parse_args()
     args.output_dir = os.path.join(args.output_dir, 't'+str(args.t))
@@ -37,7 +36,7 @@ if __name__ == "__main__":
     )
     fold_result = [{'dice': [], 'jaccard': [], 'precision': [], 'recall': [], 'hd95': [], 'assd': []} for c in range(n_center+1)]
     for fold in range(n_fold):  
-        output_dir = os.path.join(args.output_dir, 'fold'+str(args.fold))
+        output_dir = os.path.join(args.output_dir, 'fold'+str(fold))
         output_image_dir = os.path.join(output_dir, 'output')
         if not os.path.exists(output_image_dir):
             os.makedirs(output_image_dir)
@@ -47,7 +46,7 @@ if __name__ == "__main__":
         test_ds = []
         for c in range(n_center):
             image_list, label_list = get_data_list(root=args.data_path, t = args.t, center=c)
-            train_image, train_label, test_image, test_label = get_fold(image_list, label_list, fold = args.fold)
+            train_image, train_label, test_image, test_label = get_fold(image_list, label_list, fold = fold)
             print(f"Center {c+1} has {len(train_image)} training images and {len(test_image)} testing images")
             test_ds.append(Dataset(data=[{'image': image, 'label': label} for image, label in zip(test_image, test_label)], transform=test_transforms))
             test_images.append(test_image)
