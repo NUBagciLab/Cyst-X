@@ -37,7 +37,7 @@ def test_fn(model, loader, device, roi, output_dir, image_path, label_path):
             y_hat = sliding_window_inference(
                 inputs=x,
                 roi_size=roi,
-                sw_batch_size=4,
+                sw_batch_size=8,
                 predictor=model.forward,
                 overlap=0.5,
                 mode="gaussian"
