@@ -92,7 +92,7 @@ if __name__ == "__main__":
     test_images = []
     test_labels = []
     test_ds = []
-    roi = (128, 128, 32)
+    roi = (128, 128, 16)
     test_transforms = transforms.Compose(
         [
             transforms.LoadImaged(keys=["image", "label"]),
