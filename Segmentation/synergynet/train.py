@@ -131,12 +131,10 @@ if __name__ == "__main__":
     model = SynVNet_8h2s().to(device)
     criterion = DiceCELoss(to_onehot_y=False, sigmoid=True)
     optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr)
-    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args.epochs)
     log = {'train_loss':[], 'test_dice':[[] for i in range(n_center+1)]}
     test_dice_max = 0.0
     for epoch in range(1, args.epochs+1):
         log['train_loss'].append(train_fn(model, optimizer, criterion, train_dataloader, device))
-        scheduler.step()
         if epoch % args.val_freq == 0:
             torch.save(model.state_dict(), os.path.join(args.output_dir, str(epoch)+".pth"))
             for i in range(n_center):
