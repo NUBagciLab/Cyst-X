@@ -5,7 +5,7 @@ To train model with cross validation:
     CUDA_VISIBLE_DEVICES=1 ./train.sh 2
 Where, 1 and 2 after ./train.sh select T1 or T2 modality to be used.
 
-To test model with cross validation:
+To test model with cross validation and save segmentation outputs:
 
     python ./fold_test.py
     python ./fold_test.py --t 2
