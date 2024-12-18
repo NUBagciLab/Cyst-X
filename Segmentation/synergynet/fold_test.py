@@ -24,7 +24,7 @@ if __name__ == "__main__":
     device = torch.device(args.device)
     n_center = 7
     n_fold = 5
-    roi = (128, 128, 32)
+    roi = (128, 128, 16)
     
     model = SynVNet_8h2s().to(device)
     
