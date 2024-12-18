@@ -14,7 +14,6 @@ if __name__ == "__main__":
     parser.add_argument("--output-dir", default="./saved", type=str, help="path to save outputs")
     parser.add_argument("--t", default=1, type=int, help="Modalities (1 or 2)")
     parser.add_argument("--device", default="cuda", type=str, help="device (Use cuda or cpu Default: cuda)")
-    parser.add_argument("-j", "--workers", default=0, type=int, metavar="N", help="number of data loading workers (default: 8)")
     parser.add_argument("--resume", default="model_dice.pth", type=str, help="path of checkpoint")
     args = parser.parse_args()
     args.output_dir = os.path.join(args.output_dir, 't'+str(args.t))
