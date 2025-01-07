@@ -1,3 +1,6 @@
+FedProx0.3 means mu = 0.3
+FedProx means mu = 0.1
+
 To train model with cross validation:
 On Linux: 
 
