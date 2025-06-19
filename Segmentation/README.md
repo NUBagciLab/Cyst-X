@@ -1,3 +1,6 @@
+For the PanSegNet code, please go to
+
+    https://github.com/NUBagciLab/PaNSegNet
 To train model with cross validation:
 
     chmod +x ./train.sh
