@@ -1,23 +1,22 @@
-# Ask user for raw data path
-read -p $"Where do you want to put your raw data? For example, '/data2/pyq6817/nnUNetv1/nnUNet_raw_data_base' -->" raw_data_path
-export nnUNet_raw_data_base="$raw_data_path"
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Ask user for preprocessed data path
-read -p $"Where do you want to put your preprocessed data? For example, '/data2/pyq6817/nnUNetv1/nnUNet_preprocessed' -->" preprocessed_path
+# Set relative paths based on the script location
+echo "export nnUNet_raw_data_base=\"$SCRIPT_DIR/segmentation_model/nnunet_raw_data_base\"" >> ~/.bashrc
+echo "export nnUNet_preprocessed=\"$SCRIPT_DIR/segmentation_model/nnunet_preprocessed\"" >> ~/.bashrc
+echo "export RESULTS_FOLDER=\"$SCRIPT_DIR/segmentation_model/nnunet_trained_models\"" >> ~/.bashrc
 
-export nnUNet_preprocessed="$preprocessed_path"
-
-# Ask user for trained models path
-read -p $"Where do you want to put your results/trained models? For example, '/data2/pyq6817/nnUNetv1/nnUNet_trained_models' -->" results_path
-export RESULTS_FOLDER="$results_path"
-
-echo "Paths set:"
-echo "nnUNet_raw_data_base=$nnUNet_raw_data_base"
-echo "nnUNet_preprocessed=$nnUNet_preprocessed"
-echo "RESULTS_FOLDER=$RESULTS_FOLDER"
-
-pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu126
+pip install torch==1.11.0+cu113 torchvision==0.12.0+cu113 torchaudio==0.11.0 --extra-index-url https://download.pytorch.org/whl/cu113
+pip install dicom2nifti
+pip install medpy
+pip install tqdm
+pip install matplotlib
+pip install importlib-resources >=5.12
 git clone https://github.com/NUBagciLab/PaNSegNet.git
 cd PaNSegNet/src
-python setup.py
-pip install 'monai[nibabel]'
+python setup.py install
+pip install batchgenerators
+pip install numpy==1.24.3
+pip install 'monai[nibabel]' --no-deps
+# source the bashrc file
+source ~/.bashrc
