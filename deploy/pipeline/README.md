@@ -1,3 +1,7 @@
+Please download the classification models to the folder "classification", and the segmentation models to the folder "segmentation":
+
+    https://drive.google.com/drive/folders/1IVOcf0Q7LBuuX-UAbhQFf_lLlEikHjPZ?usp=sharing
+
 Setting up for segmentation and classification:
 On Linux: 
 
