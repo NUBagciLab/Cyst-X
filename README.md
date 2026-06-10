@@ -1,4 +1,4 @@
 # Cyst-X
-Cyst-X: Multicenter AI Prediction of Pancreatic Cancer Risk in Centralized and Federated Environments
+Cyst-X: A Multi-Center MRI Benchmark and Federated Learning Framework for Malignancy-Risk Stratification of Pancreatic Cystic Neoplasm
 
 Dataset: https://osf.io/74vfs/
