@@ -10,6 +10,7 @@ This directory serves as the centralized engine for storing raw classification o
 * **`External 2 Classes/`** – Houses prediction logs and inference scores generated across the leave-one-center-out generalizability experiments.
 * **`fold_test.py`** – **The Fusion Evaluation Engine.** Located here at the root of the `results/` folder, this script compiles, evaluates, and applies threshold calibration specifically for the multi-modality **fused** models (e.g., fusion, fusion_add, fusion_prob).
 * **`seed.py`** – Sets global environment random states and deterministic behavior flags to guarantee structural reproducibility across execution blocks.
+* **`Cyst-X_bigdata_risk_assessment.csv`** - Three radiologists' results.
 
 > ⚠️ **Important Script Distinction:** There are three distinct versions of `fold_test.py` across the classification repository. The versions located inside the `internal/` and `external/` code directories are dedicated exclusively to evaluating single-modality inputs (**T1W or T2W only**). The script located here at the root of the `results/` folder is designed specifically to aggregate and calibrate **fused multi-modality inputs**.
 
