@@ -1,4 +1,4 @@
-For the PanSegNet code, please go to [PanSegNet](https://github.com/NUBagciLab/PaNSegNet).
+For the PanSegNet Segmentation code, please go to [PanSegNet](https://github.com/NUBagciLab/PaNSegNet).
 
 To train model with cross validation:
 
