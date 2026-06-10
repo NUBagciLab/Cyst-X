@@ -1,5 +1,5 @@
 For the PanSegNet Segmentation code, please go to [PanSegNet](https://github.com/NUBagciLab/PaNSegNet).
-
+To access the latest segmentation model weights, please to go:(https://drive.google.com/drive/folders/1Nh-9qG8BmmyFWiLUL_lQ0Wh0wXqR4GcK?usp=drive_link).
 To train model with cross validation:
 
     chmod +x ./train.sh
