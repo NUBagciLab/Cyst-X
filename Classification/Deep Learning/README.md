@@ -66,3 +66,6 @@ For test only:
     python fold_test.py --model "$model" --t "$t" --data-path "$data_path"
     
     python fold_test.py --model "$model" --t "$t" --data-path "$data_path" --mu "$mu"
+
+#### Classification checkpoints
+Please access the classification model weights with this link: (https://drive.google.com/drive/folders/1vBNU2BPAJNXdOOM_VmqBbB7YDjpR-Upq?usp=drive_link)
