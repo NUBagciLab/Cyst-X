@@ -21,7 +21,7 @@ The source scripts executed inside the `Deep Learning/` and `Radiomics/` directo
 * **Binary Classification:** Employs a default unconstrained decision threshold of $50\%$ ($0.5$).
 * **Multi-Class Classification:** Predicts outcomes strictly using argmax selection over the raw output logits.
 
-### Stage 2: Clinically Meaningful Threshold Calibration
+### Stage 2: Clinically Meaningful Threshold Calibration for Binary Classification
 Because institutional scanning protocols and cohort distributions vary widely across international centers, a uniform 0.5 cut-off results in variable diagnostic profiles. 
 
 To resolve this, the uncalibrated prediction arrays compiled across the validation folds are output to the `results/` directory. We then execute a localized optimization routine that searches a grid space to dynamically determine center-specific operational thresholds. This calibration explicitly optimizes overall accuracy under realistic medical boundary constraints (requiring sensitivity $> 35\%$ and specificity $> 85\%$), mapping the models to clinical environments safely.
