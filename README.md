@@ -30,7 +30,7 @@ Cyst-X/
 └── README.md                # Main repository documentation hub
 ```
 
-# Citation
+# 📝 Citation
 If you use this dataset in your research, please cite our paper:
 
     @article{pan2025cyst,
