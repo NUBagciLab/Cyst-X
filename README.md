@@ -8,12 +8,8 @@ Official implementation of **Cyst-X**, an end-to-end multi-center pipeline integ
 
 ---
 
-<p align="center">
-  <img src="figures/pipeline.png" alt="" width="100%" />
-</p>
 
-
-## 📌 Overview
+# 📌 Overview
 
 Pancreatic cancer is projected to be the second-deadliest cancer by 2030, making early detection critical. IPMNs are key cancer precursors, but current consensus guidelines struggle to stratify malignancy risk accurately. 
 
@@ -22,11 +18,24 @@ Pancreatic cancer is projected to be the second-deadliest cancer by 2030, making
 2. **Advanced Pancreas Segmentation:** Integrating `PanSegNet` (a linear self-attention transformer-based backbone) for high-fidelity region of interest (ROI) extraction.
 3. **Privacy-Preserving Federated Learning:** Distributed risk classification training utilizing `FedAvg` and `FedProx` without exchanging raw clinical images.
 
+<p align="center">
+  <img src="figures/pipeline.png" alt="" width="100%" />
+</p>
 
-## 📂 Repository Structure
+# 📂 Repository Structure
 ```filesystem
 Cyst-X/
 ├── Classification/          # Pipelines and frameworks for deep risk modeling
 ├── Segmentation/            # Pipeline and engines for pancreas ROI localization
 └── README.md                # Main repository documentation hub
 ```
+
+# Citation
+If you use this dataset in your research, please cite our paper:
+
+    @article{pan2025cyst,
+      title={Cyst-X: A Multi-Center MRI Benchmark and Federated Learning Framework for Malignancy-Risk Stratification of Pancreatic Cystic Neoplasm},
+      author={Pan, Hongyi and Durak, Gorkem and Keles, Elif and Hong, Ziliang and Seyithanoglu, Deniz and Zhang, Zheyuan and Medetalibeyoglu, Alpay and Aktas, Halil Ertugrul and Bejar, Andrea Mia and Taktak, Yavuz and others},
+      journal={arXiv preprint arXiv:2507.22017},
+      year={2025}
+    }
