@@ -101,9 +101,6 @@
         <h2>Abstract</h2>
         <p>Pancreatic cancer is projected to be the second-deadliest cancer by 2030, making early detection critical. Intraductal papillary mucinous neoplasms (IPMNs), key cancer precursors, present a clinical dilemma, as current guidelines struggle to stratify malignancy risk, leading to unnecessary surgeries or missed diagnoses. Here, we introduce Cyst-X, a multi-center MRI benchmark and a federated learning framework for IPMN malignancy-risk stratification. The dataset comprises 1,461 abdominal MRI scans from 764 patients at seven international centers, with three-tier malignancy labels anchored in histopathology or three-year imaging follow-up and expert pancreas segmentations. The pipeline couples the PanSegNet pancreas segmenter with a 3D DenseNet-121 classifier and a parallel radiomics predictor. On internal cross-validation, the deep learning classifier reached a mean area under the receiver operating characteristic curve (AUC) of 0.85 (95% CI 0.84–0.86) on T2-weighted MRI for high-risk versus low- or no-risk discrimination, with the average precision rising from a prevalence baseline of 0.23 to 0.64. This performance was preserved (AUC 0.85, FedProx) when training was distributed across institutions without exchange of raw patient images. Benchmarked against three blinded radiologists on a 629-case reader subset evaluated under imaging-only conditions, the classifier matched or exceeded sensitivity at comparable specificity.</p>
 
-        <h2>IPMN Risk Stratification Pipeline</h2>
-        <p align="center"><img src="figures/pipeline.png" alt="Cyst-X Pipeline Overview"></p>
-
         <h2>Dataset Composition and Risk Distribution</h2>
         <p align="center"><img src="figures/distribution.png" alt="Cyst-X Dataset Composition and Demographics"></p>
         <p>
@@ -112,6 +109,11 @@
                 <li><strong>Pathology-Anchored Labels:</strong> Standardized classification into High-Risk (high-grade dysplasia, carcinoma in situ, invasive cancer), Low-Risk (low/intermediate dysplasia or 3-year confirmed imaging stability), and No-Risk/Control.</li>
             </ul>
         </p>
+        
+        <h2>IPMN Risk Stratification Pipeline</h2>
+        <p align="center"><img src="figures/pipeline.png" style="width: 80%;" alt="Cyst-X Pipeline Overview"></p>
+
+
         
         <h2>Pancreas Segmentation Benchmark</h2>
         <p align="center"><img src="figures/segmentation.png" alt="Pancreas Segmentation Quantitative Results"></p>
