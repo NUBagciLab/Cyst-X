@@ -94,23 +94,23 @@
     </div>
     
     <div class="content-section">
-        <h2>Pipeline Overview</h2>
-        <p align="center"><img src="figures/pipeline.jpg" alt="Cyst-X End-to-End Pipeline Overview"></p>
-        
         <h2>Abstract</h2>
         <p>Pancreatic cancer is projected to be the second-deadliest cancer by 2030, making early detection critical[cite: 2]. Intraductal papillary mucinous neoplasms (IPMNs), key cancer precursors, present a clinical dilemma, as current guidelines struggle to stratify malignancy risk, leading to unnecessary surgeries or missed diagnoses[cite: 2]. Here, we introduce Cyst-X, a multi-center MRI benchmark and a federated learning framework for IPMN malignancy-risk stratification[cite: 2]. The dataset comprises 1,461 abdominal MRI scans from 764 patients at seven international centers, with three-tier malignancy labels anchored in histopathology or three-year imaging follow-up and expert pancreas segmentations[cite: 2]. The pipeline couples the PanSegNet pancreas segmenter with a 3D DenseNet-121 classifier and a parallel radiomics predictor[cite: 2]. On internal cross-validation, the deep learning classifier reached a mean area under the receiver operating characteristic curve (AUC) of 0.85 (95% confidence interval 0.84-0.86) on T2-weighted MRI for high-risk versus low- or no-risk discrimination, with the average precision rising from a prevalence baseline of 0.23 to 0.64[cite: 2]. This performance was preserved (AUC 0.85, FedProx) when training was distributed across institutions without exchange of raw patient images[cite: 2]. Benchmarked against three blinded radiologists on a 629-case reader subset evaluated under imaging-only conditions, the classifier matched or exceeded sensitivity at comparable specificity[cite: 2].</p>
 
         <h2>Dataset Cohort & Demographic Distribution</h2>
-        <p align="center"><img src="figures/distribution.jpg" alt="Cyst-X Cohort and Label Hierarchy"></p>
+        <p align="center"><img src="figures/distribution.jpg" alt="Cyst-X Demographic and Label Distribution"></p>
         <p>
             The Cyst-X cohort comprises 1,461 MRI scans (723 T1W, 738 T2W) acquired across seven centers (NYU, MCF, NU, AHN, MCA, IU, EMC) spanning GE, Siemens, and Philips systems at 1.5T and 3.0T[cite: 2]. All imaging is released in NIfTI format with accompanying expert annotations on OSF[cite: 2].
         </p>
+
+        <h2>Cyst-X Risk Stratification and Federated Learning Pipeline</h2>
+        <p align="center"><img src="figures/pipeline.jpg" alt="Cyst-X End-to-End Pipeline Overview"></p>
 
         <h2>Pancreas Segmentation Benchmark</h2>
         <p align="center"><img src="figures/segmentation.jpg" alt="Pancreas Segmentation Benchmark Table"></p>
         <p align="center"><img src="figures/samples.jpg" alt="Qualitative Segmentation Samples Across Centers"></p>
 
-        <h2>IPMN Malignancy Risk Classification</h2>
+        <h2>IPMN Malignancy Risk Classification Benchmark</h2>
         <p align="center"><img src="figures/classification.jpg" alt="IPMN Classification Benchmark Results Table"></p>
 
         <h2>BibTeX Citation</h2>
