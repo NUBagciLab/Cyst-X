@@ -27,6 +27,7 @@ Pancreatic cancer is projected to be the second-deadliest cancer by 2030, making
 Cyst-X/
 ├── Classification/          # Pipelines and frameworks for deep risk modeling
 ├── Segmentation/            # Pipeline and engines for pancreas ROI localization
+├── MRQy/                    # MRQy analysis
 └── README.md                # Main repository documentation hub
 ```
 
