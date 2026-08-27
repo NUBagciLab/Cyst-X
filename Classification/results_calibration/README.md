@@ -11,7 +11,7 @@ The results will be saved in `Internal 2 Classes Calibrated`.
 
 Alternatively, you can run calibration on a specific file:
 
-    python analysis_internal.py -i ./Internal 2 Classes/3D Radiomics/t1.xlsx -o ./Internal 2 Classes Calibrated/3D Radiomics/t1.xlsx
+    python analysis_internal.py -i './Internal 2 Classes/3D Radiomics/t1.xlsx' -o './Internal 2 Classes Calibrated/3D Radiomics/t1.xlsx'
 
 For calibration on all external results:
 
@@ -22,7 +22,7 @@ The results will be saved in `External 2 Classes Calibrated`.
 
 Alternatively, you can run calibration on a specific file:
 
-    python analysis_internal.py -i ./External 2 Classes/3D Radiomics/t1.xlsx -o ./External 2 Classes Calibrated/3D Radiomics/t1.xlsx
+    python analysis_internal.py -i './External 2 Classes/3D Radiomics/t1.xlsx' -o './External 2 Classes Calibrated/3D Radiomics/t1.xlsx'
 
 The thresholds are saved in the output Excel files. 
 
