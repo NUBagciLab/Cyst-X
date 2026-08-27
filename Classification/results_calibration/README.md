@@ -24,6 +24,8 @@ Alternatively, you can run calibration on a specific file:
 
     python analysis_internal.py -i ./External 2 Classes/3D Radiomics/t1.xlsx -o ./External 2 Classes Calibrated/3D Radiomics/t1.xlsx
 
+The thresholds are saved in the output Excel files.
+
 # 📂 Directory Structure
 Within the `Internal 2 Classes` and `External 2 Classes`:
 * `3D Radiomics`: Radiomics models from `Classification/Radiomics`
