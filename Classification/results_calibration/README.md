@@ -40,5 +40,5 @@ Within the `Internal 2 Classes` and `External 2 Classes`:
   * `fusion_add` / `fusion_add_shared`: Latent Feature Addition with a **1-layer** classification head.
   * `fusion_add2` / `fusion_add2_shared`: Latent Feature Addition with a **2-layer** classification head.
   * `fusion_prob`: Weighted probability-level fusion where networks dynamically capture and learn the optimal contribution scalar of each isolated modality output.
-> 💡 **Key Performance Finding:** During our benchmarking, the deeper **2-layer classification heads** yielded superior performance on internal cross-validation (internal evaluation), whereas the simpler **1-layer classification heads** demonstrated greater generalizability and better results during leave-one-center-out testing (external evaluation).
+> 💡 During our benchmarking, the deeper **2-layer classification heads** yielded superior performance on internal cross-validation (internal evaluation), whereas the simpler **1-layer classification heads** demonstrated greater generalizability and better results during leave-one-center-out testing (external evaluation).
 Therefore, we present internal `fusion2` / `fusion2_shared` / `fusion_add2` / `fusion_add2_shared` and external `fusion` / `fusion_shared` / `fusion_add` / `fusion_add_shared` in our paper.
