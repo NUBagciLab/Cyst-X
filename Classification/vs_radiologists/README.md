@@ -12,7 +12,7 @@ If you want to compare the uncalibrated results (`classification threshold=0.5`)
     chmod +x run_uncalibrated.sh
     ./run_uncalibrated.sh
 
-If you want to compare on the 512 histology-confirmed cases, please pass `-H` when you run `run.sh`
+If you want to compare on the 512 histology-confirmed cases, please pass `-H` to `run.sh`:
 
     ./run.sh -H
     ./run_uncalibrated.sh -H
