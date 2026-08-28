@@ -66,3 +66,7 @@ For test only:
     python fold_test.py --model "$model" --t "$t" --data-path "$data_path"
     
     python fold_test.py --model "$model" --t "$t" --data-path "$data_path" --mu "$mu"
+
+For ploting t-SNE (only availabe at `Classification/Deep Learning/internal/2-class/centralized`):
+
+    python tsne.py --model "$model" --t "$t" --data-path "$data_path"
