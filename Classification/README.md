@@ -10,7 +10,7 @@ This directory contains the core implementation files for the automated risk str
 * **`Radiomics/`** – Houses the classical pipeline components, including isotropic resampling, N4 bias-field correction, maximum-relevance minimum-redundancy (mRMR) feature selection, and the Random Forest classification baseline.
 * **`results_calibration/`** – Performs center-specific clinical calibration on classification thresholds to improve the classification results.
 * **`results/`** – ``Its function is same as `results_calibration` but outputs latex tables in our paper.
-* **`vs_radiology/`** - Compare the model with radiologists on 629 patients with both T1W and T2W scans.
+* **`vs_radiologiests/`** - Compare the models with radiologists on 629 patients with both T1W and T2W scans.
 
 ---
 
