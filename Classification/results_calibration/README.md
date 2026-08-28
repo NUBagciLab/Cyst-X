@@ -7,7 +7,7 @@ For calibration on all internal results:
     chmod +x analysis_internal.sh
     ./analysis_internal.sh
 
-The results will be saved in `Internal 2 Classes Calibrated`. 
+The results will be saved in `Internal 2 Classes Calibrated`. ROCs and PR Curves are also saved with the output Excel files.
 
 Alternatively, you can run calibration on a specific file:
 
