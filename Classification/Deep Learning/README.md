@@ -1,6 +1,6 @@
 # Cyst-X: Deep Learning Risk Stratification Hub
 
-This directory hosts the core deep learning engines for multi-center IPMN malignancy-risk stratification. It separates experimental execution into internal validation (cross-validation) and external validation (leave-one-center-out testing), supporting single-modality pipelines and comprehensive multi-modality fusion frameworks.
+This directory hosts the core deep learning engines for multi-center IPMN malignancy-risk stratification. It separates experimental execution into internal validation (cross-validation) and external validation (leave-one-center-out testing), supporting single-modality pipelines and comprehensive multi-modality fusion frameworks. Model weights are available at [HuggingFace](https://huggingface.co/phy710/Cyst-X/tree/main/Classification).
 
 ---
 
@@ -66,6 +66,3 @@ For test only:
     python fold_test.py --model "$model" --t "$t" --data-path "$data_path"
     
     python fold_test.py --model "$model" --t "$t" --data-path "$data_path" --mu "$mu"
-
-#### Classification checkpoints
-Please access the classification model weights at [HuggingFace](https://huggingface.co/phy710/Cyst-X/tree/main/Classification).
