@@ -1,5 +1,5 @@
 # 🚀 Running the Pipeline
-You need to run `results_calibration` first. 
+Please run `classification/results_calibration` first. `Cyst-X_bigdata_risk_assessment.csv` contains the diagnosis results by our three radiologists.
 
     chmod +x run.sh
     ./run.sh "../results_calibration"
