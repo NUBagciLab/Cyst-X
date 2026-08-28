@@ -2,7 +2,7 @@
 
 
 [![Dataset](https://img.shields.io/badge/Dataset-OSF-blue)](https://osf.io/74vfs/) 
-[![Dataset](https://img.shields.io/badge/Dataset-HuggingFace-yellow)](ttps://huggingface.co/datasets/phy710/Cyst-X/) 
+[![Dataset](https://img.shields.io/badge/Dataset-HuggingFace-yellow)](https://huggingface.co/datasets/phy710/Cyst-X/) 
 [![Weights](https://img.shields.io/badge/Weights-HuggingFace-yellow)](https://huggingface.co/phy710/Cyst-X/) 
 
 Dataset (OSF): https://osf.io/74vfs/
