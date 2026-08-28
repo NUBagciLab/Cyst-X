@@ -26,4 +26,7 @@ The source scripts executed inside the `Deep Learning/` and `Radiomics/` directo
 ### Stage 2: Clinically Meaningful Threshold Calibration for Binary Classification
 Because institutional scanning protocols and cohort distributions vary widely across international centers, a uniform 0.5 cut-off results in variable diagnostic profiles. 
 
-To resolve this, the uncalibrated prediction arrays compiled across the validation folds are output to the `results/` directory. We then execute a localized optimization routine that searches a grid space to dynamically determine center-specific operational thresholds. This calibration explicitly optimizes overall accuracy under realistic medical boundary constraints (requiring sensitivity $> 35\%$ and specificity $> 85\%$), mapping the models to clinical environments safely.
+To resolve this, the uncalibrated prediction arrays compiled across the validation folds are output to the `results_calibration/` directory. We then execute a localized optimization routine that searches a grid space to dynamically determine center-specific operational thresholds. This calibration explicitly optimizes overall accuracy under realistic medical boundary constraints (requiring sensitivity $> 35\%$ and specificity $> 85\%$), mapping the models to clinical environments safely.
+
+### Stage 3: Comparision with radiologists
+The code to compare with our three radiologits' evaluation is provided in `vs_radiologists`.
