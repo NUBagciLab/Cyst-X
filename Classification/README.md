@@ -9,7 +9,7 @@ This directory contains the core implementation files for the automated risk str
 * **`Deep Learning/`** – Contains 3D network architectures (including DenseNet-121, ResNet-34, ResNet-50, and EfficientNet-B0), multi-modality fusion mechanisms, and distributed federated orchestration engines (`FedAvg` and `FedProx`).
 * **`Radiomics/`** – Houses the classical pipeline components, including isotropic resampling, N4 bias-field correction, maximum-relevance minimum-redundancy (mRMR) feature selection, and the Random Forest classification baseline.
 * **`results_calibration/`** – Performs center-specific clinical calibration on classification thresholds to improve the classification results.
-* **`results/`** – ``Its function is same as `results_calibration` but outputs latex tables in our paper.
+* **`results/`** – Its function is same as `results_calibration` but outputs latex tables in our paper.
 * **`vs_radiologists/`** - Compare the models with radiologists on 629 patients with both T1W and T2W scans.
 
 ---
