@@ -95,5 +95,6 @@ if __name__ == "__main__":
         'Probability No Risk': csv_probabilities[0],
         'Probability Low Risk': csv_probabilities[1],
         'Probability High Risk': csv_probabilities[2],
+        'Fold': csv_folds
     })
     df.style.apply(highlight_errors, axis=1).to_excel(os.path.join(args.output_dir, 'result.xlsx'), index=False)
