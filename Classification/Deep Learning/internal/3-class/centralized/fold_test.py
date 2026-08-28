@@ -75,9 +75,7 @@ if __name__ == "__main__":
     
     print(f"{log_mean['test_acc']*100:.2f}$\\pm${log_std['test_acc']*100:.2f} & {log_mean['test_auc']*100:.2f}$\\pm${log_std['test_auc']*100:.2f} & [{log_mean['auc_lower']*100:.2f}, {log_mean['auc_upper']*100:.2f}]")
 
-
     csv_probabilities = pred_all
-    csv_predictions = [i.argmax() for i in pred_all]
     df = pd.read_excel(os.path.join(args.data_path, 'IPMN_labels_t'+str(args.t)+'_total.xlsx'), usecols=[0, 5])
     df_cleaned = df.dropna(subset=[df.columns[1]]) # remove NaN
     names = [i.replace('.nii.gz', '') for i in df_cleaned.iloc[:, 0].values]
@@ -86,15 +84,17 @@ if __name__ == "__main__":
     indices = [mapping[value] for value in names]
     csv_images = [csv_images[i] for i in indices]
     csv_labels = [csv_labels[i] for i in indices]
-    csv_probabilities = [csv_probabilities for i in indices]
+    csv_probabilities = [csv_probabilities[i] for i in indices]
+    csv_predictions = [np.argmax(csv_probabilities[i]) for i in indices]
+    csv_folds = [csv_folds[i] for i in indices]
     df = pd.DataFrame({
         'ID': csv_images,
         'Risk Assessment': risks,
         'Label': csv_labels,
         'Prediction': csv_predictions,
-        'Probability No Risk': csv_probabilities[0],
-        'Probability Low Risk': csv_probabilities[1],
-        'Probability High Risk': csv_probabilities[2],
+        'Probability No Risk': [p[0] for p in csv_probabilities],
+        'Probability Low Risk': [p[1] for p in csv_probabilities],
+        'Probability High Risk': [p[2] for p in csv_probabilities],
         'Fold': csv_folds
     })
     df.style.apply(highlight_errors, axis=1).to_excel(os.path.join(args.output_dir, 'result.xlsx'), index=False)
