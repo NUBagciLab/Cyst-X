@@ -11,8 +11,17 @@ from sklearn.metrics import roc_auc_score, roc_curve, auc, accuracy_score, preci
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Result calibration.")
     parser.add_argument("-i", "--input", default='./Cyst-X_bigdata_risk_assessment.csv', type=str, help="input path")
+    parser.add_argument("-l", "--label", default="./IPMN_labels_total.xlsx", type=str, help="label path")
+    parser.add_argument('-H', '--histology', action='store_true', help='only evaluate on histology‑confirmed')
     args = parser.parse_args()
     df = pd.read_csv(args.input, header=0)
+    if args.histology:
+        ref = pd.read_excel(args.label)
+        ref_follow_up = ref[ref['follow-up information'].str.contains('no change', na=False)]
+        id_follow_up = ref_follow_up['Patient ID T1'].tolist() + ref_follow_up['Patient ID  T2'].tolist()
+        id_follow_up = set([i.replace('.nii.gz', '') for i in id_follow_up])
+        df = df[~df['Patient ID'].isin(id_follow_up)]
+
     names = df['Patient ID'].tolist()
     r1 = df['reader1'].tolist()
     r2 = df['reader2'].tolist()
