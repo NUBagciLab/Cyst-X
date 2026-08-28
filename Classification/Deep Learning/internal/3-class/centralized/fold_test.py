@@ -5,6 +5,14 @@ import torch.nn as nn
 import numpy as np
 from model import get_model
 from train import load_data, test_fn
+from data_loader import get_data_list, get_fold
+import pandas as pd
+
+def highlight_errors(row):
+    # If Prediction != Label, color the row light red
+    if row['Label'] != row['Prediction']:
+        return ['background-color: #ffcccc'] * len(row)
+    return [''] * len(row)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="IPMN classification cross validation test.")
@@ -27,16 +35,29 @@ if __name__ == "__main__":
     
     n_center = 7
     n_fold = 5
+    y_all = []
+    pred_all = []
     log = [{'test_loss':[[] for i in range(n_center+1)], 'test_acc':[[] for i in range(n_center+1)], 'test_auc':[[] for i in range(n_center+1)]} for j in range(n_fold)]   
-
+    csv_images = []
+    csv_labels = []
+    csv_folds = []
     for fold in range(n_fold):
         args.fold = fold
         _, test_dataloader = load_data(args, n_center=n_center)
         model.load_state_dict(torch.load(os.path.join(args.output_dir, 'fold'+str(fold), args.resume), map_location='cpu', weights_only=True))   
-        
-        epoch_log, _ = test_fn(test_dataloader, model, loss_fn, device)
+
+        epoch_log, epoch_y = test_fn(test_dataloader, model, loss_fn, device)
         for metric in ['loss', 'acc', 'auc']:
-            log[fold]['test_'+metric].append(epoch_log[metric])        
+            log[fold]['test_'+metric].append(epoch_log[metric])  
+        y_all.extend(epoch_y['true'])
+        pred_all.extend(epoch_y['pred'])
+        
+        image_list, label_list = get_data_list(root=args.data_path, t = args.t)
+        _, _, test_image, test_label = get_fold(image_list, label_list, fold = args.fold)
+        csv_images.extend([os.path.basename(i).replace('.nii.gz', '') for i in test_image])
+        csv_labels.extend([i for i in test_label])
+        csv_folds.extend([fold for i in range(len(epoch_y['pred']))])
+
         
     for fold in range(n_fold): 
         print(f"Fold {fold} test loss {log[fold]['test_loss'][-1]:.4f} acc {log[fold]['test_acc'][-1]:.4f} auc {log[fold]['test_auc'][-1]:.4f}")
@@ -53,3 +74,26 @@ if __name__ == "__main__":
     print(f"95%CI: [{log_mean['auc_lower']*100:.2f}, {log_mean['auc_upper']*100:.2f}]")
     
     print(f"{log_mean['test_acc']*100:.2f}$\\pm${log_std['test_acc']*100:.2f} & {log_mean['test_auc']*100:.2f}$\\pm${log_std['test_auc']*100:.2f} & [{log_mean['auc_lower']*100:.2f}, {log_mean['auc_upper']*100:.2f}]")
+
+
+    csv_probabilities = pred_all
+    csv_predictions = [i.argmax() for i in pred_all]
+    df = pd.read_excel(os.path.join(args.data_path, 'IPMN_labels_t'+str(args.t)+'_total.xlsx'), usecols=[0, 5])
+    df_cleaned = df.dropna(subset=[df.columns[1]]) # remove NaN
+    names = [i.replace('.nii.gz', '') for i in df_cleaned.iloc[:, 0].values]
+    risks =  df_cleaned.iloc[:, 1].to_numpy(dtype=np.float32)
+    mapping = {value: i for i, value in enumerate(csv_images)}
+    indices = [mapping[value] for value in names]
+    csv_images = [csv_images[i] for i in indices]
+    csv_labels = [csv_labels[i] for i in indices]
+    csv_probabilities = [csv_probabilities for i in indices]
+    df = pd.DataFrame({
+        'ID': csv_images,
+        'Risk Assessment': risks,
+        'Label': csv_labels,
+        'Prediction': csv_predictions,
+        'Probability No Risk': csv_probabilities[0],
+        'Probability Low Risk': csv_probabilities[1],
+        'Probability High Risk': csv_probabilities[2],
+    })
+    df.style.apply(highlight_errors, axis=1).to_excel(os.path.join(args.output_dir, 'result.xlsx'), index=False)
