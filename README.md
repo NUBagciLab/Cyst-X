@@ -9,7 +9,6 @@ Official implementation of **Cyst-X**, an end-to-end multi-center pipeline integ
 
 ---
 
-
 # 📌 Overview
 
 Pancreatic cancer is projected to be the second-deadliest cancer by 2030, making early detection critical. IPMNs are key cancer precursors, but current consensus guidelines struggle to stratify malignancy risk accurately. 
@@ -31,6 +30,59 @@ Cyst-X/
 ├── MRQy/                    # MRQy analysis
 └── README.md                # Main repository documentation hub
 ```
+
+# 📦 Dataset Access & Download
+The Cyst-X dataset includes raw/preprocessed NIfTI volumes, expert pancreas segmentation masks, center-wise stratified splits, and clinical metadata. Please download the dataset via Hugging Face:
+```Bash
+# Make sure you have git-lfs installed
+git lfs install
+
+# Clone the dataset repository
+git clone [https://huggingface.co/datasets/phy710/Cyst-X](https://huggingface.co/datasets/phy710/Cyst-X) data/Cyst-X
+```
+    
+Alternatively, using Python and the huggingface_hub library:
+```Python
+from huggingface_hub import snapshot_download
+
+snapshot_download(
+    repo_id="phy710/Cyst-X",
+    repo_type="dataset",
+    local_dir="data/Cyst-X"
+)
+```
+
+You can access and download the dataset mirror directly from the Open Science Framework (OSF).
+
+## Expected Directory Layout
+Once downloaded, ensure your dataset/ directory matches the following structure:
+
+    Cyst-X/dataset/
+    ├── data splits/
+    │   ├── classification/
+    │   │   ├── 2-class/
+    │   │   │   ├── t1.csv                          # 4-fold CV splits for T1W (High-Risk vs. No/Low-Risk; stratified center-wise)
+    │   │   │   ├── t2.csv                          # 4-fold CV splits for T2W (High-Risk vs. No/Low-Risk; stratified center-wise)
+    │   │   │   └── two_inputs.csv                  # 4-fold CV splits for paired (T1W+T2W) multi-modal fusion; stratified center-wise
+    │   │   └── 3-class/
+    │   │       ├── t1.csv                          # 5-fold CV splits for T1W (No-Risk vs. Low-Risk vs. High-Risk; pooled across all centers)
+    │   │       └── t2.csv                          # 5-fold CV splits for T2W (No-Risk vs. Low-Risk vs. High-Risk; pooled across all centers)
+    │   └── pansegnet segmentation/
+    │       ├── Task210_PancreasT1MRI_splits.csv    # 5-fold cross-validation splits for T1W pancreas segmentation
+    │       └── Task211_PancreasT2MRI_splits.csv    # 5-fold cross-validation splits for T2W pancreas segmentation
+    ├── IPMN_Classification/
+    │   ├── t1/                                     # Cropped 3D pancreatic ROIs for single-input T1W (.nii.gz)
+    │   ├── t2/                                     # Cropped 3D pancreatic ROIs for single-input T2W (.nii.gz)
+    │   ├── IPMN_labels_t1_total.xlsx               # Comprehensive labels and metadata for all T1W scans
+    │   ├── IPMN_labels_t2_total.xlsx               # Comprehensive labels and metadata for all T2W scans
+    │   └── IPMN_labels_total.xlsx                  # Master cohort metadata and paired (T1W+T2W) ground truth labels
+    └── IPMN_images_masks/
+        ├── t1/
+        │   ├── images/                             # Full-volume T1W NIfTI scans (.nii.gz)
+        │   └── masks/                              # Full-volume ground-truth pancreas masks (.nii.gz)
+        └── t2/
+            ├── images/                             # Full-volume T2W NIfTI scans (.nii.gz)
+            └── masks/                              # Full-volume ground-truth pancreas masks (.nii.gz)
 
 # 📝 Citation
 If you use this dataset in your research, please cite our paper:
