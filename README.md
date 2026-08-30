@@ -47,7 +47,7 @@ snapshot_download(
 )
 ```
 
-You can access and download the dataset mirror directly from the Open Science Framework ([OSF](https://osf.io/74vfs/)). However, it is hard to upload the mass files to OSF. So we compressed them into several zip files. Please organize the files according to the expected directory layout.
+You can also access and download the dataset mirror directly from the Open Science Framework ([OSF](https://osf.io/74vfs/)). However, uploading massive amounts of files to OSF is difficult. So we compressed the dataset into several zip files. Please organize the files according to the expected directory layout.
 
 ## Expected Directory Layout
 Once downloaded, ensure your dataset directory matches the following structure:
