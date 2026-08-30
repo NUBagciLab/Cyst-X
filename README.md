@@ -52,7 +52,7 @@ You can access and download the dataset mirror directly from the Open Science Fr
 ## Expected Directory Layout
 Once downloaded, ensure your dataset directory matches the following structure:
 
-    /dataset/Cyst-X
+    /dataset/Cyst-X/
     ├── data splits/
     │   ├── classification/
     │   │   ├── 2-class/
