@@ -50,7 +50,7 @@ snapshot_download(
 You can access and download the dataset mirror directly from the Open Science Framework ([OSF](https://osf.io/74vfs/)).
 
 ## Expected Directory Layout
-Once downloaded, ensure your dataset/ directory matches the following structure:
+Once downloaded, ensure your dataset directory matches the following structure:
 
     /dataset/Cyst-X
     ├── data splits/
