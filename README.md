@@ -47,7 +47,7 @@ snapshot_download(
 )
 ```
 
-You can access and download the dataset mirror directly from the Open Science Framework ([OSF](https://osf.io/74vfs/)).
+You can access and download the dataset mirror directly from the Open Science Framework ([OSF](https://osf.io/74vfs/)). However, it is hard to upload the mass files to OSF. So we compressed them into several zip files. Please organize the files according to the expected directory layout.
 
 ## Expected Directory Layout
 Once downloaded, ensure your dataset directory matches the following structure:
@@ -65,13 +65,13 @@ Once downloaded, ensure your dataset directory matches the following structure:
     │   └── pansegnet segmentation/
     │       ├── Task210_PancreasT1MRI_splits.csv    # 5-fold cross-validation splits for T1W pancreas segmentation
     │       └── Task211_PancreasT2MRI_splits.csv    # 5-fold cross-validation splits for T2W pancreas segmentation
-    ├── IPMN_Classification/
+    ├── IPMN_Classification/                        # IPMN classification dataset
     │   ├── t1/                                     # Cropped 3D pancreatic ROIs for single-input T1W (.nii.gz)
     │   ├── t2/                                     # Cropped 3D pancreatic ROIs for single-input T2W (.nii.gz)
     │   ├── IPMN_labels_t1_total.xlsx               # Comprehensive labels and metadata for all T1W scans
     │   ├── IPMN_labels_t2_total.xlsx               # Comprehensive labels and metadata for all T2W scans
     │   └── IPMN_labels_total.xlsx                  # Master cohort metadata and paired (T1W+T2W) ground truth labels
-    └── IPMN_images_masks/
+    └── IPMN_images_masks/                          # Pancreas segmentation dataset
         ├── t1/
         │   ├── images/                             # Full-volume T1W NIfTI scans (.nii.gz)
         │   └── masks/                              # Full-volume ground-truth pancreas masks (.nii.gz)
