@@ -8,10 +8,6 @@ extra_flags=()
 # Parse arguments: non-flag is treated as base_dir, flags are collected
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        -H|--histology|-hist)
-            extra_flags+=("$1")
-            shift
-            ;;
         -*)
             extra_flags+=("$1")
             shift
@@ -26,9 +22,6 @@ done
 base_dir="${base_dir%/}"
 
 echo "Using Base Directory: $base_dir"
-if [ ${#extra_flags[@]} -gt 0 ]; then
-    echo "Only evaluating on histology‑confirmed cases"
-fi
 
 # Run radiologist.py with flags
 python radiologist.py "${extra_flags[@]}"

@@ -12,16 +12,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Result calibration.")
     parser.add_argument("-i", "--input", default='../results_calibration/Internal 2 Classes Calibrated/3D Radiomics/t1.xlsx', type=str, help="input path")
     parser.add_argument("-r", "--radiology", default='./Cyst-X_bigdata_risk_assessment.csv', type=str, help="radiology input path")
-    parser.add_argument("-l", "--label", default="./IPMN_labels_total.xlsx", type=str, help="label path")
-    parser.add_argument('-H', '--histology', action='store_true', help='only evaluate on histology‑confirmed')
     args = parser.parse_args()
     rad = pd.read_csv(args.radiology, header=0)
-    if args.histology:
-       ref = pd.read_excel(args.label)
-       ref_follow_up = ref[ref['follow-up information'].str.contains('no change', na=False)]
-       id_follow_up = ref_follow_up['Patient ID T1'].tolist() + ref_follow_up['Patient ID  T2'].tolist()
-       id_follow_up = set([i.replace('.nii.gz', '') for i in id_follow_up])
-       rad = rad[~rad['Patient ID'].isin(id_follow_up)]
+
     names = rad['Patient ID'].tolist()
     df = pd.read_excel(args.input)
     filtered_df = df[df['ID'].isin(names)]
