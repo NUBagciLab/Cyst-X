@@ -79,6 +79,25 @@ Once downloaded, ensure your dataset directory matches the following structure:
             ├── images/                             # Full-volume T2W NIfTI scans (.nii.gz)
             └── masks/                              # Full-volume ground-truth pancreas masks (.nii.gz)
 
+# 📊 Mapping Between Reported Table/Figure and the Corresponding Script
+Table 1, Supplementary Tables A2--A8: `Segmentation`.
+
+Table 2: 
+
+(1) Three-class classification: `Classification/Deep Learning/internal/3-class/centralized/fold_test.py`;
+
+(2) Two-class classification: `Classification/Deep Learning/internal/2-class/xxx/fold_test.py` and `Classification/Radiomics`, where `xxx` is `centralized`, `fedavg`, or `fedprox`.
+
+Figure 3: `Classification/tsne/tsne.py` and `Classification/Deep Learning/internal/2-class/centralized/tsne.py`.
+
+Table 3: `Classification/vs_radiologists/run.sh` for calibrated results comparison, `Classification/vs_radiologists/run_uncalibrated.sh` for uncalibrated results comparison, `Classification/vs_radiologists/run_histology.sh` for calibrated histology results comparison, `Classification/vs_radiologists/run_histology_uncalibrated.sh` for uncalibrated histology results comparison.
+
+Figure 4: `Classification/results_calibration/analysis_internal.sh`. 
+
+Figure 5: `MRQy/MRQy.py`.
+
+Supplementary Tables A9--A11:  `Classification/results_calibration/analysis_internal.sh` and  `Classification/results_calibration/analysis_external.sh`. 
+    
 # 📝 Citation
 If you use this dataset in your research, please cite our paper:
 
