@@ -27,7 +27,6 @@ if __name__ == "__main__":
         epoch_y = {'true': filtered_df['Label'].to_numpy(), 'pred': filtered_df['Probability'].to_numpy()}
         if not args.no_calibration:
             thresholds[c] = calibrate(epoch_y['pred'], epoch_y['true'])
-        print(f"Center {c+1} threshold {thresholds[c]*100:.2f}%")
 
     csv_images = []
     csv_labels = []
@@ -70,7 +69,7 @@ if __name__ == "__main__":
     log['spec'].append(tn / (tn + fp))
     
     for c in range(n_center):
-        print(f"Center {c+1} auc {log['auc'][c]:.4f} 95%auc [{log['auc_lower'][c]:.4f}, {log['auc_upper'][c]:.4f}] acc {log['acc'][c]:.4f} sens {log['sens'][c]:.4f} spec {log['spec'][c]:.4f}")
+        print(f"Center {c+1} threshold {thresholds[c]*100:.2f}% auc {log['auc'][c]:.4f} 95%auc [{log['auc_lower'][c]:.4f}, {log['auc_upper'][c]:.4f}] acc {log['acc'][c]:.4f} sens {log['sens'][c]:.4f} spec {log['spec'][c]:.4f}")
     print(f"Global auc {log['auc'][-1]:.4f} 95%auc [{log['auc_lower'][-1]:.4f}, {log['auc_upper'][-1]:.4f}] acc {log['acc'][-1]:.4f} sens {log['sens'][-1]:.4f} spec {log['spec'][-1]:.4f}")
 
     mapping = {value: i for i, value in enumerate(csv_images)}

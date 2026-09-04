@@ -24,7 +24,6 @@ if __name__ == "__main__":
         epoch_y = {'true': filtered_df['Label'].to_numpy(), 'pred': filtered_df['Probability'].to_numpy()}
         if not args.no_calibration:
             thresholds[c] = calibrate(epoch_y['pred'], epoch_y['true'])
-        print(f"Center {c+1} threshold {thresholds[c]*100:.2f}%")
               
     # --- Setup for ROC ---
     tprs = []
@@ -104,7 +103,7 @@ if __name__ == "__main__":
         log_mean['auc_lower'][c] = log_mean['auc'][c] - ci95
         log_mean['auc_upper'][c] = log_mean['auc'][c] + ci95
         if c < n_center:
-            print(f"Center {c+1} auc {log_mean['auc'][c]:.4f}±{log_std['auc'][c]:.4f} 95%CI [{log_mean['auc_lower'][c]:.4f}, {log_mean['auc_upper'][c]:.4f}] acc {log_mean['acc'][c]:.4f}±{log_std['acc'][c]:.4f}  sens {log_mean['sens'][c]:.4f}±{log_std['sens'][c]:.4f} spec {log_mean['spec'][c]:.4f}±{log_std['spec'][c]:.4f}")
+            print(f"Center {c+1} threshold {thresholds[c]*100:.2f}% auc {log_mean['auc'][c]:.4f}±{log_std['auc'][c]:.4f} 95%CI [{log_mean['auc_lower'][c]:.4f}, {log_mean['auc_upper'][c]:.4f}] acc {log_mean['acc'][c]:.4f}±{log_std['acc'][c]:.4f}  sens {log_mean['sens'][c]:.4f}±{log_std['sens'][c]:.4f} spec {log_mean['spec'][c]:.4f}±{log_std['spec'][c]:.4f}")
         else: 
             print(f"Global auc {log_mean['auc'][c]:.4f}±{log_std['auc'][c]:.4f} 95% CI [{log_mean['auc_lower'][c]:.4f}, {log_mean['auc_upper'][c]:.4f}] acc {log_mean['acc'][c]:.4f}±{log_std['acc'][c]:.4f} sens {log_mean['sens'][c]:.4f}±{log_std['sens'][c]:.4f} spec {log_mean['spec'][c]:.4f}±{log_std['spec'][c]:.4f}")
     
