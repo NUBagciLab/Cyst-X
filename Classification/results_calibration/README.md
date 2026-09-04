@@ -28,6 +28,7 @@ The thresholds are saved in the output Excel files.
 
 # 📂 Directory Structure
 Within the `Internal 2 Classes` and `External 2 Classes`:
+* Folders with `_histology` mean the model was trained and tested on the histology-confirmed cases instead of all cases.
 * `3D Radiomics`: Radiomics models from `Classification/Radiomics`
 * `DenseNet-121` / `ResNet-34` / `ResNet-50` / `EfficientNet-B0`: Centralized models from `Classification/Deep Learning/internal/2-class/centralized` or `Classification/Deep Learning/external/2-class/centralized`. Models optimized over a pooled dataset approach where data is centralized across a single silo.
 * `+FedAvg`: FedAvg `DenseNet-121` models from `Classification/Deep Learning/internal/2-class/FedAvg` or `Classification/Deep Learning/external/2-class/FedAvg`. Distributed training using standard Federated Averaging across decentralized institutional partitions.
