@@ -33,11 +33,13 @@ Cyst-X/
 
 # 📦 Dataset Access & Download
 The Cyst-X dataset includes raw/preprocessed NIfTI volumes, expert pancreas segmentation masks, center-wise stratified splits, and clinical metadata. Please download the dataset via [HuggingFace](https://huggingface.co/datasets/phy710/Cyst-X).:
+
+First, please make sure that `huggingface_hub` is installed:
 ```Bash
-git clone https://huggingface.co/datasets/phy710/Cyst-X /dataset/Cyst-X
+pip install huggingface_hub
 ```
     
-Alternatively, using Python and the huggingface_hub library:
+Then, using Python and the huggingface_hub library:
 ```Python
 from huggingface_hub import snapshot_download
 snapshot_download(
