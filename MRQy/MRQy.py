@@ -7,7 +7,7 @@ Created on Mon Nov 25 13:12:02 2024
 
 import pandas as pd
 import matplotlib.pyplot as plt
-from sklearn.metrics import silhouette_score, calinski_harabasz_score, davies_bouldin_score
+from sklearn.metrics import calinski_harabasz_score
 import numpy as np
 
 label_map = {
@@ -75,7 +75,7 @@ for T in ['1', '2']:
     # plt.legend(loc='best')
     plt.grid()
     plt.axis([-0.4, 11.4, -0.3, 13.1])
-    plt.savefig('zwhitening'+T+'.pdf', format='pdf', bbox_inches='tight')
+    plt.savefig('zvaiance'+T+'.pdf', format='pdf', bbox_inches='tight')
     plt.show()
 
     plt.figure(figsize=(7, 7))
@@ -148,7 +148,7 @@ for T in ['1', '2']:
     # plt.legend(loc='best')
     plt.grid()
     plt.axis([-0.4, 11.4, -0.3, 13.1])
-    plt.savefig('cwhitening'+T+'.pdf', format='pdf', bbox_inches='tight')
+    plt.savefig('cvariance'+T+'.pdf', format='pdf', bbox_inches='tight')
     plt.show()
 
     plt.figure(figsize=(7, 7))
