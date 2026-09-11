@@ -100,8 +100,8 @@ if __name__ == "__main__":
             log_mean[metric][c] = np.mean([log[fold][metric][c][-1] for fold in range(n_fold)])
             log_std[metric][c] = np.std([log[fold][metric][c][-1] for fold in range(n_fold)])
         ci95 = 1.96 * log_std['auc'][c] / np.sqrt(n_fold)
-        log_mean['auc_lower'][c] = log_mean['auc'][c] - ci95
-        log_mean['auc_upper'][c] = log_mean['auc'][c] + ci95
+        log_mean['auc_lower'][c] = max(log_mean['auc'][c] - ci95, 0)
+        log_mean['auc_upper'][c] = min(log_mean['auc'][c] + ci95, 1)
         if c < n_center:
             print(f"Center {c+1} threshold {thresholds[c]*100:.2f}% auc {log_mean['auc'][c]:.4f}±{log_std['auc'][c]:.4f} 95%CI [{log_mean['auc_lower'][c]:.4f}, {log_mean['auc_upper'][c]:.4f}] acc {log_mean['acc'][c]:.4f}±{log_std['acc'][c]:.4f}  sens {log_mean['sens'][c]:.4f}±{log_std['sens'][c]:.4f} spec {log_mean['spec'][c]:.4f}±{log_std['spec'][c]:.4f}")
         else: 
