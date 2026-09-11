@@ -15,7 +15,7 @@ Pancreatic cancer is projected to be the second-deadliest cancer by 2030, making
 
 **Cyst-X** addresses this structural bottleneck by providing:
 1. **The Largest Multi-Center Pancreas MRI Resource:** 1,461 abdominal MRI scans from 764 patients across seven international medical centers with expert annotations and pathology-anchored ground truth.
-2. **Advanced Pancreas Segmentation:** Integrating `PanSegNet` (a linear self-attention transformer-based backbone) for high-fidelity region of interest (ROI) extraction.
+2. **Advanced Pancreas Segmentation:** Integrating [PanSegNet](https://github.com/NUBagciLab/PaNSegNet) (a linear self-attention transformer-based backbone) for high-fidelity region of interest (ROI) extraction.
 3. **Privacy-Preserving Federated Learning:** Distributed risk classification training utilizing `FedAvg` and `FedProx` without exchanging raw clinical images.
 
 <p align="center">
