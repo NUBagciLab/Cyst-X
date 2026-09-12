@@ -5,6 +5,7 @@ import torch.nn as nn
 import numpy as np
 from model import get_model
 from train import load_data, test_fn
+from auc_ci import calculate_auc_ci_cv
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="IPMN classification cross validation test.")
@@ -28,6 +29,7 @@ if __name__ == "__main__":
     
     n_center = 7
     n_fold = 5
+    folds_data = []
     log = [{'test_loss':[[] for i in range(n_center+1)], 'test_acc':[[] for i in range(n_center+1)], 'test_auc':[[] for i in range(n_center+1)]} for j in range(n_fold)]   
 
     for fold in range(n_fold):
@@ -35,9 +37,10 @@ if __name__ == "__main__":
         _, test_dataloader = load_data(args, n_center=n_center)
         model.load_state_dict(torch.load(os.path.join(args.output_dir, 'fold'+str(fold), args.resume), map_location='cpu', weights_only=True))   
         
-        epoch_log, _ = test_fn(test_dataloader, model, loss_fn, device)
+        epoch_log, epoch_y = test_fn(test_dataloader, model, loss_fn, device)
         for metric in ['loss', 'acc', 'auc']:
-            log[fold]['test_'+metric].append(epoch_log[metric])        
+            log[fold]['test_'+metric].append(epoch_log[metric])  
+        folds_data.append((epoch_y['true'], epoch_y['pred']))      
         
     for fold in range(n_fold): 
         print(f"Fold {fold} test loss {log[fold]['test_loss'][-1]:.4f} acc {log[fold]['test_acc'][-1]:.4f} auc {log[fold]['test_auc'][-1]:.4f}")
@@ -48,9 +51,9 @@ if __name__ == "__main__":
         log_std['test_'+metric] = np.std([log[fold]['test_'+metric][-1] for fold in range(n_fold)])
     print(f"Test loss {log_mean['test_loss']:.4f}±{log_std['test_loss']:.4f} acc {log_mean['test_acc']:.4f}±{log_std['test_acc']:.4f} auc {log_mean['test_auc']:.4f}±{log_std['test_auc']:.4f}")
    
-    ci95 = 1.96 * log_std['test_auc'] / np.sqrt(n_fold)
-    log_mean['auc_lower'] = log_mean['test_auc'] - ci95
-    log_mean['auc_upper'] = log_mean['test_auc'] + ci95
+    lower_bound, upper_bound = calculate_auc_ci_cv(folds_data)
+    log_mean['auc_lower'] = lower_bound
+    log_mean['auc_upper'] = upper_bound
     print(f"95%CI: [{log_mean['auc_lower']*100:.2f}, {log_mean['auc_upper']*100:.2f}]")
     
     print(f"{log_mean['test_acc']*100:.2f}$\\pm${log_std['test_acc']*100:.2f} & {log_mean['test_auc']*100:.2f}$\\pm${log_std['test_auc']*100:.2f} & [{log_mean['auc_lower']*100:.2f}, {log_mean['auc_upper']*100:.2f}]")
