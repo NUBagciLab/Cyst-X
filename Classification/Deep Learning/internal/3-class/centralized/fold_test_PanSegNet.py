@@ -4,6 +4,7 @@ import torch
 import torch.nn as nn
 import numpy as np
 from model import get_model
+from seed import seed_everything
 from train import load_data, test_fn
 from auc_ci import calculate_auc_ci_cv
 
@@ -20,6 +21,8 @@ if __name__ == "__main__":
     parser.add_argument("--t", default=1, type=int, help="modality (must be 1 or 2)")
     args = parser.parse_args()
     args.output_dir = os.path.join(args.output_dir, args.model, 't'+str(args.t))
+    
+    seed_everything(42) # Fix seed for 95% AUC
     
     device = torch.device(args.device)
     
