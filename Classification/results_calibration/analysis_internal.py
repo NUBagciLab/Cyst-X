@@ -4,7 +4,9 @@ import numpy as np
 from sklearn.metrics import roc_auc_score, roc_curve, auc, accuracy_score, recall_score, confusion_matrix, precision_recall_curve, average_precision_score
 import matplotlib.pyplot as plt
 import pandas as pd
+from seed import seed_everything
 from calibration import calibrate, highlight_errors
+from auc_ci import calculate_auc_ci_cv
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Result calibration.")
@@ -12,6 +14,9 @@ if __name__ == "__main__":
     parser.add_argument("-o", "--output", default="./out.xlsx", type=str, help="ouput path")
     parser.add_argument("-n", "--no-calibration", action="store_true", help="no calibration, use threshold=0.5")
     args = parser.parse_args()
+
+    seed_everything(42) # Fix seed for 95% AUC
+
     df = pd.read_excel(args.input)
 
     n_center = 7
@@ -19,10 +24,10 @@ if __name__ == "__main__":
     center_names = ['nyu', 'CAD|MCF', 'northwestern|NU', 'AHN|ahn', 'mca', 'IU', 'EMC']
     plt.rcParams.update({'font.size': 16})
     thresholds = [0.5 for i in range(n_center)]
-    for c in range(n_center):
-        filtered_df = df[df['ID'].str.contains(center_names[c], na=False)]
-        epoch_y = {'true': filtered_df['Label'].to_numpy(), 'pred': filtered_df['Probability'].to_numpy()}
-        if not args.no_calibration:
+    if not args.no_calibration:
+        for c in range(n_center):
+            filtered_df = df[df['ID'].str.contains(center_names[c], na=False)]
+            epoch_y = {'true': filtered_df['Label'].to_numpy(), 'pred': filtered_df['Probability'].to_numpy()}
             thresholds[c] = calibrate(epoch_y['pred'], epoch_y['true'])
               
     # --- Setup for ROC ---
@@ -44,6 +49,8 @@ if __name__ == "__main__":
     csv_labels = []
     csv_probabilities = []
     csv_predictions = []
+    folds_data = []
+    folds_data = [[] for _ in range(n_center+1)]
     for fold in range(n_fold):
         y_all = []
         pred_all = []
@@ -62,11 +69,14 @@ if __name__ == "__main__":
             y_all.extend(epoch_y['true'])
             pred_all.extend(epoch_y['pred'])
             output_all.extend(output)
+            folds_data[c].append((epoch_y['true'], epoch_y['pred']))
 
             csv_images.extend(filtered_df['ID'])
             csv_labels.extend(filtered_df['Label'])
             csv_probabilities.extend(filtered_df['Probability'])
             csv_predictions.extend([int(i) for i in output])
+
+        folds_data[-1].append((y_all, pred_all))
         
         log[fold]['acc'][-1].append(accuracy_score(y_all, output_all))
         log[fold]['auc'][-1].append(roc_auc_score(y_all, pred_all))
@@ -94,18 +104,24 @@ if __name__ == "__main__":
 
     log_mean = {'acc':[0 for i in range(n_center+1)], 'auc':[0 for i in range(n_center+1)], 'auc_lower':[0 for i in range(n_center+1)], 'auc_upper':[0 for i in range(n_center+1)], 'sens':[0 for i in range(n_center+1)], 'spec':[0 for i in range(n_center+1)]}   
     log_std = {'acc':[0 for i in range(n_center+1)], 'auc':[0 for i in range(n_center+1)], 'sens':[0 for i in range(n_center+1)], 'spec':[0 for i in range(n_center+1)]}   
-
+    
     for c in range(n_center+1):
         for metric in ['acc', 'auc', 'sens', 'spec']:
             log_mean[metric][c] = np.mean([log[fold][metric][c][-1] for fold in range(n_fold)])
             log_std[metric][c] = np.std([log[fold][metric][c][-1] for fold in range(n_fold)])
-        ci95 = 1.96 * log_std['auc'][c] / np.sqrt(n_fold)
-        log_mean['auc_lower'][c] = max(log_mean['auc'][c] - ci95, 0)
-        log_mean['auc_upper'][c] = min(log_mean['auc'][c] + ci95, 1)
+
         if c < n_center:
-            print(f"Center {c+1} threshold {thresholds[c]*100:.2f}% auc {log_mean['auc'][c]:.4f}±{log_std['auc'][c]:.4f} 95%CI [{log_mean['auc_lower'][c]:.4f}, {log_mean['auc_upper'][c]:.4f}] acc {log_mean['acc'][c]:.4f}±{log_std['acc'][c]:.4f}  sens {log_mean['sens'][c]:.4f}±{log_std['sens'][c]:.4f} spec {log_mean['spec'][c]:.4f}±{log_std['spec'][c]:.4f}")
+            filtered_df = df[df['ID'].str.contains(center_names[c], na=False)]
+            epoch_y = {'true': filtered_df['Label'].to_numpy(), 'pred': filtered_df['Probability'].to_numpy()}
+        else:
+            epoch_y = {'true': df['Label'].to_numpy(), 'pred': df['Probability'].to_numpy()}
+        lower_bound, upper_bound = calculate_auc_ci_cv(folds_data[c])
+        log_mean['auc_lower'][c] = lower_bound
+        log_mean['auc_upper'][c] = upper_bound
+        if c < n_center:
+            print(f"Center {c+1} threshold {thresholds[c]*100:.2f}% auc {log_mean['auc'][c]*100:.2f}±{log_std['auc'][c]*100:.2f} 95%CI [{log_mean['auc_lower'][c]*100:.2f}, {log_mean['auc_upper'][c]*100:.2f}] acc {log_mean['acc'][c]*100:.2f}±{log_std['acc'][c]*100:.2f}  sens {log_mean['sens'][c]*100:.2f}±{log_std['sens'][c]*100:.2f} spec {log_mean['spec'][c]*100:.2f}±{log_std['spec'][c]*100:.2f}")
         else: 
-            print(f"Global auc {log_mean['auc'][c]:.4f}±{log_std['auc'][c]:.4f} 95% CI [{log_mean['auc_lower'][c]:.4f}, {log_mean['auc_upper'][c]:.4f}] acc {log_mean['acc'][c]:.4f}±{log_std['acc'][c]:.4f} sens {log_mean['sens'][c]:.4f}±{log_std['sens'][c]:.4f} spec {log_mean['spec'][c]:.4f}±{log_std['spec'][c]:.4f}")
+            print(f"Global auc {log_mean['auc'][c]*100:.2f}±{log_std['auc'][c]*100:.2f} 95% CI [{log_mean['auc_lower'][c]*100:.2f}, {log_mean['auc_upper'][c]*100:.2f}] acc {log_mean['acc'][c]*100:.2f}±{log_std['acc'][c]*100:.2f} sens {log_mean['sens'][c]*100:.2f}±{log_std['sens'][c]*100:.2f} spec {log_mean['spec'][c]*100:.2f}±{log_std['spec'][c]*100:.2f}")
     
 # --- Finalize ROC Plot ---
     mean_tpr = np.mean(tprs, axis=0)

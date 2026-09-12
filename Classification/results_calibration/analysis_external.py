@@ -19,7 +19,6 @@ if __name__ == "__main__":
     df = pd.read_excel(args.input)
 
     n_center = 7
-    n_fold = 4
     center_names = ['nyu', 'CAD|MCF', 'northwestern|NU', 'AHN|ahn', 'mca', 'IU', 'EMC']
     thresholds = [0.5 for i in range(n_center)]
     for c in range(n_center):
@@ -69,8 +68,8 @@ if __name__ == "__main__":
     log['spec'].append(tn / (tn + fp))
     
     for c in range(n_center):
-        print(f"Center {c+1} threshold {thresholds[c]*100:.2f}% auc {log['auc'][c]:.4f} 95%auc [{log['auc_lower'][c]:.4f}, {log['auc_upper'][c]:.4f}] acc {log['acc'][c]:.4f} sens {log['sens'][c]:.4f} spec {log['spec'][c]:.4f}")
-    print(f"Global auc {log['auc'][-1]:.4f} 95%auc [{log['auc_lower'][-1]:.4f}, {log['auc_upper'][-1]:.4f}] acc {log['acc'][-1]:.4f} sens {log['sens'][-1]:.4f} spec {log['spec'][-1]:.4f}")
+        print(f"Center {c+1} threshold {thresholds[c]*100:.2f}% auc {log['auc'][c]*100:.2f} 95%auc [{log['auc_lower'][c]*100:.2f}, {log['auc_upper'][c]*100:.2f}] acc {log['acc'][c]*100:.2f} sens {log['sens'][c]*100:.2f} spec {log['spec'][c]*100:.2f}")
+    print(f"Global auc {log['auc'][-1]*100:.2f} 95%auc [{log['auc_lower'][-1]*100:.2f}, {log['auc_upper'][-1]*100:.2f}] acc {log['acc'][-1]*100:.2f} sens {log['sens'][-1]*100:.2f} spec {log['spec'][-1]*100:.2f}")
 
     mapping = {value: i for i, value in enumerate(csv_images)}
     indices = [mapping[value] for value in df['ID']]

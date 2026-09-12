@@ -32,27 +32,12 @@ if [ ${#positional_args[@]} -ge 2 ]; then
 fi
 
 tasks=(
-    "3D Radiomics T1|3D Radiomics/t1.xlsx"
-    "3D Radiomics T2|3D Radiomics/t2.xlsx"
-    "ResNet-34 T1|ResNet-34/t1.xlsx"
-    "ResNet-34 T2|ResNet-34/t2.xlsx"
-    "ResNet-50 T1|ResNet-50/t1.xlsx"
-    "ResNet-50 T2|ResNet-50/t2.xlsx"
-    "EfficientNet-B0 T1|EfficientNet-B0/t1.xlsx"
-    "EfficientNet-B0 T2|EfficientNet-B0/t2.xlsx"
-    "DenseNet-121 T1|DenseNet-121/t1.xlsx"
-    "DenseNet-121 T2|DenseNet-121/t2.xlsx"
-    "DenseNet-121 FedAvg T1|+FedAvg/t1.xlsx"
-    "DenseNet-121 FedAvg T2|+FedAvg/t2.xlsx"
-    "DenseNet-121 FedProx(0.1) T1|+FedProx(0.1)/t1.xlsx"
-    "DenseNet-121 FedProx(0.1) T2|+FedProx(0.1)/t2.xlsx"
-    "DenseNet-121 FedProx(0.3) T1|+FedProx(0.3)/t1.xlsx"
-    "DenseNet-121 FedProx(0.3) T2|+FedProx(0.3)/t2.xlsx"
-    "DenseNet-121 Early Feature Concatenation|fusion_shared2/result.xlsx"
-    "DenseNet-121 Early Feature Addition|fusion_add_shared2/result.xlsx"
-    "DenseNet-121 Late Feature Concatenation|fusion2/result.xlsx"
-    "DenseNet-121 Late Feature Addition|fusion_add2/result.xlsx"
-    "DenseNet-121 Logit Fusion|fusion_prob/result.xlsx"
+    "3D Radiomics T1 Histology|3D Radiomics_histology/t1.xlsx"
+    "3D Radiomics T2 Histology|3D Radiomics_histology/t2.xlsx"
+    "DenseNet-121 T1 Histology|DenseNet-121_histology/t1.xlsx"
+    "DenseNet-121 T2 Histology|DenseNet-121_histology/t2.xlsx"
+    "DenseNet-121 Early Feature Concatenation Histology|fusion_shared2_histology/result.xlsx"
+    "DenseNet-121 Late Feature Concatenation Histology|fusion2_histology/result.xlsx"
 )
 
 for task in "${tasks[@]}"; do
