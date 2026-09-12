@@ -4,10 +4,12 @@ import torch
 import torch.nn as nn
 import numpy as np
 from model import get_model
+from seed import seed_everything
 from sklearn.metrics import roc_auc_score, roc_curve, auc
 from train import load_data, test_fn
 import matplotlib.pyplot as plt
 from data_loader import get_data_list, get_fold
+from auc_ci import calculate_auc_ci_cv
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="IPMN classification cross validation test.")
@@ -22,6 +24,8 @@ if __name__ == "__main__":
     parser.add_argument("--t", default=1, type=int, help="modality (must be 1 or 2)")
     args = parser.parse_args()
     args.output_dir = os.path.join(args.output_dir, args.model, 't'+str(args.t))
+
+    seed_everything(42) # Fix seed for 95% AUC
     
     device = torch.device(args.device)
             
@@ -41,6 +45,7 @@ if __name__ == "__main__":
     csv_labels = []
     csv_probabilities = []
     csv_folds = []
+    folds_data = [[] for _ in range(n_center+1)]
     for fold in range(n_fold):
         args.fold = fold
         _, test_dataloader = load_data(args, n_center=n_center)
@@ -56,6 +61,7 @@ if __name__ == "__main__":
                 log[fold]['test_'+metric][c].append(epoch_log[metric])
             y_all.extend(epoch_y['true'])
             pred_all.extend(epoch_y['pred'])
+            folds_data[c].append((epoch_y['true'], epoch_y['pred']))
             
             image_list, label_list = get_data_list(root=args.data_path, t = args.t, center=c)
             _, _, test_image, test_label = get_fold(image_list, label_list, fold = args.fold)
@@ -63,6 +69,8 @@ if __name__ == "__main__":
             csv_labels.extend([i[0] for i in test_label])
             csv_probabilities.extend([i[0] for i in epoch_y['pred']])
             csv_folds.extend([fold for i in range(len(epoch_y['pred']))])
+
+        folds_data[-1].append((y_all, pred_all))
         
         log[fold]['test_loss'][-1].append(sum([log[fold]['test_loss'][i][-1]*len(test_dataloader[i]) for i in range(n_center)])/n_test_dataloader)
         log[fold]['test_acc'][-1].append(sum([log[fold]['test_acc'][i][-1]*len(test_ds[i]) for i in range(n_center)])/n_test_ds)
@@ -89,9 +97,10 @@ if __name__ == "__main__":
         for metric in ['loss', 'acc', 'auc']:
             log_mean['test_'+metric][c] = np.mean([log[fold]['test_'+metric][c][-1] for fold in range(n_fold)])
             log_std['test_'+metric][c] = np.std([log[fold]['test_'+metric][c][-1] for fold in range(n_fold)])
-        ci95 = 1.96 * log_std['test_auc'][c] / np.sqrt(n_fold)
-        log_mean['test_auc_lower'][c] = log_mean['test_auc'][c] - ci95
-        log_mean['test_auc_upper'][c] = log_mean['test_auc'][c] + ci95
+
+        lower_bound, upper_bound = calculate_auc_ci_cv(folds_data[c])
+        log_mean['test_auc_lower'][c] = lower_bound
+        log_mean['test_auc_upper'][c] = upper_bound
         if c < n_center:
             print(f"Center {c+1} test loss {log_mean['test_loss'][c]:.4f}±{log_std['test_loss'][c]:.4f} acc {log_mean['test_acc'][c]:.4f}±{log_std['test_acc'][c]:.4f} auc {log_mean['test_auc'][c]:.4f}±{log_std['test_auc'][c]:.4f} 95%CI [{log_mean['test_auc_lower'][c]:.4f}, {log_mean['test_auc_upper'][c]:.4f}]")
         else: 
