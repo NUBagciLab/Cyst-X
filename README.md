@@ -88,7 +88,7 @@ Table 2:
 
 (1) Three-class classification: `Classification/Deep Learning/internal/3-class/centralized/fold_test.py`;
 
-(2) Two-class classification: `Classification/Deep Learning/internal/2-class/xxx/fold_test.py` and `Classification/Radiomics`, where `xxx` is `centralized`, `fedavg`, or `fedprox`. Alternatively, you can find results in Supplementary Tables A9--A11. 
+(2) Two-class classification: `Classification/Deep Learning/internal/2-class/xxx/fold_test.py` and `Classification/Radiomics`, where `xxx` is `centralized`, `fedavg`, or `fedprox`. Alternatively, you can find results in Supplementary Table A9 at row `Global`.
 
 Figure 3: `Classification/tsne/tsne.py` and `Classification/Deep Learning/internal/2-class/centralized/tsne.py`.
 
