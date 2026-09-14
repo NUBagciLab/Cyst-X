@@ -26,6 +26,8 @@ Alternatively, you can run calibration on a specific file:
 
 The thresholds are saved in the output Excel files. 
 
+To get results on the histology-confirmed cases, please run `analysis_internal_histology.sh` and `analysis_external_histology`.sh. Alternatively, you can run `analysis_internal_all.sh` and `analysis_external_all`.sh directly. These will do calibration on all Excel files under the folders `Internal 2 Classes` and `External 2 Classes`
+
 # 📂 Directory Structure
 Within the `Internal 2 Classes` and `External 2 Classes`:
 * Folders with `_histology` mean the model was trained and tested on the histology-confirmed cases instead of all cases.
