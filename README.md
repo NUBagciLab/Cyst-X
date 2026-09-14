@@ -19,7 +19,7 @@ Pancreatic cancer is projected to be the second-deadliest cancer by 2030, making
 3. **Privacy-Preserving Federated Learning:** Distributed risk classification training utilizing `FedAvg` and `FedProx` without exchanging raw clinical images.
 
 <p align="center">
-  <img src="figures/samples.png" alt="" width="80%" />
+  <img src="figures/pipeline.png" alt="" width="80%" />
 </p>
 
 # 📂 Repository Structure
