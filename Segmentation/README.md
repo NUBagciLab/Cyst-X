@@ -15,3 +15,7 @@ To test `Swin-UnetR` model with cross validation and save segmentation outputs:
     
 It will also output the results for LaTeX.
 Please revise the --data-path to your data path.
+
+<p align="center">
+  <img src="../figures/samples.png" alt="" width="80%" />
+</p>
