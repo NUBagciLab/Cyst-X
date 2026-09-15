@@ -45,7 +45,7 @@ from huggingface_hub import snapshot_download
 snapshot_download(
     repo_id="phy710/Cyst-X",
     repo_type="dataset",
-    local_dir="/dataset/Cyst-X"
+    local_dir="/dataset"
 )
 ```
 
@@ -99,7 +99,18 @@ Figure 4: `Classification/results_calibration/analysis_internal.sh`.
 Figure 5: `MRQy/MRQy.py`.
 
 Supplementary Tables A9--A11:  `Classification/results_calibration/analysis_internal.sh` and  `Classification/results_calibration/analysis_external.sh`. 
-    
+
+To download the pre-trained models:
+```Python
+from huggingface_hub import snapshot_download
+snapshot_download(
+    repo_id="phy710/Cyst-X",
+    repo_type="model",
+    local_dir="./"
+)
+```
+Then put the models into the folders of the corresponding tasks.
+
 # 📝 Citation
 If you use this dataset in your research, please cite our paper:
 
