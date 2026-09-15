@@ -82,7 +82,7 @@ Once downloaded, ensure your dataset directory matches the following structure:
             └── masks/                              # Full-volume ground-truth pancreas masks (.nii.gz)
 
 # 📊 Mapping Between Reported Table/Figure and the Corresponding Script
-Table 1, Supplementary Tables A2--A8: Please check the folder `Segmentation`.
+Table 1, Supplementary Tables A2--A8: Please check the folder `Segmentation`. For PanSegNet results: `/Segmentation/PanSegNet/Task210_PancreasT1MRI/get_results.sh` and /Segmentation/PanSegNet/Task211_PancreasT2MRI/get_results.sh
 
 Table 2: 
 
