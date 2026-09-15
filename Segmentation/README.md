@@ -1,6 +1,10 @@
 For the PanSegNet Segmentation code, please go to [PanSegNet](https://github.com/NUBagciLab/PaNSegNet).
 Model weights and segmentation outputs are available at [HuggingFace](https://huggingface.co/phy710/Cyst-X/tree/main/Segmentation).
 
+To get `PanSegNet` results:
+Download the PanSegNet model segmentation results from [HuggingFace](https://huggingface.co/phy710/Cyst-X/tree/main/Segmentation/PanSegNet), then exclude `get_results.sh`.
+
+
 To train `Swin-UnetR` model with cross validation:
 
     chmod +x ./train.sh
