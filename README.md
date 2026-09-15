@@ -82,13 +82,13 @@ Once downloaded, ensure your dataset directory matches the following structure:
             └── masks/                              # Full-volume ground-truth pancreas masks (.nii.gz)
 
 # 📊 Mapping Between Reported Table/Figure and the Corresponding Script
-Table 1, Supplementary Tables A2--A3: `/Segmentation/PanSegNet/Task210_PancreasT1MRI/get_results.sh` and `/Segmentation/PanSegNet/Task211_PancreasT2MRI/get_results.sh`.
+Table 1 and Supplementary Tables A2--A3: `/Segmentation/PanSegNet/Task210_PancreasT1MRI/get_results.sh` and `/Segmentation/PanSegNet/Task211_PancreasT2MRI/get_results.sh`.
 
 Table 2: 
 
 (1) Three-class classification: `Classification/Deep Learning/internal/3-class/centralized/fold_test.py`;
 
-(2) Two-class classification: `Classification/Deep Learning/internal/2-class/xxx/fold_test.py` and `Classification/Radiomics`, where `xxx` is `centralized`, `fedavg`, or `fedprox`. Alternatively, you can find results in Supplementary Table A9 at row `Global`.
+(2) Two-class classification: `Classification/Deep Learning/internal/2-class/xxx/fold_test.py` and `Classification/Radiomics`, where `xxx` is `centralized`, `fedavg`, or `fedprox`. Alternatively, you can find the results in Supplementary Table A9 at row `Global`.
 
 Figure 3: `Classification/tsne/tsne.py` and `Classification/Deep Learning/internal/2-class/centralized/tsne.py`.
 
