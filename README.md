@@ -88,7 +88,7 @@ Table 2:
 
 (1) Three-class classification: `Classification/Deep Learning/internal/3-class/centralized/fold_test.py`;
 
-(2) Two-class classification: `Classification/Deep Learning/internal/2-class/xxx/fold_test.py` and `Classification/Radiomics`, where `xxx` is `centralized`, `fedavg`, or `fedprox`. Alternatively, you can find the results in Supplementary Table A9 at row `Global`.
+(2) Two-class classification: `Classification/Deep Learning/internal/2-class/xxx/fold_test.py` and `Classification/Radiomics`, where `xxx` is `centralized`, `fedavg`, or `fedprox`. Alternatively, you can find the results in Supplementary Tables A9 and A10 at row `Global`.
 
 Figure 3: `Classification/tsne/tsne.py` and `Classification/Deep Learning/internal/2-class/centralized/tsne.py`.
 
@@ -98,7 +98,9 @@ Figure 4: `Classification/results_calibration/analysis_internal.sh`.
 
 Figure 5: `MRQy/MRQy.py`.
 
-Supplementary Tables A9--A11:  `Classification/results_calibration/analysis_internal.sh` and  `Classification/results_calibration/analysis_external.sh`. 
+Supplementary Tables A9, A10, and A13: `Classification/results_calibration/analysis_internal.sh`. 
+
+Supplementary Tables A11, A12, and A14: `Classification/results_calibration/analysis_external.sh`. 
 
 To download the pre-trained models:
 ```Python
