@@ -98,9 +98,11 @@ Figure 4: `Classification/results_calibration/analysis_internal.sh`.
 
 Figure 5: `MRQy/MRQy.py`.
 
-Supplementary Tables A9, A10, and A13: `Classification/results_calibration/analysis_internal.sh`. 
+Supplementary Tables A9, A10: `Classification/results_calibration/analysis_internal.sh`. 
 
-Supplementary Tables A11, A12, and A14: `Classification/results_calibration/analysis_external.sh`. 
+Supplementary Tables A11, A12: `Classification/results_calibration/analysis_external.sh`. 
+
+Supplementary Table A13: `Classification/results_calibration/analysis_fusion.sh`. 
 
 To download the pre-trained models:
 ```Python
