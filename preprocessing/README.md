@@ -1,6 +1,6 @@
 # Cyst-X preprocessing
 
-These scripts are from Cyst-X-v2.3 and prepare aligned image/mask volumes, RAS-oriented volumes, N4-corrected images, and cropped classification ROIs. Install the dependencies in your active Python environment:
+These scripts are from Cyst-X-v2.3 and prepare RAS-oriented volumes, N4-corrected images, and cropped classification ROIs from aligned image/mask pairs. The segmentation data in the Hugging Face `main` / `v2` release already has matching image/mask orientations, so this pipeline starts at step 1. Install the dependencies in your active Python environment:
 
 ```bash
 pip install -r preprocessing/requirements.txt
@@ -12,18 +12,19 @@ Paths below are relative to the repository root. Each segmentation dataset direc
 
 | Script | Input | Default output |
 |---|---|---|
-| `step0_reorientation.py` | Original image/mask pairs requiring alignment | `Cyst-X/segmentation` |
 | `step1_reorientation_to_RAS.py` | `Cyst-X/segmentation` | `Cyst-X-RAS/segmentation` |
 | `step2_n4biascorrection.py` | `Cyst-X-RAS/segmentation` | `Cyst-X-n4/segmentation` |
 | `step3_crop.py` | N4 images and RAS masks in separate directories | `Cyst-X-n4/classification` |
 
-For original inputs that require step 0, use explicit input and output directories:
+Starting with the published segmentation folder, run the complete pipeline from the repository root:
 
 ```bash
-python preprocessing/step0_reorientation.py --input /path/to/original/segmentation --output ./Cyst-X/segmentation
+bash preprocessing/run_preprocessing.sh
 ```
 
-The published v2 segmentation folder has already undergone the image/mask alignment step. Starting with that folder, run:
+The default input is `Cyst-X/segmentation`. To use another directory of already aligned image/mask pairs, run `bash preprocessing/run_preprocessing.sh /path/to/aligned/segmentation`. Outputs still use the default directories listed above.
+
+Alternatively, run each step separately:
 
 ```bash
 python preprocessing/step1_reorientation_to_RAS.py --input ./Cyst-X/segmentation --output ./Cyst-X-RAS/segmentation
@@ -46,7 +47,7 @@ for pattern in ("*.xlsx", "*_split.csv"):
         copy2(path, target / path.name)
 ```
 
-`run_preprocessing.sh /path/to/original/segmentation` chains steps 0–3, including alignment. Use the individual commands above when step 0 is already complete. `step2_crop.py` is retained as an alternative cropping/visualization implementation; it is not the N4 correction script.
+`run_preprocessing.sh` chains steps 1–3 and stops if any step fails. `step2_crop.py` is retained as an alternative cropping/visualization implementation; it is not the N4 correction script.
 
 ## Predicted masks
 
