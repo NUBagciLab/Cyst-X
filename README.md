@@ -133,7 +133,7 @@ The v1 names `IPMN_Classification/` and `IPMN_images_masks/` have been replaced 
 
 Table 1 and Supplementary Tables A2 and A3: `/Segmentation/PanSegNet/Task210_PancreasT1MRI/get_results.sh` and `/Segmentation/PanSegNet/Task211_PancreasT2MRI/get_results.sh`.
 
-The classification references below follow the current manuscript numbering, with the additional analyses placed last as Supplementary Tables A15–A18. Run the evaluation scripts from their own experiment directories with the corresponding data and saved models; see the [classification instructions](Classification/README.md).
+The classification references below follow the current manuscript numbering. Run the evaluation scripts from their own experiment directories with the corresponding data and saved models; see the [classification instructions](Classification/README.md).
 
 ## Table 2 — Classification AUC summaries
 
@@ -180,21 +180,14 @@ The cohort counts come from the dataset label workbooks and the cohort definitio
 | A12 | Broad binary, T1W | `fold_test.py` in `centralized`, `fedavg`, `fedprox`, and `radiomics` under [internal/2-class](Classification/internal/2-class) and [external/2-class](Classification/external/2-class), selecting modality 1 |
 | A13 | Broad binary, T2W | The same `2-class` scripts as A12, selecting modality 2 |
 | A14 | Broad binary, paired T1W/T2W fusion | `fold_test.py` in `early_fusion`, `late_fusion`, `siamese_fusion`, and `logit_fusion` under [internal/2-class](Classification/internal/2-class) and [external/2-class](Classification/external/2-class) |
+| A15 | Internal T2W DenseNet-121 and radiologist-mean sensitivity/specificity with 95% CIs, 629/474/357-patient cohorts | [run_analysis.py](Classification/additional_analyses/run_analysis.py), rendered by [render_tables.py](Classification/additional_analyses/render_tables.py) as `reader_ci.tex` |
+| A16 | Paired model-minus-radiologist-mean sensitivity/specificity differences with 95% CIs | [run_analysis.py](Classification/additional_analyses/run_analysis.py), rendered by [render_tables.py](Classification/additional_analyses/render_tables.py) as `paired_differences.tex` |
+| A17 | Broad, IPMN-only, and histology models evaluated on the same 357 pathology-confirmed patients | [run_analysis.py](Classification/additional_analyses/run_analysis.py), rendered by [render_tables.py](Classification/additional_analyses/render_tables.py) as `frozen_histopathology.tex` |
+| A18 | Broad-task internal/external AUC summaries on matched patients: pooled and seven-center mean AUC | [run_analysis.py](Classification/additional_analyses/run_analysis.py), rendered by [render_tables.py](Classification/additional_analyses/render_tables.py) as `matched_auc.tex` |
 
 For binary test results, run `fold_test.py` once without `-c` to save `result.txt/.xlsx` at threshold 0.5, and again with `-c` to save `result_calibrated.txt/.xlsx` using the existing validation-selected thresholds. Keep the published `thresholds.json` beside the saved folds to reuse those thresholds. Fusion experiments use the paired cohort and the T1 split assignments. These manuscript tables use held-out test results; `fold_test_val.py` separately exports model-validation results.
 
-## Supplementary Tables A15–A18 — Additional analyses (pink tables)
-
-All four tables are generated together by [Classification/additional_analyses/run_analysis.py](Classification/additional_analyses/run_analysis.py), with LaTeX rendering handled by [render_tables.py](Classification/additional_analyses/render_tables.py). The utility reads the existing held-out predictions; it does not retrain models or recalibrate thresholds.
-
-| Table | Analysis | Generated LaTeX file | Stable manuscript label |
-|---|---|---|---|
-| A15 | Internal T2W DenseNet-121 versus the arithmetic radiologist mean: sensitivity/specificity with conditional 95% CIs for the 629-, 474-, and 357-patient cohorts | `reader_ci.tex` | `tab:zw-reader-ci` |
-| A16 | Paired model-minus-radiologist-mean sensitivity/specificity differences with 95% CIs | `paired_differences.tex` | `tab:zw-paired-differences` |
-| A17 | Broad, IPMN-only, and separately trained histology models evaluated on the same 357 histopathology-confirmed patients: sensitivity, specificity, pooled AUC, and AUC CIs | `frozen_histopathology.tex` | `tab:zw-frozen-pathology` |
-| A18 | Broad-task internal/external AUC summaries on matched patients: pooled AUC and unweighted seven-center mean AUC | `matched_auc.tex` | `tab:zw-matched-auc` |
-
-Use the stable labels when incorporating the fragments, since manuscript numbering can change. Defaults are 1,000 bootstrap replicates and seed 20261024. Run [verify_results.py](Classification/additional_analyses/verify_results.py) to compare regenerated aggregates with the accepted references. See the [validation notes](Classification/additional_analyses/VALIDATION.md) and [repository-root execution commands](Classification/README.md#additional-supplementary-analyses). The package includes aggregate examples and reference outputs.
+Tables A15–A18 use saved held-out predictions without retraining or recalibrating models. See the [analysis commands](Classification/README.md#additional-supplementary-analyses) and [validation notes](Classification/additional_analyses/VALIDATION.md) for execution and reference checks.
 
 To download the pre-trained models:
 ```Python
