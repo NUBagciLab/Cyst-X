@@ -133,7 +133,7 @@ The v1 names `IPMN_Classification/` and `IPMN_images_masks/` have been replaced 
 
 Table 1 and Supplementary Tables A6 and A7: `/Segmentation/PanSegNet/Task210_PancreasT1MRI/get_results.sh` and `/Segmentation/PanSegNet/Task211_PancreasT2MRI/get_results.sh`.
 
-The classification references below follow the current manuscript numbering. Pink-highlighted supplementary Tables A1–A4 are deferred. Run the evaluation scripts from their own experiment directories with the corresponding data and saved models; see the [classification instructions](Classification/README.md).
+The classification references below follow the current manuscript numbering. Run the evaluation scripts from their own experiment directories with the corresponding data and saved models; see the [classification instructions](Classification/README.md).
 
 ## Table 2 — Classification AUC summaries
 
@@ -168,6 +168,19 @@ The cohort counts come from the dataset label workbooks and the cohort definitio
 | Figure 3 — Broad-binary t-SNE visualization | [Input-image t-SNE](Classification/tsne/tsne.py) and [learned-feature t-SNE](Classification/internal/2-class/centralized/tsne.py) |
 | Figure 4 — Internal broad-binary ROC and PR curves | Saved `result.xlsx` probabilities from the [centralized](Classification/internal/2-class/centralized/fold_test.py), [FedAvg](Classification/internal/2-class/fedavg/fold_test.py), and [FedProx](Classification/internal/2-class/fedprox/fold_test.py) evaluations. The evaluators generate individual ROC plots; the combined ROC/PR plotting script is not yet included in this checkout. |
 | Figure 5 — MRQy analysis | [MRQy/MRQy.py](MRQy/MRQy.py), using [MRQy_UMAP.xlsx](MRQy/MRQy_UMAP.xlsx) |
+
+## Supplementary Tables A1–A4 — Additional analyses (pink tables)
+
+All four tables are generated together by [Classification/additional_analyses/run_analysis.py](Classification/additional_analyses/run_analysis.py), with LaTeX rendering handled by [render_tables.py](Classification/additional_analyses/render_tables.py). The utility reads the existing held-out predictions; it does not retrain models or recalibrate thresholds.
+
+| Table | Analysis | Generated LaTeX file | Stable manuscript label |
+|---|---|---|---|
+| A1 | Internal T2W DenseNet-121 versus the arithmetic radiologist mean: sensitivity/specificity with conditional 95% CIs for the 629-, 474-, and 357-patient cohorts | `reader_ci.tex` | `tab:zw-reader-ci` |
+| A2 | Paired model-minus-radiologist-mean sensitivity/specificity differences with 95% CIs | `paired_differences.tex` | `tab:zw-paired-differences` |
+| A3 | Broad, IPMN-only, and separately trained histology models evaluated on the same 357 histopathology-confirmed patients: sensitivity, specificity, pooled AUC, and AUC CIs | `frozen_histopathology.tex` | `tab:zw-frozen-pathology` |
+| A4 | Broad-task internal/external AUC summaries on matched patients: pooled AUC and unweighted seven-center mean AUC | `matched_auc.tex` | `tab:zw-matched-auc` |
+
+Use the stable labels when incorporating the fragments, since manuscript numbering can change. Defaults are 1,000 bootstrap replicates and seed 20261024. Run [verify_results.py](Classification/additional_analyses/verify_results.py) to compare regenerated aggregates with the accepted references. See the [package README](Classification/additional_analyses/README.md) for statistical definitions and the [repository-root execution commands](Classification/README.md#additional-supplementary-analyses). The package includes aggregate examples and reference outputs.
 
 ## Supplementary classification tables
 
