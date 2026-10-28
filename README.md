@@ -95,7 +95,7 @@ Set `--data-path /dataset/classification` for the current classification experim
 The v1 names `IPMN_Classification/` and `IPMN_images_masks/` have been replaced by `classification/` and `segmentation/`. The downloadable classification ROIs are already generated from N4-corrected images. Full-volume segmentation images and their aligned masks are the starting inputs for the [preprocessing pipeline](preprocessing/README.md), which generates RAS and N4 intermediate volumes locally; those intermediate directories are not included in the dataset download.
 
 # 📊 Mapping Between Reported Table/Figure and the Corresponding Script
-Table 1 and Supplementary Tables A2--A3: `/Segmentation/PanSegNet/Task210_PancreasT1MRI/get_results.sh` and `/Segmentation/PanSegNet/Task211_PancreasT2MRI/get_results.sh`.
+Table 1 and Supplementary Tables A6 and A7: `/Segmentation/PanSegNet/Task210_PancreasT1MRI/get_results.sh` and `/Segmentation/PanSegNet/Task211_PancreasT2MRI/get_results.sh`.
 
 Table 2: 
 
