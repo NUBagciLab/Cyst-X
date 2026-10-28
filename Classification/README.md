@@ -1,6 +1,6 @@
-# Cyst-X classification — v2
+# Cyst-X classification
 
-This directory contains the classification code from Cyst-X-v2.3. The original GitHub release is preserved by the `v1` tag; current development is on `main`. Internal binary experiments use five folds in v2, replacing the four-fold binary setup in v1. External experiments use seven leave-one-center-out models.
+This directory contains the Cyst-X classification code. Internal binary experiments use five folds. External experiments use seven leave-one-center-out models.
 
 The current preprocessing aligns image/mask orientation and applies N4 bias-field correction before generating the classification ROIs. See [preprocessing](../preprocessing/README.md), the [dataset](https://huggingface.co/datasets/phy710/Cyst-X), and the [model archives](https://huggingface.co/phy710/Cyst-X).
 
