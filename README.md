@@ -77,21 +77,20 @@ The current Hugging Face dataset (`main` / `v2`) contains `classification/` and 
 │   ├── IPMN_labels_t1_total.xlsx        # T1W labels and metadata
 │   ├── IPMN_labels_t2_total.xlsx        # T2W labels and metadata
 │   ├── IPMN_labels_total.xlsx           # Master metadata and paired T1W/T2W labels
-│   ├── t1_split.csv                     # Current five-fold T1W patient assignments
+│   ├── t1_split.csv                     # Five-fold split for T1W and all paired fusion methods
 │   └── t2_split.csv                     # Current five-fold T2W patient assignments
-├── segmentation/
-│   ├── t1/
-│   │   ├── images/                      # 723 full-volume T1W scans (.nii.gz)
-│   │   ├── masks/                       # Corresponding masks aligned with the images
-│   │   └── visualizations/
-│   └── t2/
-│       ├── images/                      # 738 full-volume T2W scans (.nii.gz)
-│       ├── masks/                       # Corresponding masks aligned with the images
-│       └── visualizations/
-└── data splits/                         # Legacy splits retained for reference
+└── segmentation/
+    ├── t1/
+    │   ├── images/                      # 723 full-volume T1W scans (.nii.gz)
+    │   ├── masks/                       # Corresponding masks aligned with the images
+    │   └── visualizations/
+    └── t2/
+        ├── images/                      # 738 full-volume T2W scans (.nii.gz)
+        ├── masks/                       # Corresponding masks aligned with the images
+        └── visualizations/
 ```
 
-Set `--data-path /dataset/classification` for the current classification experiments. Use `classification/t1_split.csv` and `classification/t2_split.csv` for the current internal five-fold evaluations; paired T1W/T2W fusion uses the T1 patient assignments. The historical classification splits under `data splits/` should not replace these current files. External evaluation holds out one of the seven centers at a time.
+Set `--data-path /dataset/classification` for the current classification experiments. Use `classification/t1_split.csv` and `classification/t2_split.csv` for the current internal five-fold evaluations; **all paired T1W/T2W fusion experiments use `classification/t1_split.csv`, applying the same T1 patient fold assignment to both modalities**. External evaluation holds out one of the seven centers at a time.
 
 The v1 names `IPMN_Classification/` and `IPMN_images_masks/` have been replaced by `classification/` and `segmentation/`. The downloadable classification ROIs are already generated from N4-corrected images. Full-volume segmentation images and their aligned masks are the starting inputs for the [preprocessing pipeline](preprocessing/README.md), which generates RAS and N4 intermediate volumes locally; those intermediate directories are not included in the dataset download.
 
