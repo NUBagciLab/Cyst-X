@@ -91,7 +91,7 @@ In each experiment directory, `tar -xzf saved.tar.gz` restores its `saved/` fold
 
 ## Radiomics, readers, and t-SNE
 
-Radiomics uses precomputed feature CSVs named `radiomics_features_t1.csv` and `radiomics_features_t2.csv`. Supply them under the repository's `features/` directory or pass `--features-path` to the radiomics Python scripts. The code release does not include the feature tables. See each radiomics `USAGE.txt`; its model name is `random_forest` and its CLI uses `-t` rather than `--model`.
+Radiomics uses precomputed feature CSVs named `radiomics_features_t1.csv` and `radiomics_features_t2.csv`. Supply them under the repository's `features/` directory or pass `--features-path` to the radiomics Python scripts. The precomputed tables are included in the root [features folder](../features/README.md), together with the optional v1 extraction script. Feature extraction is not required when using the provided CSVs. See each radiomics `USAGE.txt`; its model name is `random_forest` and its CLI uses `-t` rather than `--model`.
 
 The [reader comparison](vs_radiologists/README.md) reads saved test predictions for the 629 paired, 474 IPMN-only, and 357 histology reader cohorts. Its included CSV and workbook are reference inputs, rather than model outputs. Run from the repository root with `bash Classification/vs_radiologists/run.sh`; outputs are written to `results/tables/`.
 
