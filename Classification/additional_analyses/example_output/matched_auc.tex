@@ -1,0 +1,20 @@
+\begin{table}[ht]
+\centering
+\caption{\zwrev{Matched AUC summaries for the broad task. Internal and external estimates use the same patients within each modality (652 T1W; 655 T2W). Center means are unweighted averages over the same seven centers. Values are percentages; these are descriptive point estimates.}}
+\label{tab:zw-matched-auc}
+{\color{ZhixiangPink}\small
+\begin{tabular}{llllll}
+\toprule
+Method & MRI & Pooled int. & Pooled ext. & Center int. & Center ext.\\
+\midrule
+Centralized & T1W & 74.94 & 71.35 & 68.74 & 74.22\\
+Centralized & T2W & 78.17 & 77.49 & 68.57 & 71.18\\
+FedAvg & T1W & 71.35 & 66.90 & 67.82 & 73.12\\
+FedAvg & T2W & 68.63 & 65.15 & 61.99 & 72.28\\
+FedProx (0.1) & T1W & 73.27 & 62.54 & 69.61 & 73.80\\
+FedProx (0.1) & T2W & 66.85 & 74.18 & 61.25 & 68.61\\
+FedProx (0.3) & T1W & 74.20 & 65.89 & 72.83 & 72.09\\
+FedProx (0.3) & T2W & 65.72 & 62.35 & 59.42 & 71.00\\
+\bottomrule
+\end{tabular}}
+\end{table}

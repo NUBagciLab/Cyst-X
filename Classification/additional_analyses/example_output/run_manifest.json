@@ -1,0 +1,162 @@
+{
+  "bootstrap": 1000,
+  "seed": 20261024,
+  "python": "3.9.6",
+  "numpy": "2.0.2",
+  "pandas": "2.3.3",
+  "cohorts": {
+    "2-class": 629,
+    "low_vs_high": 474,
+    "histology": 357
+  },
+  "inputs": {
+    "vs_radiologists/IPMN_labels_total.xlsx": {
+      "bytes": 43461,
+      "sha256": "99c6689b4e51bf6dfebce83a579e2fc1fda49bf49f89747589a4f6f6c0acbae3"
+    },
+    "vs_radiologists/Cyst-X_bigdata_risk_assessment.csv": {
+      "bytes": 10675,
+      "sha256": "995e70d08bd19d3aec48acf2b3f396dab836ad38bdfe9e682b3a397b3381be5d"
+    },
+    "internal/2-class/centralized/saved/densenet121/t2/result_calibrated.xlsx": {
+      "bytes": 31307,
+      "sha256": "6f4ff6c5828ceae22488e6bd34ad0fe89da8830d37368183474089cdc65babdf"
+    },
+    "internal/2-class/centralized/saved/densenet121/t2/result.xlsx": {
+      "bytes": 29346,
+      "sha256": "7a430b36762de115ec8d39e09859c1fc938d9b4616a181ab9ea4e2afcf63b68b"
+    },
+    "internal/low_vs_high/centralized/saved/densenet121/t2/result_calibrated.xlsx": {
+      "bytes": 25219,
+      "sha256": "7bc2907d50541fb61eb144c76f7cdf1edd8e36f5f239673168f50f65e11aa472"
+    },
+    "internal/low_vs_high/centralized/saved/densenet121/t2/result.xlsx": {
+      "bytes": 23736,
+      "sha256": "9f8e0f39b1690c95abf9de88b1f85babc7270f577384bdc9d7dbebc164a1a5d3"
+    },
+    "internal/histology/centralized/saved/densenet121/t2/result_calibrated.xlsx": {
+      "bytes": 20428,
+      "sha256": "c6fbc93adeaae995895ff3121cf0cac2f35454898cfa63331fd37120a4175bd2"
+    },
+    "internal/histology/centralized/saved/densenet121/t2/result.xlsx": {
+      "bytes": 19429,
+      "sha256": "4d9d1af636a33168a483335abd950db708b407c623a8fef70257aedcb5e79a66"
+    },
+    "internal/2-class/centralized/saved/densenet121/t1/result_calibrated.xlsx": {
+      "bytes": 31139,
+      "sha256": "cc2bbd4df7c9608d0a1179a3e999dddde4aa6bf194cb8a6e37ad930a0eb27246"
+    },
+    "internal/low_vs_high/centralized/saved/densenet121/t1/result_calibrated.xlsx": {
+      "bytes": 24712,
+      "sha256": "854354b4ee679a07306a26595beae26c9bfae7cac69a3af568843874a2a08e2b"
+    },
+    "internal/histology/centralized/saved/densenet121/t1/result_calibrated.xlsx": {
+      "bytes": 20122,
+      "sha256": "a87085a6e67829950744c261334e5a355cf8df84f7705df32881eafc2c72c795"
+    },
+    "external/2-class/centralized/saved/densenet121/t1/result_calibrated.xlsx": {
+      "bytes": 31146,
+      "sha256": "3e3a23363dfda122fbc399a4e9640b0afbec5b804322e0dbdb791d76fb5fe5eb"
+    },
+    "external/2-class/centralized/saved/densenet121/t2/result_calibrated.xlsx": {
+      "bytes": 31314,
+      "sha256": "0ec58a7ad75c8c169053c79be4151a1eda2c59ec0d0a8366894c0b6e951cbd3f"
+    },
+    "external/low_vs_high/centralized/saved/densenet121/t1/result_calibrated.xlsx": {
+      "bytes": 24844,
+      "sha256": "42341386a6802c3fa99450ed022375aef97e101d49a9430deaf011f9a1cbbcfb"
+    },
+    "external/low_vs_high/centralized/saved/densenet121/t2/result_calibrated.xlsx": {
+      "bytes": 25185,
+      "sha256": "a5c105eeb4563c43acb0a7615889987a5770684c5acfbf6fe38b7a102953cb40"
+    },
+    "external/histology/centralized/saved/densenet121/t1/result_calibrated.xlsx": {
+      "bytes": 20146,
+      "sha256": "7676bffde6ece8d4b381cfea77386b711d5d39d3737ee02c0629ef3173d26f65"
+    },
+    "external/histology/centralized/saved/densenet121/t2/result_calibrated.xlsx": {
+      "bytes": 19767,
+      "sha256": "8e93fe311bac47f432e0851b4a38a73a25043237d5abca8b033e69bdb190a612"
+    },
+    "internal/2-class/centralized/saved/densenet121/t1/result.xlsx": {
+      "bytes": 29257,
+      "sha256": "aa04ee3b5034be76d1a7a03a640feb76bba9d51a18fca27db25ed24717c9d4ae"
+    },
+    "external/2-class/centralized/saved/densenet121/t1/result.xlsx": {
+      "bytes": 29092,
+      "sha256": "7f2ab991b86e9e404ea83036a4bcae133bf506938edfab3f2348ec2457a80303"
+    },
+    "external/2-class/centralized/saved/densenet121/t2/result.xlsx": {
+      "bytes": 29255,
+      "sha256": "21993b3a2f3cae0663112579a79c2826bed640e92e2da08d7d7aec73fefb88ab"
+    },
+    "internal/2-class/fedavg/saved/densenet121/t1/result.xlsx": {
+      "bytes": 29207,
+      "sha256": "e92398620a77de995184aeadef39013159829d081de2afe1b30cadd0e2741402"
+    },
+    "external/2-class/fedavg/saved/densenet121/t1/result.xlsx": {
+      "bytes": 28987,
+      "sha256": "4a26161b613a13ac381962e488dfcdd6725442ba317d17ea1c65903feaf3cd16"
+    },
+    "internal/2-class/fedavg/saved/densenet121/t2/result.xlsx": {
+      "bytes": 29174,
+      "sha256": "874a096db83535a60a3438f756e6e52ac33855e937017e1f716e52945b97a7cc"
+    },
+    "external/2-class/fedavg/saved/densenet121/t2/result.xlsx": {
+      "bytes": 29152,
+      "sha256": "d14c2de3bcc033824216d96b9ef0cec04f91e8653f1f207f748ffd996cebb743"
+    },
+    "internal/2-class/fedprox/saved/densenet121_0.1/t1/result.xlsx": {
+      "bytes": 29240,
+      "sha256": "7667970cf6ff180362071fb8568c951c399568442c45879241b1d5af24f73e88"
+    },
+    "external/2-class/fedprox/saved/densenet121_0.1/t1/result.xlsx": {
+      "bytes": 29045,
+      "sha256": "776fb5da8ea24e421807882097d52d9b1472b06d1177e7c21e918e54a7f8a7b5"
+    },
+    "internal/2-class/fedprox/saved/densenet121_0.1/t2/result.xlsx": {
+      "bytes": 29169,
+      "sha256": "c7643020ec081ab5a6ab75121edf960a003a083dac1a0d52cfd445047d189324"
+    },
+    "external/2-class/fedprox/saved/densenet121_0.1/t2/result.xlsx": {
+      "bytes": 29192,
+      "sha256": "89615d22b805c593369369bff00cee9bfb1ceb968502607d67711e5c3dbc6d5b"
+    },
+    "internal/2-class/fedprox/saved/densenet121_0.3/t1/result.xlsx": {
+      "bytes": 29016,
+      "sha256": "6fc400148080a9fbae7ffc3fd579d0385324c2448d17de07e7c769154d06444b"
+    },
+    "external/2-class/fedprox/saved/densenet121_0.3/t1/result.xlsx": {
+      "bytes": 29184,
+      "sha256": "019d204910c190ebeece6412111fa38ef3680876f852752a0e62136d4da6728f"
+    },
+    "internal/2-class/fedprox/saved/densenet121_0.3/t2/result.xlsx": {
+      "bytes": 29416,
+      "sha256": "9279b9fd386bacc36a550c7494dd91e69bcd291b532cafd47f1432f8080e665e"
+    },
+    "external/2-class/fedprox/saved/densenet121_0.3/t2/result.xlsx": {
+      "bytes": 29247,
+      "sha256": "5518360728d070d4f72ac7f2a279f95d40c9554625f7bb0a01dec44d5bda6aee"
+    },
+    "principal_ci.csv": {
+      "bytes": 2828,
+      "sha256": "9aaa12c6d09d08f1f93a61ec691974a910704c9b8ad6ff691fa1c18efa60a05b"
+    },
+    "paired_comparison.csv": {
+      "bytes": 2224,
+      "sha256": "0e606b8802ce7ed0fda255495598a4447cde49015cf8944f1c7d6d53959cd9e6"
+    },
+    "frozen_pathology_auc_ci.csv": {
+      "bytes": 1010,
+      "sha256": "53740f12f85c79d323f222af81c3b480340ea8c983e9675be1faaca56ffb6a3b"
+    },
+    "frozen_pathology.csv": {
+      "bytes": 1221,
+      "sha256": "8453403afb0a6c0835afeb155aa2b9d0324f3b0194a14d367c076dbc2d63c945"
+    },
+    "matched_auc.csv": {
+      "bytes": 1727,
+      "sha256": "b6fa5616b8767e6379bb251b9e7f9230fc77152de94c9180f40b67d28bc8009b"
+    }
+  }
+}

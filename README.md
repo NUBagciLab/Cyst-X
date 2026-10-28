@@ -48,6 +48,7 @@ Cyst-X/
 │   │   └── histology/
 │   ├── tsne/                 # Input-image t-SNE visualization
 │   ├── vs_radiologists/      # Matched reader/model comparisons across the three cohorts
+│   ├── additional_analyses/  # CPU-only supplementary analyses of saved predictions
 │   ├── run_radiomics.sh      # Batch launcher for the radiomics experiments
 │   ├── requirements.txt
 │   └── README.md
