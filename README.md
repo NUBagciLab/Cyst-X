@@ -194,7 +194,7 @@ All four tables are generated together by [Classification/additional_analyses/ru
 | A17 | Broad, IPMN-only, and separately trained histology models evaluated on the same 357 histopathology-confirmed patients: sensitivity, specificity, pooled AUC, and AUC CIs | `frozen_histopathology.tex` | `tab:zw-frozen-pathology` |
 | A18 | Broad-task internal/external AUC summaries on matched patients: pooled AUC and unweighted seven-center mean AUC | `matched_auc.tex` | `tab:zw-matched-auc` |
 
-Use the stable labels when incorporating the fragments, since manuscript numbering can change. Defaults are 1,000 bootstrap replicates and seed 20261024. Run [verify_results.py](Classification/additional_analyses/verify_results.py) to compare regenerated aggregates with the accepted references. See the [package README](Classification/additional_analyses/README.md) for statistical definitions and the [repository-root execution commands](Classification/README.md#additional-supplementary-analyses). The package includes aggregate examples and reference outputs.
+Use the stable labels when incorporating the fragments, since manuscript numbering can change. Defaults are 1,000 bootstrap replicates and seed 20261024. Run [verify_results.py](Classification/additional_analyses/verify_results.py) to compare regenerated aggregates with the accepted references. See the [validation notes](Classification/additional_analyses/VALIDATION.md) and [repository-root execution commands](Classification/README.md#additional-supplementary-analyses). The package includes aggregate examples and reference outputs.
 
 To download the pre-trained models:
 ```Python

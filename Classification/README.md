@@ -101,9 +101,9 @@ Checkpoints, prediction workbooks, generated plots, caches, server logs, and loc
 
 ## Additional supplementary analyses
 
-[additional_analyses/](additional_analyses/README.md) contains the independent, CPU-only supplementary analyses of saved held-out predictions. It reproduces reader sensitivity/specificity confidence intervals, paired model-minus-reader differences, evaluation on the common 357-patient histopathology subset, and matched pooled/center-mean AUC summaries. No retraining or recalibration is performed.
+[additional_analyses/](additional_analyses/) contains the independent, CPU-only supplementary analyses of saved held-out predictions. It reproduces reader sensitivity/specificity confidence intervals, paired model-minus-reader differences, evaluation on the common 357-patient histopathology subset, and matched pooled/center-mean AUC summaries. No retraining or recalibration is performed.
 
-The package is preserved as supplied, with aggregate example outputs, accepted reference results, validation notes, and a checksum manifest. Its README's `additional_analyses/...` commands assume you run from this `Classification/` directory. Alternatively, from the repository root run:
+The package includes aggregate example outputs, accepted reference results, validation notes, and a checksum manifest. From the repository root run:
 
 ```bash
 pip install -r Classification/additional_analyses/requirements.txt
@@ -115,4 +115,4 @@ python Classification/additional_analyses/run_analysis.py \
 python Classification/additional_analyses/verify_results.py ./results/additional_analyses
 ```
 
-Restore the required saved prediction workbooks before running. Use a new or empty output directory. The default calculation uses 1,000 bootstrap replicates with seed 20261024; the verifier checks agreement with the accepted prediction snapshot. Statistical assumptions, conditioning, provenance, and the stable manuscript table labels are documented in the package README.
+Restore the required saved prediction workbooks before running. Use a new or empty output directory. The default calculation uses 1,000 bootstrap replicates with seed 20261024; the verifier checks agreement with the accepted prediction snapshot. See the [validation notes](additional_analyses/VALIDATION.md) for reference checks and the [root README](../README.md) for manuscript table mappings.
