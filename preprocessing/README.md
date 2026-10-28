@@ -1,0 +1,53 @@
+# Cyst-X preprocessing
+
+These scripts are from Cyst-X-v2.3 and prepare aligned image/mask volumes, RAS-oriented volumes, N4-corrected images, and cropped classification ROIs. Install the dependencies in your active Python environment:
+
+```bash
+pip install -r preprocessing/requirements.txt
+```
+
+Paths below are relative to the repository root. Each segmentation dataset directory has `t1/images`, `t1/masks`, `t2/images`, and `t2/masks`. The published Hugging Face dataset can be downloaded under `Cyst-X/`; its `classification/` folder already contains N4-based crops, so preprocessing is only needed to regenerate data or process new inputs.
+
+## Processing steps
+
+| Script | Input | Default output |
+|---|---|---|
+| `step0_reorientation.py` | Original image/mask pairs requiring alignment | `Cyst-X/segmentation` |
+| `step1_reorientation_to_RAS.py` | `Cyst-X/segmentation` | `Cyst-X-RAS/segmentation` |
+| `step2_n4biascorrection.py` | `Cyst-X-RAS/segmentation` | `Cyst-X-n4/segmentation` |
+| `step3_crop.py` | N4 images and RAS masks in separate directories | `Cyst-X-n4/classification` |
+
+For original inputs that require step 0, use explicit input and output directories:
+
+```bash
+python preprocessing/step0_reorientation.py --input /path/to/original/segmentation --output ./Cyst-X/segmentation
+```
+
+The published v2 segmentation folder has already undergone the image/mask alignment step. Starting with that folder, run:
+
+```bash
+python preprocessing/step1_reorientation_to_RAS.py --input ./Cyst-X/segmentation --output ./Cyst-X-RAS/segmentation
+python preprocessing/step2_n4biascorrection.py --dataset ./Cyst-X-RAS/segmentation --output ./Cyst-X-n4/segmentation
+python preprocessing/step3_crop.py --input ./Cyst-X-n4/segmentation --mask-input ./Cyst-X-RAS/segmentation --output ./Cyst-X-n4/classification
+```
+
+Each of these three scripts accepts `-t 1` or `-t 2` to process a single modality. Without `-t`, both are processed. Use `--help` for worker counts and visualization options. N4 processing can take considerable CPU time.
+
+Keep classification metadata with the regenerated crops. For a dataset downloaded into `Cyst-X/`, copy the label workbooks and split files:
+
+```python
+from pathlib import Path
+from shutil import copy2
+source = Path("Cyst-X/classification")
+target = Path("Cyst-X-n4/classification")
+target.mkdir(parents=True, exist_ok=True)
+for pattern in ("*.xlsx", "*_split.csv"):
+    for path in source.glob(pattern):
+        copy2(path, target / path.name)
+```
+
+`run_preprocessing.sh /path/to/original/segmentation` chains steps 0–3, including alignment. Use the individual commands above when step 0 is already complete. `step2_crop.py` is retained as an alternative cropping/visualization implementation; it is not the N4 correction script.
+
+## Predicted masks
+
+To crop with another segmentation model, orient its masks consistently with the images first, then supply that RAS mask directory to `step3_crop.py --mask-input`. The image input remains the N4-corrected segmentation image directory. For example, `run_seg_crop.sh PanSegNet 1` uses `seg/PanSegNet-RAS/segmentation` and saves the T1 crops under `seg/PanSegNet-n4/classification`. The wrapper accepts `PanSegNet` or `Swin` and modality `1` or `2`; activate your Python environment before running it.

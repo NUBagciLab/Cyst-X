@@ -1,0 +1,26 @@
+External low_vs_high radiomics
+
+Run from this folder in your ML environment (no PyRadiomics or images required):
+  python -m pip install -r requirements.txt
+  bash main.sh -t 1
+Use -t 2 for T2, or omit -t for both modalities.
+Labels are IPMN_labels_t1_total.xlsx / IPMN_labels_t2_total.xlsx.
+main.sh defaults to ../../../../Cyst-X-resampled/classification for labels/splits.
+--data-path overrides that root. Features default to Cyst-X-v2.4/features.
+train.py, calibrate.py and fold_test.py accept --features-path as a folder or CSV.
+
+Seven external runs hold out one center each; no split CSV is used.
+Center order: NYU, CAD/MCF, Northwestern/NU, AHN, MCA, IU, EMC (0 through 6).
+Exclude no-risk cases; low risk maps to 0, high risk maps to 1.
+Source cases are split 80/20 into train/validation within each center, seed 42.
+Imputation, variance filtering, scaling and mRMR-like ranking fit on train only.
+Random Forest subset sizes/hyperparameters are selected using validation AUC, then accuracy.
+Calibration uses validation only: specificity >=0.9, sensitivity >=0.3, otherwise 0.5.
+Held-out test cases do not fit preprocessing, selection, tuning or calibration.
+Defaults: 20 RF search candidates; selected feature counts 10,20,30,50; seed 42.
+No files from the original Radiomics folder are read.
+
+Outputs: saved/random_forest/tN/foldN/{model.joblib,split.csv,config.json,search_results.csv}.
+Aggregated outputs: result.xlsx/result.txt/result_fold_metrics.csv and calibrated equivalents.
+Printed metrics match the DL ordering: acc, sens, spec, auc, confidence intervals and LaTeX rows.
+Loss is not computed or reported. Each result row includes one case ID.

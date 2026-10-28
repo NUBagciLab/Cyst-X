@@ -21,7 +21,7 @@ from sklearn.metrics import calinski_harabasz_score
 from seed import seed_everything
 import argparse
 
-def get_data_list(root='/dataset/IPMN_Classification/', t = 1, center = None):
+def get_data_list(root='/dataset/classification/', t = 1, center = None):
     image_list = []
     label_list = []
     center_names = [['nyu'], ['CAD', 'MCF'], ['northwestern', 'NU'], ['AHN', 'ahn'], ['mca'], ['IU'], ['EMC']]
@@ -41,14 +41,14 @@ def get_data_list(root='/dataset/IPMN_Classification/', t = 1, center = None):
         name = names[i].replace('.nii.gz', '')
         for c in center_name:
             if c in name:
-                image_list.append(os.path.join(root, 't'+str(t), name+'.nii.gz'))
+                image_list.append(os.path.join(root, 't'+str(t), 'images', name+'.nii.gz'))
                 label_list.append(labels[i])
                 break
     return image_list, label_list
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="IPMN classification cross validation test.")
-    parser.add_argument("--data-path", default="/dataset/IPMN_Classification/", type=str, help="dataset path")
+    parser.add_argument("--data-path", default="/dataset/classification/", type=str, help="dataset path")
     args = parser.parse_args()
 
     test_transforms = Compose([EnsureChannelFirst(), Resize((96, 96, 96))])

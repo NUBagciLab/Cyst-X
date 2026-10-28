@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+.cache/
+saved/
+*.pth
+*.pt
+*.joblib
+*.log
+*.nii
+*.nii.gz
+*.pdf
+*.tar.gz
+*.zip

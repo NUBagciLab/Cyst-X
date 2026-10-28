@@ -1,0 +1,29 @@
+Internal low_vs_high T1+T2 fusion
+
+Inputs: IPMN_labels_total.xlsx defines paired T1/T2 IDs and risk labels.
+Images: DATA/t1/images/ID.nii.gz and DATA/t2/images/ID_T2.nii.gz.
+Exclude risk 0 (no risk). Risk 1 (low) maps to class 0; risk 2 (high) maps to class 1.
+Only labeled pairs with both images are used; missing files raise an error.
+Each pair follows the T1 ID's assignment in DATA/t1_split.csv (ID, Fold columns).
+T2's independent split is not used. Unlisted pairs are excluded.
+--split-path optionally overrides the T1 split file.
+
+For each fold, reserve its cases for test and split the other paired cases
+80/20 into train/validation within each center (seed 42, stratified where possible).
+The paired cohort differs from single-modality centralized cohorts.
+The two inputs always stay together; random flips/rotations are synchronized.
+Train for 40 epochs with BCEWithLogitsLoss, AdamW lr=0.001 and StepLR(30, 0.1),
+matching centralized classification. Validation alone selects saved models.
+Calibration uses only validation predictions: first ascending threshold with
+specificity >=0.9; accept if sensitivity >=0.3, otherwise print fallback and use 0.5.
+
+From this folder:
+  bash main.sh --model densenet121 --data-path ../../../../Cyst-X-resampled/classification
+Optional: --output-dir ./saved --split-path /path/to/t1_split.csv
+This trains five folds, calibrates, and evaluates uncalibrated/calibrated test results.
+Outputs: saved/MODEL/foldN/{checkpoint.pth,model_loss.pth,model_acc.pth,model_auc.pth,log.json}
+Calibration/evaluation default to model_auc.pth.
+Aggregated outputs under saved/MODEL: thresholds.json, result.xlsx, result.txt, roc.pdf,
+result_calibrated.xlsx, result_calibrated.txt, roc_calibrated.pdf.
+Spreadsheets include one case ID (T1) and a threshold for each calibrated case.
+Each folder retains its own fusion architecture; supported backbones follow model.py.

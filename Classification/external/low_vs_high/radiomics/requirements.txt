@@ -1,0 +1,7 @@
+numpy
+pandas
+scikit-learn>=1.2
+joblib
+openpyxl
+jinja2
+tqdm

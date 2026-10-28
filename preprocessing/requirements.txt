@@ -1,0 +1,7 @@
+torch
+monai
+SimpleITK
+nibabel
+numpy
+matplotlib
+tqdm

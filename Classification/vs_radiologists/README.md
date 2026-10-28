@@ -1,13 +1,37 @@
-# 🚀 Running the Pipeline
+# Radiologist comparison
 
-This folder compares the models with radiologists on 629 patients with both T1W and T2W scans. `Cyst-X_bigdata_risk_assessment.csv` contains the diagnosis results from our three radiologists.
+Run with the `pt` environment activated, from the project root:
 
-Please run `classification/results_calibration` first. Make sure that both the whole cohort and the histology-confirmed cohort are calibrated (make sure that you have run `analysis_internal.sh`, `analysis_external.sh`, and `analysis_fusion.sh`.
+```bash
+bash Classification/vs_radiologists/run.sh
+```
 
-Then, please exclude the following:
+The launcher also works from this folder using `bash ./run.sh`.
+It reads existing predictions and does not retrain or recalibrate models.
 
-    bash ./run.sh
+`compare_results.py` compares the three readers with radiomics, centralized
+DenseNet121 (T1 and T2), and all four DenseNet121 fusion methods, for internal
+and external evaluation. Each task uses its own trained results under
+`Classification/{internal,external}/{2-class,low_vs_high,histology}`.
 
-If you want to compare the uncalibrated results (`classification threshold=0.5`) with the radiologists' results, please run
+All methods are restricted to the same reader patients: 629 paired cases,
+474 IPMN-only cases, and 357 histology cases. Cohorts follow the reference
+risk labels; the histology subset additionally excludes stable follow-up
+entries containing `no change`, matching the original reader analysis.
+T1/T2 aliases are mapped to one patient. The script rejects missing cases,
+duplicates, label mismatches, inconsistent probabilities/folds, and
+uncalibrated predictions that do not use a 0.50 threshold.
 
-    bash ./run_uncalibrated.sh
+Sensitivity and specificity are pooled over the selected patients, rather
+than averaged over folds or centers. The table shows saved calibrated
+predictions outside parentheses and the 0.50-threshold results inside.
+Reader averages are arithmetic means of the three reader metrics.
+
+Outputs under `results/tables/`:
+
+- `radiologist_comparison_updated.tex`: completed table.
+- `radiologist_comparison_metrics.csv`: metrics, confusion counts, and model source paths.
+- `radiologist_comparison_cohorts.json`: patient membership for each cohort.
+
+The supplied table layout is retained in `table_template.tex`. Optional
+arguments include `--project-root`, `--output-dir`, and `--template`.
