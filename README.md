@@ -33,13 +33,47 @@ Pancreatic cancer is projected to be the second-deadliest cancer by 2030, making
 </p>
 
 # 📂 Repository Structure
-```filesystem
+
+```text
 Cyst-X/
-├── Classification/          # Pipelines and frameworks for deep risk modeling
+├── Classification/
+│   ├── internal/             # Five-fold internal evaluation
+│   │   ├── 2-class/          # Centralized, FedAvg, FedProx, radiomics, and four fusion methods
+│   │   ├── 3-class/          # Centralized three-class classification
+│   │   ├── low_vs_high/      # IPMN-only high-risk versus low-risk
+│   │   └── histology/        # Histopathology-confirmed IPMN cohort
+│   ├── external/             # Seven-center leave-one-center-out evaluation
+│   │   ├── 2-class/
+│   │   ├── low_vs_high/
+│   │   └── histology/
+│   ├── tsne/                 # Input-image t-SNE visualization
+│   ├── vs_radiologists/      # Matched reader/model comparisons across the three cohorts
+│   ├── run_radiomics.sh      # Batch launcher for the radiomics experiments
+│   ├── requirements.txt
+│   └── README.md
 ├── Segmentation/            # Pipeline and engines for pancreas ROI localization
-├── MRQy/                    # MRQy analysis
+├── preprocessing/
+│   ├── step1_reorientation_to_RAS.py
+│   ├── step2_n4biascorrection.py
+│   ├── step3_crop.py
+│   ├── step2_crop.py         # Alternative cropping/visualization implementation
+│   ├── run_preprocessing.sh  # Run steps 1–3 on the aligned v2 segmentation dataset
+│   ├── run_seg_crop.sh       # Crop N4 images using predicted RAS masks
+│   ├── requirements.txt
+│   └── README.md
+├── features/
+│   ├── radiomics_features_t1.csv
+│   ├── radiomics_features_t2.csv
+│   ├── radiomics_feature_extraction_wavelet_LoG.py  # Optional extraction script from v1
+│   └── README.md
+├── MRQy/                    # MRI quality analysis and UMAP inputs
+├── figures/                 # Repository illustration assets
+├── index.html               # Project webpage
+├── LICENSE.txt
 └── README.md                # Main repository documentation hub
 ```
+
+Classification checkpoints and saved model outputs are distributed through the [Hugging Face model repository](https://huggingface.co/phy710/Cyst-X); MRI images, masks, labels, and split files are distributed through the [dataset repository](https://huggingface.co/datasets/phy710/Cyst-X). See the directory-specific READMEs for usage.
 
 # 📦 Dataset Access & Download
 The Cyst-X dataset includes raw/preprocessed NIfTI volumes, expert pancreas segmentation masks, center-wise stratified splits, and clinical metadata. Please download the dataset via [HuggingFace](https://huggingface.co/datasets/phy710/Cyst-X).:
