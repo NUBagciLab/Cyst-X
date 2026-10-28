@@ -62,34 +62,38 @@ snapshot_download(
 You can also access and download the dataset mirror directly from the Open Science Framework ([OSF](https://osf.io/74vfs/)). However, uploading massive amounts of files to OSF is difficult. So we compressed the dataset into several zip files. Please organize the files according to the expected directory layout.
 
 ## Expected Directory Layout
-Once downloaded, ensure your dataset directory matches the following structure:
 
-    /dataset/
-    ├── data splits/
-    │   ├── classification/
-    │   │   ├── 2-class/
-    │   │   │   ├── t1.csv                          # 4-fold CV splits for T1W (High-Risk vs. No/Low-Risk; stratified center-wise)
-    │   │   │   ├── t2.csv                          # 4-fold CV splits for T2W (High-Risk vs. No/Low-Risk; stratified center-wise)
-    │   │   │   └── two_inputs.csv                  # 4-fold CV splits for paired (T1W+T2W) multi-modal fusion; stratified center-wise
-    │   │   └── 3-class/
-    │   │       ├── t1.csv                          # 5-fold CV splits for T1W (No-Risk vs. Low-Risk vs. High-Risk; pooled across all centers)
-    │   │       └── t2.csv                          # 5-fold CV splits for T2W (No-Risk vs. Low-Risk vs. High-Risk; pooled across all centers)
-    │   └── pansegnet segmentation/
-    │       ├── Task210_PancreasT1MRI_splits.csv    # 5-fold cross-validation splits for T1W pancreas segmentation
-    │       └── Task211_PancreasT2MRI_splits.csv    # 5-fold cross-validation splits for T2W pancreas segmentation
-    ├── IPMN_Classification/                        # IPMN classification dataset
-    │   ├── t1/                                     # Cropped 3D pancreatic ROIs for single-input T1W (.nii.gz)
-    │   ├── t2/                                     # Cropped 3D pancreatic ROIs for single-input T2W (.nii.gz)
-    │   ├── IPMN_labels_t1_total.xlsx               # Comprehensive labels and metadata for all T1W scans
-    │   ├── IPMN_labels_t2_total.xlsx               # Comprehensive labels and metadata for all T2W scans
-    │   └── IPMN_labels_total.xlsx                  # Master cohort metadata and paired (T1W+T2W) ground truth labels
-    └── IPMN_images_masks/                          # Pancreas segmentation dataset
-        ├── t1/
-        │   ├── images/                             # Full-volume T1W NIfTI scans (.nii.gz)
-        │   └── masks/                              # Full-volume ground-truth pancreas masks (.nii.gz)
-        └── t2/
-            ├── images/                             # Full-volume T2W NIfTI scans (.nii.gz)
-            └── masks/                              # Full-volume ground-truth pancreas masks (.nii.gz)
+The current Hugging Face dataset (`main` / `v2`) contains `classification/` and `segmentation/` directly under the download directory. With the `local_dir="/dataset"` example above, the layout is:
+
+```text
+/dataset/
+├── classification/
+│   ├── t1/
+│   │   ├── images/                      # 723 N4-based cropped T1W pancreatic ROIs (.nii.gz)
+│   │   └── visualizations/
+│   ├── t2/
+│   │   ├── images/                      # 738 N4-based cropped T2W pancreatic ROIs (.nii.gz)
+│   │   └── visualizations/
+│   ├── IPMN_labels_t1_total.xlsx        # T1W labels and metadata
+│   ├── IPMN_labels_t2_total.xlsx        # T2W labels and metadata
+│   ├── IPMN_labels_total.xlsx           # Master metadata and paired T1W/T2W labels
+│   ├── t1_split.csv                     # Current five-fold T1W patient assignments
+│   └── t2_split.csv                     # Current five-fold T2W patient assignments
+├── segmentation/
+│   ├── t1/
+│   │   ├── images/                      # 723 full-volume T1W scans (.nii.gz)
+│   │   ├── masks/                       # Corresponding masks aligned with the images
+│   │   └── visualizations/
+│   └── t2/
+│       ├── images/                      # 738 full-volume T2W scans (.nii.gz)
+│       ├── masks/                       # Corresponding masks aligned with the images
+│       └── visualizations/
+└── data splits/                         # Legacy splits retained for reference
+```
+
+Set `--data-path /dataset/classification` for the current classification experiments. Use `classification/t1_split.csv` and `classification/t2_split.csv` for the current internal five-fold evaluations; paired T1W/T2W fusion uses the T1 patient assignments. The historical classification splits under `data splits/` should not replace these current files. External evaluation holds out one of the seven centers at a time.
+
+The v1 names `IPMN_Classification/` and `IPMN_images_masks/` have been replaced by `classification/` and `segmentation/`. The downloadable classification ROIs are already generated from N4-corrected images. Full-volume segmentation images and their aligned masks are the starting inputs for the [preprocessing pipeline](preprocessing/README.md), which generates RAS and N4 intermediate volumes locally; those intermediate directories are not included in the dataset download.
 
 # 📊 Mapping Between Reported Table/Figure and the Corresponding Script
 Table 1 and Supplementary Tables A2--A3: `/Segmentation/PanSegNet/Task210_PancreasT1MRI/get_results.sh` and `/Segmentation/PanSegNet/Task211_PancreasT2MRI/get_results.sh`.
