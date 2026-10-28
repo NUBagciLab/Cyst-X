@@ -8,6 +8,16 @@ pip install -r preprocessing/requirements.txt
 
 Paths below are relative to the repository root. Each segmentation dataset directory has `t1/images`, `t1/masks`, `t2/images`, and `t2/masks`. The published Hugging Face dataset can be downloaded under `Cyst-X/`; its `classification/` folder already contains N4-based crops, so preprocessing is only needed to regenerate data or process new inputs.
 
+## Differences from v1
+
+The original release is preserved as [GitHub code v1](https://github.com/NUBagciLab/Cyst-X/tree/v1), [dataset v1](https://huggingface.co/datasets/phy710/Cyst-X/tree/v1), and [models v1](https://huggingface.co/phy710/Cyst-X/tree/v1). Use the [current code on main](https://github.com/NUBagciLab/Cyst-X/tree/main), [dataset v2](https://huggingface.co/datasets/phy710/Cyst-X/tree/v2), and [models v2](https://huggingface.co/phy710/Cyst-X/tree/v2) for the updated workflow.
+
+- **Image/mask orientation:** Some v1 masks did not share the orientation of their paired MRI images. These mismatches are corrected in the released v2 segmentation dataset, so preprocessing begins at step 1 (RAS conversion).
+- **Bias-field correction:** The current classification preprocessing applies N4 bias-field correction before cropping. The downloadable v2 classification ROIs were generated from N4-corrected images; the full-volume segmentation images are the inputs for the RAS/N4 pipeline below.
+- **Classification folds:** Internal two-class models used four-fold cross-validation in v1 and are standardized to five-fold cross-validation in v2. Use the current `classification/t1_split.csv` and `classification/t2_split.csv` distributed with the v2 dataset.
+
+The code changes can be viewed in the [v1-to-main comparison](https://github.com/NUBagciLab/Cyst-X/compare/v1...main).
+
 ## Processing steps
 
 | Script | Input | Default output |
