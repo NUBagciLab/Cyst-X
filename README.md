@@ -95,27 +95,58 @@ Set `--data-path /dataset/classification` for the current classification experim
 The v1 names `IPMN_Classification/` and `IPMN_images_masks/` have been replaced by `classification/` and `segmentation/`. The downloadable classification ROIs are already generated from N4-corrected images. Full-volume segmentation images and their aligned masks are the starting inputs for the [preprocessing pipeline](preprocessing/README.md), which generates RAS and N4 intermediate volumes locally; those intermediate directories are not included in the dataset download.
 
 # 📊 Mapping Between Reported Table/Figure and the Corresponding Script
+
 Table 1 and Supplementary Tables A6 and A7: `/Segmentation/PanSegNet/Task210_PancreasT1MRI/get_results.sh` and `/Segmentation/PanSegNet/Task211_PancreasT2MRI/get_results.sh`.
 
-Table 2: 
+The classification references below follow the current manuscript numbering. Pink-highlighted supplementary Tables A1–A4 are deferred. Run the evaluation scripts from their own experiment directories with the corresponding data and saved models; see the [classification instructions](Classification/README.md).
 
-(1) Three-class classification: `Classification/Deep Learning/internal/3-class/centralized/fold_test.py`;
+## Table 2 — Classification AUC summaries
 
-(2) Two-class classification: `Classification/Deep Learning/internal/2-class/xxx/fold_test.py` and `Classification/Radiomics`, where `xxx` is `centralized`, `fedavg`, or `fedprox`. Alternatively, you can find the results in Supplementary Tables A9 and A10 at row `Global`.
+| Analysis | Corresponding scripts |
+|---|---|
+| IPMN-only high-risk versus low-risk, internal | [DenseNet-121](Classification/internal/low_vs_high/centralized/fold_test.py) and [radiomics](Classification/internal/low_vs_high/radiomics/fold_test.py) |
+| IPMN-only high-risk versus low-risk, external | [DenseNet-121](Classification/external/low_vs_high/centralized/fold_test.py) and [radiomics](Classification/external/low_vs_high/radiomics/fold_test.py) |
+| Broad binary high-risk versus no-/low-risk, internal | [Centralized](Classification/internal/2-class/centralized/fold_test.py), [FedAvg](Classification/internal/2-class/fedavg/fold_test.py), [FedProx](Classification/internal/2-class/fedprox/fold_test.py), and [radiomics](Classification/internal/2-class/radiomics/fold_test.py) |
+| Broad binary high-risk versus no-/low-risk, external | [Centralized](Classification/external/2-class/centralized/fold_test.py), [FedAvg](Classification/external/2-class/fedavg/fold_test.py), [FedProx](Classification/external/2-class/fedprox/fold_test.py), and [radiomics](Classification/external/2-class/radiomics/fold_test.py) |
+| Three-class no-risk versus low-risk versus high-risk, internal | [Three-class evaluation](Classification/internal/3-class/centralized/fold_test.py) |
+| Effect of predicted segmentation ROIs, two-class | [PanSegNet ROIs](Classification/internal/2-class/centralized/fold_test_PanSegNet.py) and [Swin-UNETR ROIs](Classification/internal/2-class/centralized/fold_test_swin.py) |
+| Effect of predicted segmentation ROIs, three-class | [PanSegNet ROIs](Classification/internal/3-class/centralized/fold_test_PanSegNet.py) and [Swin-UNETR ROIs](Classification/internal/3-class/centralized/fold_test_swin.py) |
 
-Figure 3: `Classification/tsne/tsne.py` and `Classification/Deep Learning/internal/2-class/centralized/tsne.py`.
+For single-modality experiments, select T1W/T2W with `--t 1` / `--t 2`. The internal centralized broad-binary and three-class scripts select the network with `--model densenet121`, `resnet34`, `resnet50`, or `efficientnet_b0`. Select FedProx coefficients with `--mu 0.1` or `--mu 0.3`. Radiomics scripts use `-t 1` / `-t 2` and the supplied [feature tables](features/README.md).
 
-Table 3: `Classification/vs_radiologists/run.sh` for calibrated results comparison, `Classification/vs_radiologists/run_uncalibrated.sh` for uncalibrated results comparison, `Classification/vs_radiologists/run_histology.sh` for calibrated histology results comparison, `Classification/vs_radiologists/run_histology_uncalibrated.sh` for uncalibrated histology results comparison.
+Internal summaries report the mean and standard deviation of test-fold AUCs. External summaries report pooled test AUC with the mean of the seven center AUCs in parentheses. For the predicted-ROI analyses, crop N4 images using the corresponding aligned model masks with [step3_crop.py](preprocessing/step3_crop.py), then pass the resulting classification directory through `--data-path`. The AUC evaluation does not require `-c`.
 
-Figure 4: `Classification/results_calibration/analysis_internal.sh`. 
+## Table 3 — Comparison with radiologists
 
-Figure 5: `MRQy/MRQy.py`.
+[Classification/vs_radiologists/run.sh](Classification/vs_radiologists/run.sh) launches [compare_results.py](Classification/vs_radiologists/compare_results.py). This single comparison script handles the broad paired cohort (629), IPMN-only cohort (474), and histology cohort (357), both internal and external evaluations, and both validation-selected and fixed-0.5 thresholds. It reads saved `result_calibrated.xlsx` and `result.xlsx` files for radiomics, DenseNet-121, and all four fusion methods.
 
-Supplementary Tables A9, A10: `Classification/results_calibration/analysis_internal.sh`. 
+The separately trained histology-model predictions are generated by `fold_test.py` under [Classification/internal/histology](Classification/internal/histology) and [Classification/external/histology](Classification/external/histology). See the [reader-comparison README](Classification/vs_radiologists/README.md) for outputs and cohort matching.
 
-Supplementary Tables A11, A12: `Classification/results_calibration/analysis_external.sh`. 
+## Table 4 — Dataset composition
 
-Supplementary Table A13: `Classification/results_calibration/analysis_fusion.sh`. 
+The cohort counts come from the dataset label workbooks and the cohort definitions in the [single-modality data loader](Classification/internal/2-class/centralized/data_loader.py), [paired data loader](Classification/internal/2-class/early_fusion/data_loader.py), and [histology data loader](Classification/internal/histology/centralized/data_loader.py). Demographic and scanner summaries are metadata summaries; a dedicated script generating the full Table 4 is not included in this checkout.
+
+## Figures
+
+| Figure | Corresponding scripts / inputs |
+|---|---|
+| Figure 3 — Broad-binary t-SNE visualization | [Input-image t-SNE](Classification/tsne/tsne.py) and [learned-feature t-SNE](Classification/internal/2-class/centralized/tsne.py) |
+| Figure 4 — Internal broad-binary ROC and PR curves | Saved `result.xlsx` probabilities from the [centralized](Classification/internal/2-class/centralized/fold_test.py), [FedAvg](Classification/internal/2-class/fedavg/fold_test.py), and [FedProx](Classification/internal/2-class/fedprox/fold_test.py) evaluations. The evaluators generate individual ROC plots; the combined ROC/PR plotting script is not yet included in this checkout. |
+| Figure 5 — MRQy analysis | [MRQy/MRQy.py](MRQy/MRQy.py), using [MRQy_UMAP.xlsx](MRQy/MRQy_UMAP.xlsx) |
+
+## Supplementary classification tables
+
+| Table | Task and modality | Corresponding experiment scripts |
+|---|---|---|
+| A5 | Classification cohort distribution | Current modality label workbooks, using the [single-modality](Classification/internal/2-class/centralized/data_loader.py) and [paired](Classification/internal/2-class/early_fusion/data_loader.py) cohort definitions |
+| A13 | IPMN-only, T1W | `--t 1` for [internal DenseNet-121](Classification/internal/low_vs_high/centralized/fold_test.py) and [external DenseNet-121](Classification/external/low_vs_high/centralized/fold_test.py); `-t 1` for [internal radiomics](Classification/internal/low_vs_high/radiomics/fold_test.py) and [external radiomics](Classification/external/low_vs_high/radiomics/fold_test.py) |
+| A14 | IPMN-only, T2W | The same `low_vs_high` scripts as A13, selecting modality 2 |
+| A15 | IPMN-only, paired T1W/T2W fusion | `fold_test.py` in `early_fusion`, `late_fusion`, `siamese_fusion`, and `logit_fusion` under [internal/low_vs_high](Classification/internal/low_vs_high) and [external/low_vs_high](Classification/external/low_vs_high) |
+| A16 | Broad binary, T1W | `fold_test.py` in `centralized`, `fedavg`, `fedprox`, and `radiomics` under [internal/2-class](Classification/internal/2-class) and [external/2-class](Classification/external/2-class), selecting modality 1 |
+| A17 | Broad binary, T2W | The same `2-class` scripts as A16, selecting modality 2 |
+| A18 | Broad binary, paired T1W/T2W fusion | `fold_test.py` in `early_fusion`, `late_fusion`, `siamese_fusion`, and `logit_fusion` under [internal/2-class](Classification/internal/2-class) and [external/2-class](Classification/external/2-class) |
+
+For binary test results, run `fold_test.py` once without `-c` to save `result.txt/.xlsx` at threshold 0.5, and again with `-c` to save `result_calibrated.txt/.xlsx` using the existing validation-selected thresholds. Keep the published `thresholds.json` beside the saved folds to reuse those thresholds. Fusion experiments use the paired cohort and the T1 split assignments. These manuscript tables use held-out test results; `fold_test_val.py` separately exports model-validation results.
 
 To download the pre-trained models:
 ```Python
