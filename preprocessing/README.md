@@ -8,6 +8,12 @@ pip install -r preprocessing/requirements.txt
 
 Paths below are relative to the repository root. Each segmentation dataset directory has `t1/images`, `t1/masks`, `t2/images`, and `t2/masks`. The published Hugging Face dataset can be downloaded under `Cyst-X/`; its `classification/` folder already contains N4-based crops, so preprocessing is only needed to regenerate data or process new inputs.
 
+## Image orientation
+
+The classification dataset is released in **RAS voxel orientation** (Right, Anterior, Superior). The full-volume segmentation dataset retains its original acquisition orientation, with each mask aligned to its corresponding image; it has not been standardized to RAS. To convert the segmentation images and masks to RAS, use [step1_reorientation_to_RAS.py](https://github.com/NUBagciLab/Cyst-X/blob/main/preprocessing/step1_reorientation_to_RAS.py).
+
+Here, RAS follows the increasing-voxel-axis convention used by [NiBabel](https://nipy.org/nibabel/image_orientation.html) and SimpleITK's orientation helpers. The supplied script uses MONAI `Orientationd(axcodes="RAS")` and writes NIfTI files with NiBabel. For a classification image, `nib.aff2axcodes(nib.load(path).affine)` returns `('R', 'A', 'S')`; the corresponding SimpleITK check is `sitk.DICOMOrientImageFilter.GetOrientationFromDirectionCosines(sitk.ReadImage(path).GetDirection())`. **ITK-SNAP may label the same RAS-oriented volume as LPI**, because its orientation-code convention names the opposite ends of the axes. This is a difference in labeling, not an image/mask misalignment; see the [ITK orientation conventions](https://docs.itk.org/projects/doxygen/en/latest/classitk_1_1AnatomicalOrientation.html).
+
 ## Processing steps
 
 | Script | Input | Default output |
