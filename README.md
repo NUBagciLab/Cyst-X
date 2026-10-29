@@ -83,15 +83,18 @@ First, please make sure that `huggingface_hub` is installed:
 pip install huggingface_hub
 ```
     
-Then, using Python and the huggingface_hub library:
+Download the dataset with Python. The `visualizations/` folders contain optional previews for convenient visual inspection; they are not used as inputs by the training or evaluation code. To download the images, masks, labels, and split files without these previews:
 ```Python
 from huggingface_hub import snapshot_download
 snapshot_download(
     repo_id="phy710/Cyst-X",
     repo_type="dataset",
-    local_dir="/dataset"
+    local_dir="/dataset",
+    ignore_patterns=["**/visualizations/**"],
 )
 ```
+
+Omit `ignore_patterns` to download the complete dataset, including visualization previews. This option skips downloads; it does not delete previews already present locally.
 
 You can also access and download the dataset mirror directly from the Open Science Framework ([OSF](https://osf.io/74vfs/)). However, uploading massive amounts of files to OSF is difficult. So we compressed the dataset into several zip files. Please organize the files according to the expected directory layout.
 
