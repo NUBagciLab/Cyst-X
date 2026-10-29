@@ -89,7 +89,7 @@ from huggingface_hub import snapshot_download
 snapshot_download(
     repo_id="phy710/Cyst-X",
     repo_type="dataset",
-    local_dir="/dataset"
+    local_dir="."
 )
 ```
 
@@ -99,7 +99,7 @@ The `visualizations/` folders are optional previews for convenient visual inspec
 snapshot_download(
     repo_id="phy710/Cyst-X",
     repo_type="dataset",
-    local_dir="/dataset",
+    local_dir=".",
     ignore_patterns=["**/visualizations/**"],
 )
 ```
@@ -108,10 +108,10 @@ You can also access and download the dataset mirror directly from the Open Scien
 
 ## Expected Directory Layout
 
-The current Hugging Face dataset (`main` / `v2`) contains `classification/` and `segmentation/` directly under the download directory. With the `local_dir="/dataset"` example above, the layout is:
+The current Hugging Face dataset (`main` / `v2`) contains `classification/` and `segmentation/` directly under the current working directory. With the `local_dir="."` example above, the layout is:
 
 ```text
-/dataset/
+./
 ├── classification/
 │   ├── t1/
 │   │   ├── images/                      # 723 N4-based cropped T1W pancreatic ROIs (.nii.gz)
