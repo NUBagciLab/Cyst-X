@@ -162,7 +162,7 @@ if __name__ == "__main__":
     parser.add_argument("--device", default="cuda", type=str, help="device (Use cuda or cpu Default: cuda)")
     parser.add_argument("-b", "--batch-size", default=16, type=int, help="batch size")
     parser.add_argument("-j", "--workers", default=0, type=int, metavar="N", help="number of data loading workers")
-    parser.add_argument("--epochs", default=40, type=int, metavar="N", help="number of FedAvg rounds (one local epoch per center per round)")
+    parser.add_argument("--epochs", default=100, type=int, metavar="N", help="number of FedAvg rounds (one local epoch per center per round)")
     parser.add_argument("--lr", default=1e-3, type=float, help="initial learning rate")
     parser.add_argument("--lr-step-size", default=30, type=int, help="decrease lr every step-size epochs")
     parser.add_argument("--lr-gamma", default=0.1, type=float, help="decrease lr by a factor of lr-gamma")
