@@ -19,7 +19,6 @@ Classification/
 │   └── histology/
 ├── tsne/
 ├── vs_radiologists/
-├── additional_analyses/
 ├── run_radiomics.sh
 └── requirements.txt
 ```
@@ -62,8 +61,6 @@ python fold_test.py --data-path "$DATA_PATH" --model densenet121 --t 1 -c
 
 These save `result.txt/.xlsx` and `result_calibrated.txt/.xlsx`. The test scripts may also generate ROC PDFs. Thresholds are selected from validation data by `calibrate.py`, seeking specificity of at least 0.90 without a sensitivity floor. To reuse published thresholds, keep `thresholds.json` beside the corresponding saved folds; some test scripts otherwise invoke calibration automatically.
 
-FedAvg and FedProx keep a separate validation loader for each participating center. `validate_fn` evaluates the global model center by center and pools only predictions and labels to calculate global validation accuracy and AUC for checkpoint and threshold selection. Validation loss is averaged per patient. The single-loader `test_fn` remains unchanged.
-
 ## Validation results
 
 For binary experiments, evaluate each model's validation partition using:
@@ -74,8 +71,6 @@ python fold_test_val.py --data-path "$DATA_PATH" --model densenet121 --t 1 -c
 ```
 
 The outputs are `val_result.txt/.xlsx` and `val_result_calibrated.txt/.xlsx`, with no ROC PDFs. Here `-c` only loads existing `thresholds.json`; missing thresholds cause an error. The workbook has five `Fold_1`–`Fold_5` sheets internally or seven `Center_1`–`Center_7` sheets externally. An external sheet identifies the model's held-out center; its validation patients come from the other centers. Patients can appear in validation for more than one model, so retain the fold identity in analysis.
-
-The centralized `low_vs_high` experiments (internal and external) and external `2-class` experiments also provide `fold_test_PanSegNet.py` and `fold_test_swin.py` for predicted segmentation ROIs. Pass the corresponding cropped dataset via `--data-path` and choose T1W or T2W with `--t 1` or `--t 2`. These scripts save `PanSegNet_` or `swin_` prefixed outputs beside the existing checkpoints. AUC evaluation does not require `-c`.
 
 ## Pretrained models
 

@@ -5,7 +5,7 @@
 [![Weights](https://img.shields.io/badge/Weights-HuggingFace-yellow)](https://huggingface.co/phy710/Cyst-X/) 
 [![OSF](https://img.shields.io/badge/OSF-Dataset%20Mirror-007ec6.svg)](https://osf.io/74vfs/)
 
-Official code for **Cyst-X**, a public multicenter MRI benchmark for pancreas segmentation and malignancy-risk classification of intraductal papillary mucinous neoplasms (IPMNs). The repository contains the reference models (PanSegNet segmentation, 3D radiomics and 3D DenseNet-121 classifiers), centralized and federated training baselines, and scripts for reproducing reported tables and figures from the released data and saved predictions.
+Official code for **Cyst-X**, a public multicenter MRI benchmark for pancreas segmentation and malignancy-risk classification of intraductal papillary mucinous neoplasms (IPMNs). The repository contains the reference models (PanSegNet segmentation, 3D radiomics and 3D DenseNet-121 classifiers), centralized and federated training baselines, and the scripts that produce every reported table and figure from the released data and saved predictions.
 
 ## Differences from v1
 
