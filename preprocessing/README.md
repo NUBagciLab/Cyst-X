@@ -1,6 +1,6 @@
 # Cyst-X preprocessing
 
-These scripts are from Cyst-X-v2.3 and prepare RAS-oriented volumes, N4-corrected images, and cropped classification ROIs from aligned image/mask pairs. The segmentation data in the Hugging Face `main` / `v2` release already has matching image/mask orientations, so this pipeline starts at step 1. Install the dependencies in your active Python environment:
+These scripts prepare RAS-oriented volumes, N4-corrected images, and cropped classification ROIs from aligned image/mask pairs. The segmentation data in the Hugging Face `main` / `v2` release already has matching image/mask orientations, so this pipeline starts at step 1. Install the dependencies in your active Python environment:
 
 ```bash
 pip install -r preprocessing/requirements.txt

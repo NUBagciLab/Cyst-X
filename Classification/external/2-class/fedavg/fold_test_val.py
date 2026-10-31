@@ -11,7 +11,7 @@ import torch.nn as nn
 import numpy as np
 from model import get_model
 from sklearn.metrics import roc_auc_score, accuracy_score
-from train import load_data, test_fn
+from train import load_data, validate_fn
 
 import pandas as pd
 from auc_ci import calculate_auc_ci, highlight_errors
@@ -31,14 +31,18 @@ def write_validation_excel(frame, path):
 
 
 def validation_case_rows(loader, predictions):
-    """Read IDs in exactly the order used by the unshuffled validation loader."""
-    dataset = loader.dataset
-    if hasattr(dataset, "image_files"):
-        images, labels = dataset.image_files, dataset.labels
-    else:
-        records = dataset.data
-        images = [record["t1"] for record in records]
-        labels = [record["label"] for record in records]
+    """Read IDs in center-loader order, matching the pooled predictions."""
+    images, labels = [], []
+    for center_loader in loader:
+        dataset = center_loader.dataset
+        if hasattr(dataset, "image_files"):
+            center_images, center_labels = dataset.image_files, dataset.labels
+        else:
+            records = dataset.data
+            center_images = [record["t1"] for record in records]
+            center_labels = [record["label"] for record in records]
+        images.extend(center_images)
+        labels.extend(center_labels)
     targets = np.asarray(labels).reshape(-1)
     inferred = np.asarray(predictions["true"]).reshape(-1)
     probabilities = np.asarray(predictions["pred"]).reshape(-1)
@@ -102,7 +106,7 @@ if __name__ == "__main__":
         args.fold = c      
         _, val_dataloader, _ = load_data(args)        
         model.load_state_dict(torch.load(os.path.join(args.output_dir, 'fold'+str(args.fold), args.resume), map_location='cpu', weights_only=True))
-        epoch_log, epoch_y = test_fn(val_dataloader, model, loss_fn, device)
+        epoch_log, epoch_y = validate_fn(val_dataloader, model, loss_fn, device)
 
         # Compute balanced accuracy and F1 score if not already provided by test_fn
         y_true_fold = np.array(epoch_y['true'])

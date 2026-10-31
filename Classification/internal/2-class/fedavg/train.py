@@ -17,7 +17,7 @@ from fl import fedavg
 
 def load_data(args, n_center=7, val_ratio=0.2, random_state=42):
     train_ds = []
-    all_val_images, all_val_labels = [], []
+    val_ds = []
     all_test_images, all_test_labels = [], []
 
     train_transforms = Compose([
@@ -56,20 +56,22 @@ def load_data(args, n_center=7, val_ratio=0.2, random_state=42):
         print(f"Center {c+1}: {len(tr_img)} train | {len(val_img)} val | {len(test_image)} test | {len(tr_img)+len(val_img)+len(test_image)} total")
 
         train_ds.append(ImageDataset(image_files=tr_img, labels=tr_lbl, transform=train_transforms))
-        all_val_images.extend(val_img)
-        all_val_labels.extend(val_lbl)
+        val_ds.append(ImageDataset(image_files=val_img, labels=val_lbl, transform=val_test_transforms))
         all_test_images.extend(test_image)
         all_test_labels.extend(test_label)
     n_train = sum(len(ds) for ds in train_ds)
-    print(f"Total: {n_train} train | {len(all_val_images)} val | {len(all_test_images)} test | {n_train+len(all_val_images)+len(all_test_images)} total")
-    val_ds = ImageDataset(image_files=all_val_images, labels=all_val_labels, transform=val_test_transforms)
+    n_val = sum(len(ds) for ds in val_ds)
+    print(f"Total: {n_train} train | {n_val} val | {len(all_test_images)} test | {n_train+n_val+len(all_test_images)} total")
     test_ds = ImageDataset(image_files=all_test_images, labels=all_test_labels, transform=val_test_transforms)
 
     train_dataloader = [
         DataLoader(ds, batch_size=args.batch_size, shuffle=True, num_workers=args.workers)
         for ds in train_ds
     ]
-    val_dataloader = DataLoader(val_ds, batch_size=args.batch_size, shuffle=False, num_workers=args.workers)
+    val_dataloader = [
+        DataLoader(ds, batch_size=args.batch_size, shuffle=False, num_workers=args.workers)
+        for ds in val_ds
+    ]
     test_dataloader = DataLoader(test_ds, batch_size=args.batch_size, shuffle=False, num_workers=args.workers)
 
     return train_dataloader, val_dataloader, test_dataloader
@@ -120,7 +122,35 @@ def test_fn(dataloader, model, loss_fn, device):
             progress_bar.set_postfix(loss=f"{loss.item():.4f}", loss_avg = f"{total_loss/batch_count:.4f}", acc=f"{correct/len(X):.4f}", acc_avg = f"{total_correct/sample_count:.4f}")
     auc_score = roc_auc_score(y_all, pred_all)
     return {'loss': total_loss/batch_count, 'acc': total_correct/sample_count, 'auc': auc_score}, {'true': y_all, 'pred': pred_all}
-    
+
+
+def validate_fn(dataloaders, model, loss_fn, device):
+    """Evaluate each center separately and compute metrics from pooled outputs."""
+    model.eval()
+    y_all, pred_all = [], []
+    total_loss, sample_count = 0.0, 0
+    with torch.no_grad():
+        for center, loader in enumerate(dataloaders):
+            progress_bar = tqdm(loader, desc=f"Validation center {center + 1}")
+            for X, y in progress_bar:
+                y_all.extend(y)
+                X, y = X.to(device), y.to(device)
+                logits = model(X)
+                pred_all.extend(torch.sigmoid(logits).cpu().numpy())
+                loss = loss_fn(logits, y)
+                total_loss += loss.item() * len(X)
+                sample_count += len(X)
+    if not sample_count:
+        raise ValueError("No validation cases across the participating centers.")
+    targets = np.asarray(y_all).reshape(-1)
+    probabilities = np.asarray(pred_all).reshape(-1)
+    metrics = {
+        'loss': total_loss / sample_count,
+        'acc': float(np.mean((probabilities > 0.5) == (targets >= 0.5))),
+        'auc': roc_auc_score(targets, probabilities),
+    }
+    return metrics, {'true': y_all, 'pred': pred_all}
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="IPMN FedAvg training with validation-based checkpoint selection.")
     parser.add_argument("--data-path", default="/dataset/Cyst-X-resampled/classification", type=str, help="dataset path")
@@ -178,8 +208,8 @@ if __name__ == "__main__":
         log['train_acc'][-1].append(sum([log['train_acc'][i][-1]*len(train_ds[i]) for i in range(n_center)])/n_train_ds)
         fedavg(model, model_local, aggregation_weights)
 
-        # Select the global model using pooled validation data only.
-        epoch_log, _ = test_fn(val_dataloader, model, loss_fn, device)
+        # Evaluate each center locally; select using pooled predictions and labels.
+        epoch_log, _ = validate_fn(val_dataloader, model, loss_fn, device)
         for metric in ['loss', 'acc', 'auc']:
             log['val_'+metric].append(epoch_log[metric])
         print(f"Epoch {epoch+1} train loss {log['train_loss'][-1][-1]:.4f} acc {log['train_acc'][-1][-1]:.4f} val loss {log['val_loss'][-1]:.4f} acc {log['val_acc'][-1]:.4f} auc {log['val_auc'][-1]:.4f}")

@@ -11,7 +11,7 @@ import torch
 import torch.nn as nn
 import numpy as np
 from model import get_model
-from train import load_data, test_fn
+from train import load_data, validate_fn
 from sklearn.metrics import confusion_matrix
 
 def calibrate(probabilities, labels):
@@ -41,7 +41,7 @@ def calibrate_and_save_thresholds(args):
         args.fold = fold
         _, val_dataloader, _ = load_data(args, n_center=n_center)
         model.load_state_dict(torch.load(os.path.join(args.output_dir, 'fold'+str(fold), args.resume), map_location='cpu', weights_only=True))   
-        _, epoch_y = test_fn(val_dataloader, model, loss_fn, device)
+        _, epoch_y = validate_fn(val_dataloader, model, loss_fn, device)
         thresholds.append(calibrate(np.array(epoch_y['pred']).squeeze(), np.array(epoch_y['true']).squeeze()))
     for fold in range(n_fold):
         print(f"Fold {fold} threshold: {thresholds[fold]:.4f}")
