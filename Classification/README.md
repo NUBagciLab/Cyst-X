@@ -121,3 +121,29 @@ python Classification/additional_analyses/verify_results.py ./results/additional
 ```
 
 Restore the required saved prediction workbooks before running. Use a new or empty output directory. The default calculation uses 1,000 bootstrap replicates with seed 20261024; the verifier checks agreement with the accepted prediction snapshot. See the [validation notes](additional_analyses/VALIDATION.md) for reference checks and the [root README](../README.md) for manuscript table mappings.
+
+### Second-round revision analyses
+
+These scripts add the analyses requested in the second review round. Like the package above, they read saved predictions and never retrain a model. They also need each experiment's `val_result.xlsx` (written by `fold_test_val.py`), because recalibration is fitted on validation predictions only.
+
+| Script | Output | Manuscript item |
+|---|---|---|
+| [federated_auc_ci.py](additional_analyses/federated_auc_ci.py) | `federated_auc_ci.csv` | Section 2.4: pooled and center-averaged external AUC, federated versus centralized, paired bootstrap 95% CIs |
+| [center_adjusted_or.py](additional_analyses/center_adjusted_or.py) | `center_adjusted_or.csv` | Section 2.2.1 and Limitations: DenseNet-121 score odds ratio per SD after adjustment for center |
+| [calibration_dca.py](additional_analyses/calibration_dca.py) | `calibration_dca.csv`, `calibration_rows.tex`, `net_benefit_rows.tex` | Supplementary Tables A19 and A20 |
+| [plot_calibration_dca.py](additional_analyses/plot_calibration_dca.py) | `figA2_calibration_dca.pdf/.png` | Supplementary Fig. A2 |
+| [plot_roc_pr.py](additional_analyses/plot_roc_pr.py) | `figure4/*.pdf` | Figure 4, panels (a)–(h) |
+
+Run all of them and check the results from the repository root:
+
+```bash
+pip install -r Classification/additional_analyses/requirements.txt
+bash Classification/additional_analyses/run_round2.sh ./Classification ./results/round2
+```
+
+`run_round2.sh` ends with [verify_round2.py](additional_analyses/verify_round2.py), which compares the outputs with [reference_results/round2](additional_analyses/reference_results/round2) and checks the odds ratios printed in the manuscript. Bootstrap CIs use 1,000 replicates stratified as described in each script, with seed 20261031. Example outputs, including the Figure 4 panels and Fig. A2, are in [example_output/round2](additional_analyses/example_output/round2); the verification record is in [VALIDATION.md](additional_analyses/VALIDATION.md).
+
+Method notes:
+- **Recalibration.** Each fold-specific (internal) or held-out-center-specific (external) model is recalibrated by logistic regression on the logit of its own validation predictions, and the fitted transformation is applied to that model's test predictions. Test labels and held-out-center data are not used.
+- **Center adjustment.** Scores are rank-normalized within each fold (internal) or across all held-out predictions (external), standardized, and entered with center as a fixed effect; Wald 95% CIs.
+- **Federated CIs.** Patients are resampled within each center and true class, with the same resampled patients for every model, so the differences are paired.

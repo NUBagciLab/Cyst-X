@@ -1,0 +1,5 @@
+task,scope,mri,n,odds_ratio_per_sd,lower,upper
+low_vs_high,internal,T1W,488,2.3074,1.7885,2.9767
+low_vs_high,internal,T2W,496,1.9086,1.4859,2.4516
+low_vs_high,external,T1W,488,1.8477,1.4403,2.3704
+low_vs_high,external,T2W,496,2.0830,1.6002,2.7114

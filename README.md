@@ -1,11 +1,11 @@
-# Cyst-X: A Multi-Center MRI Benchmark and Federated Learning Framework for Malignancy-Risk Stratification of Pancreatic Cystic Neoplasm
+# Cyst-X: A Multicenter MRI Benchmark for Pancreatic Cyst Risk Stratification and Cross-Institutional AI
 
 [![Paper](https://img.shields.io/badge/Paper-arXiv%3A2507.22017-B31B1B.svg)](https://arxiv.org/abs/2507.22017)
 [![Dataset](https://img.shields.io/badge/Dataset-HuggingFace-yellow)](https://huggingface.co/datasets/phy710/Cyst-X/) 
 [![Weights](https://img.shields.io/badge/Weights-HuggingFace-yellow)](https://huggingface.co/phy710/Cyst-X/) 
 [![OSF](https://img.shields.io/badge/OSF-Dataset%20Mirror-007ec6.svg)](https://osf.io/74vfs/)
 
-Official implementation of **Cyst-X**, an end-to-end multi-center pipeline integrating state-of-the-art pancreas segmentation, federated optimization, and classical radiomics pipelines for automated malignancy risk stratification of intraductal papillary mucinous neoplasms (IPMNs).
+Official code for **Cyst-X**, a public multicenter MRI benchmark for pancreas segmentation and malignancy-risk classification of intraductal papillary mucinous neoplasms (IPMNs). The repository contains the reference models (PanSegNet segmentation, 3D radiomics and 3D DenseNet-121 classifiers), centralized and federated training baselines, and scripts for reproducing reported tables and figures from the released data and saved predictions.
 
 ## Differences from v1
 
@@ -22,10 +22,11 @@ The code changes can be viewed in the [v1-to-main comparison](https://github.com
 
 Pancreatic cancer is projected to be the second-deadliest cancer by 2030, making early detection critical. IPMNs are key cancer precursors, but current consensus guidelines struggle to stratify malignancy risk accurately. 
 
-**Cyst-X** addresses this structural bottleneck by providing:
-1. **The Largest Multi-Center Pancreas MRI Resource:** 1,461 abdominal MRI scans from 764 patients across seven international medical centers with expert annotations and pathology-anchored ground truth.
-2. **Advanced Pancreas Segmentation:** Integrating [PanSegNet](https://github.com/NUBagciLab/PaNSegNet) (a linear self-attention transformer-based backbone) for high-fidelity region of interest (ROI) extraction.
-3. **Privacy-Preserving Federated Learning:** Distributed risk classification training utilizing `FedAvg` and `FedProx` without exchanging raw clinical images.
+**Cyst-X** provides:
+1. **A multicenter pancreas MRI resource:** 1,461 T1W and T2W MRI volumes from 764 patients at seven centers, with expert pancreas masks, histopathology- or surveillance-based risk labels, and fixed patient-level splits.
+2. **Three classification tasks:** high-risk versus low-risk IPMN (the primary clinical task), a broad binary task (high-risk IPMN versus low-risk IPMN and the no-risk reference group), and three-class phenotype classification.
+3. **Reference baselines:** [PanSegNet](https://github.com/NUBagciLab/PaNSegNet) pancreas segmentation, 3D radiomics and 3D DenseNet-121 classifiers, internal five-fold and leave-one-center-out evaluation, and a blinded comparison with three radiologists.
+4. **Federated training baselines:** `FedAvg` and `FedProx` trained on seven institution-partitioned data silos simulated on a single server. These experiments evaluate federated optimization; they do not include privacy mechanisms such as secure aggregation or differential privacy.
 
 <p align="center">
   <img src="figures/pipeline.png" alt="" width="80%" />
@@ -47,7 +48,7 @@ Cyst-X/
 │   │   └── histology/
 │   ├── tsne/                 # Input-image t-SNE visualization
 │   ├── vs_radiologists/      # Matched reader/model comparisons across the three cohorts
-│   ├── additional_analyses/  # CPU-only supplementary analyses of saved predictions
+│   ├── additional_analyses/  # CPU-only analyses of saved predictions (Tables A15–A20, Fig. 4, Fig. A2)
 │   ├── run_radiomics.sh      # Batch launcher for the radiomics experiments
 │   ├── requirements.txt
 │   └── README.md
@@ -182,8 +183,17 @@ The cohort counts come from the dataset label workbooks and the cohort definitio
 | Figure | Corresponding scripts / inputs |
 |---|---|
 | Figure 3 — Broad-binary t-SNE visualization | [Input-image t-SNE](Classification/tsne/tsne.py) and [learned-feature t-SNE](Classification/internal/2-class/centralized/tsne.py) |
-| Figure 4 — Internal broad-binary ROC and PR curves | Saved `result.xlsx` probabilities from the [centralized](Classification/internal/2-class/centralized/fold_test.py), [FedAvg](Classification/internal/2-class/fedavg/fold_test.py), and [FedProx](Classification/internal/2-class/fedprox/fold_test.py) evaluations. The evaluators generate individual ROC plots; the combined ROC/PR plotting script is not yet included in this checkout. |
+| Figure 4 — Mean internal ROC and PR curves: (a)–(d) IPMN-only DenseNet-121 versus radiomics; (e)–(h) broad binary centralized versus federated DenseNet-121 | [plot_roc_pr.py](Classification/additional_analyses/plot_roc_pr.py), from the saved internal `result.xlsx` files of the corresponding `low_vs_high` and `2-class` experiments |
 | Figure 5 — MRQy analysis | [MRQy/MRQy.py](MRQy/MRQy.py), using [MRQy_UMAP.xlsx](MRQy/MRQy_UMAP.xlsx) |
+| Supplementary Fig. A2 — Decision curves and calibration curves (IPMN-only DenseNet-121) | [plot_calibration_dca.py](Classification/additional_analyses/plot_calibration_dca.py), from saved test and validation predictions |
+
+## Statistics reported in the text
+
+| Result | Corresponding script |
+|---|---|
+| Section 2.4 — Pooled and center-averaged external AUC of federated versus centralized training, with paired bootstrap 95% CIs for the differences | [federated_auc_ci.py](Classification/additional_analyses/federated_auc_ci.py) |
+| Section 2.2.1 and Limitations — Center-adjusted odds ratios of the DenseNet-121 score (IPMN-only task) | [center_adjusted_or.py](Classification/additional_analyses/center_adjusted_or.py) |
+| Section 2.2.1 and 2.4 — Calibration, recalibration and net benefit | [calibration_dca.py](Classification/additional_analyses/calibration_dca.py) |
 
 ## Supplementary classification tables
 
@@ -200,10 +210,12 @@ The cohort counts come from the dataset label workbooks and the cohort definitio
 | A16 | Paired model-minus-radiologist-mean sensitivity/specificity differences with 95% CIs | [run_analysis.py](Classification/additional_analyses/run_analysis.py), rendered by [render_tables.py](Classification/additional_analyses/render_tables.py) as `paired_differences.tex` |
 | A17 | Broad, IPMN-only, and histology models evaluated on the same 357 pathology-confirmed patients | [run_analysis.py](Classification/additional_analyses/run_analysis.py), rendered by [render_tables.py](Classification/additional_analyses/render_tables.py) as `frozen_histopathology.tex` |
 | A18 | Broad-task internal/external AUC summaries on matched patients: pooled and seven-center mean AUC | [run_analysis.py](Classification/additional_analyses/run_analysis.py), rendered by [render_tables.py](Classification/additional_analyses/render_tables.py) as `matched_auc.tex` |
+| A19 | Calibration slope, calibration-in-the-large intercept, Brier score and pooled AUC before and after validation-based recalibration | [calibration_dca.py](Classification/additional_analyses/calibration_dca.py), rows written to `calibration_rows.tex` |
+| A20 | Decision-curve net benefit of the recalibrated models at threshold probabilities 0.10–0.40 | [calibration_dca.py](Classification/additional_analyses/calibration_dca.py), rows written to `net_benefit_rows.tex` |
 
 For binary test results, run `fold_test.py` once without `-c` to save `result.txt/.xlsx` at threshold 0.5, and again with `-c` to save `result_calibrated.txt/.xlsx` using the existing validation-selected thresholds. Keep the published `thresholds.json` beside the saved folds to reuse those thresholds. Fusion experiments use the paired cohort and the T1 split assignments. These manuscript tables use held-out test results; `fold_test_val.py` separately exports model-validation results.
 
-Tables A15–A18 use saved held-out predictions without retraining or recalibrating models. See the [analysis commands](Classification/README.md#additional-supplementary-analyses) and [validation notes](Classification/additional_analyses/VALIDATION.md) for execution and reference checks.
+Tables A15–A20, Figure 4 and Supplementary Fig. A2 use saved held-out predictions without retraining any model. Tables A15–A18 use the predictions as saved; Tables A19–A20 and Fig. A2 additionally recalibrate each fold or held-out-center model on its own validation predictions (never on test data). See the [analysis commands](Classification/README.md#additional-supplementary-analyses) and [validation notes](Classification/additional_analyses/VALIDATION.md) for execution and reference checks.
 
 To download the pre-trained models:
 ```Python
