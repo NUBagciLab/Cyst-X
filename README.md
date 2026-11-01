@@ -232,8 +232,8 @@ Then put the models into the folders of the corresponding tasks.
 If you use this dataset in your research, please cite our paper:
 
     @article{pan2025cyst,
-      title={Cyst-X: A Multi-Center MRI Benchmark and Federated Learning Framework for Malignancy-Risk Stratification of Pancreatic Cystic Neoplasm},
-      author={Pan, Hongyi and Durak, Gorkem and Keles, Elif and Hong, Ziliang and Seyithanoglu, Deniz and Zhang, Zheyuan and Medetalibeyoglu, Alpay and Aktas, Halil Ertugrul and Bejar, Andrea Mia and Taktak, Yavuz and others},
+      title={Cyst-X: A Multicenter MRI Benchmark for Pancreatic Cyst Risk Stratification and Cross-Institutional AI},
+      author={Pan, Hongyi and Durak, Gorkem and Aktas, Halil Ertugrul and Hong, Ziliang and Wang, Zhixiang and Keles, Elif and Seyithanoglu, Deniz and Zhang, Zheyuan and Medetalibeyoglu, Alpay and Bejar, Andrea Mia and others},
       journal={arXiv preprint arXiv:2507.22017},
       year={2025}
     }
