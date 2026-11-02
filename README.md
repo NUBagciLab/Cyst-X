@@ -32,6 +32,25 @@ Pancreatic cancer is projected to be the second-deadliest cancer by 2030, making
   <img src="figures/pipeline.png" alt="" width="80%" />
 </p>
 
+# Environment and requirements
+
+Cyst-X uses separate environments for PaNSegNet training/inference and the other tasks.
+
+- **PaNSegNet:** Follow the [PaNSegNet environment and setup instructions](https://github.com/NUBagciLab/PaNSegNet#pretrained-model), which use nnU-Net v1 with the custom PaNSegNet model and trainer.
+- **Other Cyst-X tasks:** Install the shared dependencies from the root [requirements.txt](requirements.txt). These exact versions were taken from the current `pt` environment: Python 3.14.6, PyTorch 2.13.0 with CUDA 12.6, and MONAI 1.6.0.
+
+From the repository root:
+
+```bash
+conda create -n cyst-x python=3.14.6
+conda activate cyst-x
+python -m pip install -r requirements.txt
+```
+
+The requirements include the CUDA 12.6 PyTorch wheel source. This environment covers classification with the supplied radiomics features, preprocessing, segmentation metric computation, supplementary analyses, and MRQy plots. Optional radiomics feature extraction requires PyRadiomics; see the [feature extraction instructions](features/README.md#feature-extraction-optional).
+
+The legacy Swin-UNETR scripts still pass `img_size` to `SwinUNETR`, an argument no longer accepted by MONAI 1.6.0. Those scripts need that API adjustment before use with these pins.
+
 # 📂 Repository Structure
 
 ```text
@@ -71,6 +90,7 @@ Cyst-X/
 ├── figures/                 # Repository illustration assets
 ├── index.html               # Project webpage
 ├── LICENSE.txt
+├── requirements.txt         # Shared dependencies, pinned from the pt environment
 └── README.md                # Main repository documentation hub
 ```
 
@@ -79,10 +99,7 @@ Classification checkpoints and saved model outputs are distributed through the [
 # 📦 Dataset Access & Download
 The Cyst-X dataset includes raw/preprocessed NIfTI volumes, expert pancreas segmentation masks, center-wise stratified splits, and clinical metadata. Please download the dataset via [HuggingFace](https://huggingface.co/datasets/phy710/Cyst-X).:
 
-First, please make sure that `huggingface_hub` is installed:
-```Bash
-pip install huggingface_hub
-```
+`huggingface_hub` is included in the root `requirements.txt`; install the environment above before downloading.
     
 Download the full dataset, including visualization previews, with Python:
 ```Python

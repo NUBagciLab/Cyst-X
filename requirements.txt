@@ -1,0 +1,24 @@
+# Direct dependencies from the current pt environment.
+# Reference: Python 3.14.6 on Linux; PyTorch CUDA 12.6.
+# PaNSegNet training/inference uses its own environment (see README.md).
+--extra-index-url https://download.pytorch.org/whl/cu126
+
+torch==2.13.0+cu126
+monai==1.6.0
+numpy==2.4.4
+pandas==3.0.5
+scipy==1.18.0
+scikit-learn==1.9.0
+matplotlib==3.11.1
+seaborn==0.13.2
+nibabel==5.4.2
+SimpleITK==2.5.6
+tqdm==4.70.0
+joblib==1.5.3
+Jinja2==3.1.6
+openpyxl==3.1.5
+einops==0.8.2
+huggingface-hub==1.27.0
+
+# Optional radiomics feature extraction is documented in features/README.md.
+# PyRadiomics is not installed in the reference pt environment.
