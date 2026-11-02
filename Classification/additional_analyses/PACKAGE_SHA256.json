@@ -38,7 +38,7 @@
   "reference_results/matched_auc.csv": "b6fa5616b8767e6379bb251b9e7f9230fc77152de94c9180f40b67d28bc8009b",
   "reference_results/paired_comparison.csv": "6b5416a1d9cdfcd7fa91b1cc62629d8212a70ec7477b2cc35026013b3e8191df",
   "reference_results/principal_ci.csv": "9aaa12c6d09d08f1f93a61ec691974a910704c9b8ad6ff691fa1c18efa60a05b",
-  "reference_results/round2/calibration_dca.csv": "a7ac158004c35a11c493981821293b6166ecb926aa3afa2d3efe7dcb8f5031fd",
+  "reference_results/round2/calibration_dca.csv": "04093d8501cb1efe8d19a1a5dc5f2d55ea6c554262c5113a17467d84f2111f7e",
   "reference_results/round2/center_adjusted_or.csv": "961fbf17e3011131078d6c755970c924ffbd31e77c948bdee0aaae295fd2a515",
   "reference_results/round2/federated_auc_ci.csv": "ce2d2b36b3224c2bc52e8096ade3857da6839401c5c20854152d7061fa2ecb97",
   "render_tables.py": "081da788f8c9000acfaeaa17fe28b4ff051689bcdbbed7b79211b03adbf8be35",
