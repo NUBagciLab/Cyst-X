@@ -469,7 +469,7 @@ function pct(v, lo, hi) { return Math.max(2, Math.min(100, (v - lo) / (hi - lo) 
   function layout() {
     dpr = Math.min(window.devicePixelRatio || 1, 2);
     W = cv.clientWidth; H = cv.clientHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const cx = W * 0.5, cy = H * 0.47, rx = Math.max(W * 0.44, 300), ry = H * 0.43;
+    const narrow = W < 700, cx = W * 0.5, cy = H * 0.47, rx = narrow ? W * 0.40 : Math.max(W * 0.44, 300), ry = narrow ? H * 0.40 : H * 0.43;
     hub = { x: cx, y: cy };
     nodes = CENTERS.map((c, i) => { const a = -Math.PI / 2 + i * 2 * Math.PI / 7; return { name: c, x: cx + rx * Math.cos(a), y: cy + ry * Math.sin(a), ph: Math.random() * 6 }; });
     stars = Array.from({ length: Math.round(W * H / 9000) }, () => ({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 1.2 + .2, s: Math.random() * .3 + .05 }));
@@ -502,7 +502,6 @@ function pct(v, lo, hi) { return Math.max(2, Math.min(100, (v - lo) / (hi - lo) 
       const kk = (Math.sin(now / 600 + n.ph) + 1) / 2;
       ctx.fillStyle = `rgba(95,211,196,${.07 + .07 * kk})`; ctx.beginPath(); ctx.arc(n.x, n.y, 13 + 4 * kk, 0, 7); ctx.fill();
       ctx.fillStyle = 'rgba(95,211,196,.75)'; ctx.beginPath(); ctx.arc(n.x, n.y, 3.5, 0, 7); ctx.fill();
-      ctx.fillStyle = 'rgba(200,220,250,.32)'; ctx.font = '600 11px Inter, sans-serif'; ctx.textAlign = 'center'; ctx.fillText(n.name, n.x, n.y - 24);
     });
     if (!reduce) requestAnimationFrame(draw);
   }
