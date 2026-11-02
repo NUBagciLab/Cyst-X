@@ -67,7 +67,6 @@ Cyst-X/
 │   ├── vs_radiologists/      # Matched reader/model comparisons across the three cohorts
 │   ├── additional_analyses/  # CPU-only analyses of saved predictions (Tables A15–A20, Fig. 4, Fig. A2)
 │   ├── run_radiomics.sh      # Batch launcher for the radiomics experiments
-│   ├── requirements.txt
 │   └── README.md
 ├── Segmentation/            # Pipeline and engines for pancreas ROI localization
 ├── preprocessing/
@@ -77,7 +76,6 @@ Cyst-X/
 │   ├── step2_crop.py         # Alternative cropping/visualization implementation
 │   ├── run_preprocessing.sh  # Run steps 1–3 on the aligned v2 segmentation dataset
 │   ├── run_seg_crop.sh       # Crop N4 images using predicted RAS masks
-│   ├── requirements.txt
 │   └── README.md
 ├── features/
 │   ├── radiomics_features_t1.csv

@@ -1,6 +1,6 @@
 {
   "PACKAGE_AUDIT.md": "e0a86305593b64b3a17812164f0848c17cc481ad1b16fe1e53e176ac2bad6432",
-  "VALIDATION.md": "6fe64895dde3471fc2f1e071c70697bd5d8fa8153187bf47aaab2aab1fd1d747",
+  "VALIDATION.md": "3c5953ab55cc15d5539fc2ca868353cd11796ededf9141da66dd535136f4d37d",
   "calibration_dca.py": "3f2a22e6f9faab2c78ccc3e06a64159cc67c9175cd09c81271be3bdae141ecad",
   "center_adjusted_or.py": "0aa49d52b7cbeb3fddc11cc5654db8ef14e23dab644d9d1d32428c0138ab7d23",
   "cohort_io.py": "ccfa7ef69bcf0673943e347608e6e86341c66a22d4278f1fed56e7ccced349c6",
@@ -42,7 +42,6 @@
   "reference_results/round2/center_adjusted_or.csv": "961fbf17e3011131078d6c755970c924ffbd31e77c948bdee0aaae295fd2a515",
   "reference_results/round2/federated_auc_ci.csv": "ce2d2b36b3224c2bc52e8096ade3857da6839401c5c20854152d7061fa2ecb97",
   "render_tables.py": "081da788f8c9000acfaeaa17fe28b4ff051689bcdbbed7b79211b03adbf8be35",
-  "requirements.txt": "a45480747366bde2cfb93c36b8e6eba517166f0b8f5d0313c1659df11a2f26be",
   "run_analysis.py": "b747137dcf4a7ef311cd4f9e7f8ee0d36779f01903925d5ca2bb84c591626771",
   "run_round2.sh": "8656e75189c715ec6914a5d7d31a54685456cee5eb9ebd2580d6814d1b8561d6",
   "verify_results.py": "8e1cd1a9b44b3b1eef9fe336b88f7ab959625552a8b1a4d505aad777ccad1633",

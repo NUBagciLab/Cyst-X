@@ -1,7 +1,7 @@
 External low_vs_high radiomics
 
 Run from this folder in your ML environment (no PyRadiomics or images required):
-  python -m pip install -r requirements.txt
+  python -m pip install -r ../../../../requirements.txt
   bash main.sh -t 1
 Use -t 2 for T2, or omit -t for both modalities.
 Labels are IPMN_labels_t1_total.xlsx / IPMN_labels_t2_total.xlsx.

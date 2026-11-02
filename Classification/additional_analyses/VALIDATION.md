@@ -20,7 +20,7 @@ Standalone preview compiled successfully with two LaTeX passes: four pages, no u
 
 `run_round2.sh` was executed end to end on the training server against the saved
 released prediction workbooks (`result.xlsx`, `val_result.xlsx`), in a clean virtual
-environment built from `requirements.txt` (Python 3.9, numpy 2.0.2, pandas 2.3.3,
+environment using the analysis package’s original dependency pins (Python 3.9, numpy 2.0.2, pandas 2.3.3,
 scikit-learn 1.6.1, matplotlib 3.9.4). `verify_round2.py` reported all checks passed:
 
 - `federated_auc_ci.csv`, `center_adjusted_or.csv`, `calibration_dca.csv`: all numeric

@@ -19,18 +19,17 @@ Classification/
 │   └── histology/
 ├── tsne/
 ├── vs_radiologists/
-├── run_radiomics.sh
-└── requirements.txt
+└── run_radiomics.sh
 ```
 
 `2-class` compares high-risk with no-/low-risk cases. `low_vs_high` includes only low- and high-risk IPMN. `histology` further applies the existing `keep_histology` rule, which excludes cases whose follow-up information contains `no change`. Fusion methods are `early_fusion`, `late_fusion`, `siamese_fusion`, and `logit_fusion`.
 
 ## Environment and data
 
-Install a CUDA-compatible PyTorch build for your machine, then install the Python dependencies in your environment:
+Use the shared environment described in the [root README](../README.md#environment-and-requirements). Install the root [requirements.txt](../requirements.txt) from the repository root:
 
 ```bash
-pip install -r Classification/requirements.txt
+python -m pip install -r requirements.txt
 ```
 
 Use the dataset repository's `classification/` directory, which contains the cropped images, label workbooks, and current `t1_split.csv` and `t2_split.csv`. The paired fusion loaders use the T1 patient fold assignments. Prefer these split files over the legacy `data splits/` files. For a download under this repository's `Cyst-X/` directory, set an absolute data path from the repository root:
@@ -106,7 +105,7 @@ Checkpoints, prediction workbooks, generated plots, caches, server logs, and loc
 The package includes aggregate example outputs, accepted reference results, validation notes, and a checksum manifest. From the repository root run:
 
 ```bash
-pip install -r Classification/additional_analyses/requirements.txt
+python -m pip install -r requirements.txt
 python Classification/additional_analyses/run_analysis.py \
   --classification-root ./Classification \
   --labels ./Classification/vs_radiologists/IPMN_labels_total.xlsx \
@@ -132,7 +131,7 @@ These scripts add the analyses requested in the second review round. Like the pa
 Run all of them and check the results from the repository root:
 
 ```bash
-pip install -r Classification/additional_analyses/requirements.txt
+python -m pip install -r requirements.txt
 bash Classification/additional_analyses/run_round2.sh ./Classification ./results/round2
 ```
 
