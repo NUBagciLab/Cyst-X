@@ -1,143 +1,641 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cyst-X: A Multicenter MRI Benchmark for Pancreatic Cyst Risk Stratification and Cross-Institutional AI</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; line-height: 1.6; max-width: 1100px; margin: 0 auto; padding: 40px 20px; color: #24292e; background-color: #ffffff; }
-        .center { text-align: center; }
-        h1 { font-size: 2.2rem; font-weight: 800; color: #1c2b3a; margin-bottom: 20px; line-height: 1.25; }
-        .journal-tag { font-size: 1.25rem; font-weight: 600; color: #007bff; margin-bottom: 25px; }
-        
-        /* Author & Affiliation Styles */
-        .authors { font-size: 1.05rem; color: #24292e; margin-bottom: 15px; font-weight: 400; line-height: 1.6; }
-        .affiliations { font-size: 0.88rem; color: #555e67; line-height: 1.5; margin-bottom: 20px; }
-        
-        /* Pill Button Container */
-        .link-buttons { margin: 25px 0; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
-        
-        /* Pill Button Styling */
-        .btn { 
-            background-color: #1c2b3a; color: white; padding: 10px 20px; border-radius: 12px; 
-            text-decoration: none; font-weight: 600; font-size: 1rem;
-            display: flex; align-items: center; gap: 8px; transition: all 0.2s ease;
-        }
-        .btn:hover { background-color: #3e4c59; transform: translateY(-2px); }
-        .btn-highlight { border: 2px solid #007bff; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cyst-X: A Multicenter MRI Benchmark for Pancreatic Cyst Risk Stratification and Cross-Institutional AI</title>
+<meta name="description" content="Cyst-X: a public multicenter MRI benchmark for IPMN risk stratification with expert pancreas masks, risk labels, patient-level splits and reference models.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+  --ink: #0f1b2d; --ink-2: #44526a; --ink-3: #7a879c;
+  --bg: #ffffff; --bg-soft: #f5f7fb; --line: #e3e8f0;
+  --navy: #0a1424; --navy-2: #13223a;
+  --accent: #2f7cf6; --accent-2: #19b8a6; --warm: #f2a33a; --rose: #e5566b;
+  --radius: 14px;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; font-family: 'Inter', system-ui, -apple-system, sans-serif; color: var(--ink); background: var(--bg); line-height: 1.65; -webkit-font-smoothing: antialiased; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code, .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: .9em; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
 
-        /* High-Impact Summary Box */
-        .summary-box {
-            background-color: #f1f4ff;
-            border-left: 6px solid #4493d1;
-            padding: 25px 35px;
-            border-radius: 10px;
-            margin: 40px 0;
-            text-align: left;
-        }
-        .summary-box p {
-            margin: 0;
-            font-size: 1.15rem;
-            color: #4051b5;
-            line-height: 1.6;
-        }
-        .summary-box strong { color: #283593; font-weight: 700; }
-        
-        /* Content Sections */
-        .content-section { margin-top: 40px; border-top: 1px dotted #ccc; padding-top: 25px; }
-        h2 { font-size: 1.5rem; margin-top: 40px; border-bottom: 1px solid #eee; padding-bottom: 5px; color: #1c2b3a; }
-        img { width: 100%; border-radius: 6px; margin: 20px 0; }
-        .fig-narrow { max-width: 760px; }
-        .caption { font-size: 0.92rem; color: #555e67; margin-top: -8px; }
-        pre { background: #f6f8fa; padding: 20px; border-radius: 8px; overflow-x: auto; font-size: 0.9rem; border: 1px solid #dfe2e5; }
-        ul { padding-left: 20px; }
-        li { margin-bottom: 8px; }
-    </style>
+/* ---------- Hero ---------- */
+.hero { position: relative; background: radial-gradient(1200px 600px at 70% -10%, #1d3560 0%, var(--navy) 55%); color: #e8eefb; overflow: hidden; }
+#fl-canvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .9; }
+.hero-inner { position: relative; z-index: 2; padding: 88px 24px 56px; max-width: 1120px; margin: 0 auto; text-align: center; }
+.badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; background: rgba(47,124,246,.16); border: 1px solid rgba(120,170,255,.35); color: #b9d2ff; font-size: .85rem; font-weight: 600; letter-spacing: .02em; }
+.badge .dot { width: 7px; height: 7px; border-radius: 50%; background: #5fd3c4; box-shadow: 0 0 0 0 rgba(95,211,196,.7); animation: ping 2s infinite; }
+@keyframes ping { 0% { box-shadow: 0 0 0 0 rgba(95,211,196,.6); } 80%,100% { box-shadow: 0 0 0 9px rgba(95,211,196,0); } }
+.hero h1 { font-size: clamp(2rem, 4.6vw, 3.35rem); line-height: 1.12; font-weight: 800; letter-spacing: -.02em; margin: 22px auto 18px; max-width: 980px;
+  background: linear-gradient(92deg, #ffffff 0%, #cfe0ff 45%, #8fe3d6 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.authors { font-size: .98rem; color: #c9d5ea; max-width: 980px; margin: 0 auto; }
+.authors sup { color: #8fb4ff; font-size: .7em; margin-left: 1px; }
+.affils { font-size: .82rem; color: #8d9bb4; margin: 14px auto 0; max-width: 900px; display: flex; flex-wrap: wrap; justify-content: center; gap: 2px 14px; }
+.affils span { white-space: nowrap; }
+.btns { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 30px 0 8px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px; border-radius: 12px; font-weight: 600; font-size: .95rem; color: #fff; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.16); backdrop-filter: blur(6px); transition: transform .2s, background .2s, border-color .2s; }
+.btn:hover { text-decoration: none; transform: translateY(-2px); background: rgba(255,255,255,.16); border-color: rgba(255,255,255,.32); }
+.btn.primary { background: linear-gradient(135deg, #2f7cf6, #1aa89a); border-color: transparent; }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 44px auto 0; max-width: 900px; }
+.stat { padding: 18px 12px; border-radius: var(--radius); background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); }
+.stat .num { font-size: 2.1rem; font-weight: 800; letter-spacing: -.02em; color: #fff; font-variant-numeric: tabular-nums; }
+.stat .lbl { font-size: .82rem; color: #9fb0cc; }
+.scroll-hint { margin-top: 36px; color: #7f90ad; font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; }
+.scroll-hint i { display: block; margin-top: 6px; animation: bob 1.8s ease-in-out infinite; }
+@keyframes bob { 50% { transform: translateY(6px); } }
+
+/* ---------- Nav ---------- */
+nav.top { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,.86); backdrop-filter: saturate(160%) blur(12px); border-bottom: 1px solid var(--line); }
+nav.top .wrap { display: flex; align-items: center; gap: 22px; height: 56px; overflow-x: auto; scrollbar-width: none; }
+nav.top .brand { font-weight: 800; color: var(--ink); white-space: nowrap; }
+nav.top a.lnk { color: var(--ink-2); font-size: .9rem; font-weight: 500; white-space: nowrap; padding: 4px 0; border-bottom: 2px solid transparent; }
+nav.top a.lnk:hover { text-decoration: none; color: var(--ink); }
+nav.top a.lnk.active { color: var(--accent); border-bottom-color: var(--accent); }
+#progress { position: absolute; left: 0; bottom: -1px; height: 2px; width: 0; background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
+
+/* ---------- Sections ---------- */
+section { padding: 84px 0 20px; }
+.eyebrow { font-size: .78rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); letter-spacing: -.015em; margin: 6px 0 14px; line-height: 1.2; }
+h3 { font-size: 1.1rem; margin: 30px 0 10px; }
+.lead { color: var(--ink-2); font-size: 1.05rem; max-width: 860px; }
+.muted { color: var(--ink-3); font-size: .86rem; }
+.card { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; box-shadow: 0 1px 2px rgba(15,27,45,.04); }
+.soft { background: var(--bg-soft); }
+.reveal { opacity: 0; transform: translateY(26px); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.7,.2,1); }
+.reveal.in { opacity: 1; transform: none; }
+
+.abstract { font-size: 1.04rem; color: #26344a; columns: 2; column-gap: 40px; }
+.abstract p { margin: 0; }
+
+/* summary chips */
+.chips { display: flex; flex-wrap: wrap; gap: 10px; margin: 22px 0 0; }
+.chip { padding: 8px 14px; border-radius: 999px; background: #eef4ff; color: #1f4fa8; font-weight: 600; font-size: .88rem; }
+.chip i { margin-right: 6px; }
+
+/* toggles */
+.seg-ctl { display: inline-flex; padding: 4px; border-radius: 12px; background: var(--bg-soft); border: 1px solid var(--line); gap: 2px; flex-wrap: wrap; }
+.seg-ctl button { border: 0; background: transparent; padding: 8px 14px; border-radius: 9px; font: inherit; font-size: .88rem; font-weight: 600; color: var(--ink-2); cursor: pointer; transition: background .2s, color .2s, box-shadow .2s; }
+.seg-ctl button.on { background: #fff; color: var(--ink); box-shadow: 0 1px 3px rgba(15,27,45,.12); }
+.ctl-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 18px 0; }
+
+/* dataset */
+.grid-2 { display: grid; grid-template-columns: 1.15fr 1fr; gap: 22px; align-items: start; }
+.center-bars .row { display: grid; grid-template-columns: 58px 1fr 54px; align-items: center; gap: 10px; margin: 9px 0; font-size: .9rem; }
+.center-bars .name { font-weight: 700; }
+.center-bars .track { height: 14px; background: #edf1f7; border-radius: 7px; overflow: hidden; }
+.center-bars .fill { height: 100%; width: 0; border-radius: 7px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); transition: width 1.1s cubic-bezier(.2,.7,.2,1); }
+.center-bars .val { text-align: right; font-variant-numeric: tabular-nums; color: var(--ink-2); }
+.center-bars .row:hover .fill { filter: brightness(1.1); }
+.tip { font-size: .78rem; color: var(--ink-3); margin-top: 2px; grid-column: 2 / 4; }
+.labels { display: grid; gap: 12px; }
+.lab { border-radius: 12px; padding: 14px 16px; border: 1px solid var(--line); border-left-width: 5px; background: #fff; }
+.lab b { display: block; margin-bottom: 2px; }
+.lab .n { float: right; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--ink-2); font-size: .9rem; }
+.lab p { margin: 0; color: var(--ink-2); font-size: .9rem; }
+.lab.high { border-left-color: var(--rose); }
+.lab.low { border-left-color: var(--warm); }
+.lab.no { border-left-color: var(--accent-2); }
+
+table.t { width: 100%; border-collapse: collapse; font-size: .9rem; font-variant-numeric: tabular-nums; }
+table.t th { text-align: left; font-size: .76rem; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); font-weight: 700; padding: 10px 10px; border-bottom: 1px solid var(--line); }
+table.t td { padding: 9px 10px; border-bottom: 1px solid #eef2f7; vertical-align: middle; }
+table.t tr.grp td { background: var(--bg-soft); font-weight: 700; color: var(--ink-2); font-size: .82rem; }
+table.t tr.hl td { background: #f2f7ff; }
+table.t tr:hover td { background: #f7faff; }
+.scroll-x { overflow-x: auto; }
+
+/* bar cell */
+.bar { display: flex; align-items: center; gap: 10px; min-width: 190px; }
+.bar .v { flex: 0 0 auto; min-width: 92px; font-weight: 600; color: #0d2244; white-space: nowrap; }
+.bar .trk { flex: 1; height: 8px; border-radius: 4px; background: #edf1f7; overflow: hidden; min-width: 60px; }
+.bar .b { height: 100%; width: 0; border-radius: 4px; background: linear-gradient(90deg, #2f7cf6, #19b8a6); transition: width 1s cubic-bezier(.2,.7,.2,1); }
+.bar .b.alt { background: linear-gradient(90deg, #f2a33a, #e5566b); }
+.ci { color: var(--ink-3); font-size: .8rem; white-space: nowrap; }
+
+/* segmentation viewer */
+.viewer { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.panel { position: relative; border-radius: 12px; overflow: hidden; background: #000; aspect-ratio: 1/1; box-shadow: 0 6px 24px rgba(10,20,36,.18); }
+.panel img { width: 100%; height: 100%; object-fit: cover; display: block; transition: opacity .35s ease, transform .6s ease; }
+.panel:hover img { transform: scale(1.04); }
+.panel .cap { position: absolute; left: 10px; top: 10px; padding: 4px 10px; border-radius: 8px; background: rgba(10,20,36,.72); color: #fff; font-size: .8rem; font-weight: 600; }
+.legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: .85rem; color: var(--ink-2); margin-top: 12px; }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+
+/* curves */
+.curves { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.curves figure { margin: 0; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 8px; }
+.curves img { width: 100%; display: block; }
+.curves figcaption { text-align: center; font-size: .8rem; color: var(--ink-3); }
+
+/* scatter */
+.scatter-wrap { display: grid; grid-template-columns: 1.1fr 1fr; gap: 22px; align-items: start; }
+svg.sc { width: 100%; height: auto; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); }
+svg.sc .pt { transition: cx .8s cubic-bezier(.2,.7,.2,1), cy .8s cubic-bezier(.2,.7,.2,1), opacity .4s; cursor: pointer; }
+svg.sc text { font-family: Inter, sans-serif; }
+.sc-tip { position: fixed; pointer-events: none; background: var(--navy); color: #fff; font-size: .8rem; padding: 6px 10px; border-radius: 8px; opacity: 0; transition: opacity .15s; z-index: 100; }
+
+/* release & cite */
+.rel { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.rel .card { transition: transform .25s, box-shadow .25s; }
+.rel .card:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(15,27,45,.08); }
+.rel .k { font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-3); font-weight: 700; }
+.rel .v { font-size: 1.05rem; font-weight: 700; margin-top: 4px; }
+pre.cite { position: relative; background: var(--navy); color: #d6e2f7; padding: 22px; border-radius: var(--radius); overflow-x: auto; font-size: .85rem; line-height: 1.55; }
+.copy { position: absolute; top: 12px; right: 12px; border: 1px solid rgba(255,255,255,.2); background: rgba(255,255,255,.08); color: #fff; border-radius: 8px; padding: 6px 10px; font: 600 .8rem Inter, sans-serif; cursor: pointer; }
+footer { margin-top: 70px; padding: 30px 0 50px; border-top: 1px solid var(--line); color: var(--ink-3); font-size: .85rem; text-align: center; }
+
+@media (max-width: 860px) {
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .abstract { columns: 1; }
+  .grid-2, .scatter-wrap { grid-template-columns: 1fr; }
+  .curves { grid-template-columns: repeat(2, 1fr); }
+  .rel { grid-template-columns: 1fr; }
+  .viewer { gap: 8px; }
+  .panel .cap { font-size: .66rem; padding: 2px 6px; left: 6px; top: 6px; }
+  .hero-inner { padding-top: 64px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+  .reveal { opacity: 1; transform: none; }
+}
+</style>
 </head>
 <body>
 
-    <div class="center">
-        <h1>Cyst-X: A Multicenter MRI Benchmark for Pancreatic Cyst Risk Stratification and Cross-Institutional AI</h1>
-        <div class="journal-tag">Under Review at Nature Communications</div>
-
-        <div class="authors">
-            Hongyi Pan<sup>1*</sup>, Gorkem Durak<sup>1*</sup>, Halil Ertugrul Aktas<sup>1</sup>, Ziliang Hong<sup>1</sup>, Zhixiang Wang<sup>1</sup>, Elif Keles<sup>1</sup>, 
-            Deniz Seyithanoglu<sup>2</sup>, Zheyuan Zhang<sup>1</sup>, Alpay Medetalibeyoglu<sup>2</sup>, Andrea Mia Bejar<sup>1</sup>, Yavuz Taktak<sup>2</sup>, 
-            Gulbiz Dagoglu Kartal<sup>2</sup>, Mehmet Sukru Erturk<sup>2</sup>, Timurhan Cebeci<sup>2</sup>, Yury Velichko<sup>1</sup>, Lili Zhao<sup>1</sup>, Emil Agarunov<sup>4</sup>, 
-            Federica Proietto Salanitri<sup>5</sup>, Concetto Spampinato<sup>5</sup>, Pallavi Tiwari<sup>3</sup>, Ziyue Xu<sup>6</sup>, Sachin Jambawalikar<sup>7</sup>, 
-            Ivo G. Schoots<sup>8</sup>, Marco J. Bruno<sup>8</sup>, Chenchan Huang<sup>4</sup>, Candice W. Bolan<sup>9</sup>, Tamas Gonda<sup>4</sup>, 
-            Frank H. Miller<sup>1</sup>, Rajesh N. Keswani<sup>1</sup>, Michael B. Wallace<sup>9</sup>, Ulas Bagci<sup>1</sup>
-        </div>
-
-        <div class="affiliations">
-            <sup>1</sup>Northwestern University &nbsp;|&nbsp;
-            <sup>2</sup>Istanbul University &nbsp;|&nbsp;
-            <sup>3</sup>University of Wisconsin-Madison &nbsp;|&nbsp;
-            <sup>4</sup>New York University <br>
-            <sup>5</sup>University of Catania &nbsp;|&nbsp;
-            <sup>6</sup>NVIDIA &nbsp;|&nbsp;
-            <sup>7</sup>Columbia University &nbsp;|&nbsp;
-            <sup>8</sup>Erasmus Medical Center &nbsp;|&nbsp;
-            <sup>9</sup>Mayo Clinic Florida <br>
-            <sup>*</sup>Equal contribution
-        </div>
-
-        <div class="link-buttons">
-            <a href="https://arxiv.org/abs/2507.22017" class="btn"><i class="fas fa-file-pdf"></i> arXiv</a>
-            <a href="https://github.com/NUBagciLab/Cyst-X" class="btn btn-highlight"><i class="fab fa-github"></i> Code</a>
-            <a href="https://huggingface.co/datasets/phy710/Cyst-X" class="btn"><span>✿</span> HuggingFace (Dataset)</a>
-            <a href="https://huggingface.co/phy710/Cyst-X" class="btn"><span>✿</span> HuggingFace (Model)</a>
-            <a href="https://osf.io/74vfs/" class="btn"><span>✿</span> OSF (Dataset Mirror)</a>
-        </div>
+<header class="hero" id="top">
+  <canvas id="fl-canvas" aria-hidden="true"></canvas>
+  <div class="hero-inner">
+    <span class="badge"><span class="dot"></span>Under review at Nature Communications</span>
+    <h1>Cyst-X: A Multicenter MRI Benchmark for Pancreatic Cyst Risk Stratification and Cross-Institutional AI</h1>
+    <div class="authors">
+      Hongyi Pan<sup>1*</sup>, Gorkem Durak<sup>1*</sup>, Halil Ertugrul Aktas<sup>1</sup>, Ziliang Hong<sup>1</sup>, Zhixiang Wang<sup>1</sup>, Elif Keles<sup>1</sup>, Deniz Seyithanoglu<sup>2</sup>, Zheyuan Zhang<sup>1</sup>, Alpay Medetalibeyoglu<sup>2</sup>, Andrea Mia Bejar<sup>1</sup>, Yavuz Taktak<sup>2</sup>, Gulbiz Dagoglu Kartal<sup>2</sup>, Mehmet Sukru Erturk<sup>2</sup>, Timurhan Cebeci<sup>2</sup>, Yury Velichko<sup>1</sup>, Lili Zhao<sup>1</sup>, Emil Agarunov<sup>4</sup>, Federica Proietto Salanitri<sup>5</sup>, Concetto Spampinato<sup>5</sup>, Pallavi Tiwari<sup>3</sup>, Ziyue Xu<sup>6</sup>, Sachin Jambawalikar<sup>7</sup>, Ivo G. Schoots<sup>8</sup>, Marco J. Bruno<sup>8</sup>, Chenchan Huang<sup>4</sup>, Candice W. Bolan<sup>9</sup>, Tamas Gonda<sup>4</sup>, Frank H. Miller<sup>1</sup>, Rajesh N. Keswani<sup>1</sup>, Michael B. Wallace<sup>9</sup>, Ulas Bagci<sup>1</sup>
     </div>
-
-    <div class="summary-box">
-        <p>
-            <strong>Cyst-X is a public multicenter MRI benchmark</strong> for intraductal papillary mucinous neoplasm (IPMN) risk stratification: 1,461 T1-weighted and T2-weighted MRI volumes from 764 patients at seven centers, released with <strong>expert pancreas masks</strong>, <strong>risk labels</strong>, <strong>patient-level splits</strong> and <strong>reference segmentation and classification models</strong>.
-        </p>
+    <div class="affils">
+      <span><sup>1</sup>Northwestern University</span><span><sup>2</sup>Istanbul University</span><span><sup>3</sup>University of Wisconsin-Madison</span><span><sup>4</sup>New York University</span><span><sup>5</sup>University of Catania</span><span><sup>6</sup>NVIDIA</span><span><sup>7</sup>Columbia University</span><span><sup>8</sup>Erasmus Medical Center</span><span><sup>9</sup>Mayo Clinic Florida</span><span><sup>*</sup>Equal contribution</span>
     </div>
+    <div class="btns">
+      <a class="btn" href="https://arxiv.org/abs/2507.22017"><i class="fas fa-file-lines"></i> Paper (arXiv)</a>
+      <a class="btn primary" href="https://github.com/NUBagciLab/Cyst-X"><i class="fab fa-github"></i> Code</a>
+      <a class="btn" href="https://huggingface.co/datasets/phy710/Cyst-X"><i class="fas fa-database"></i> Dataset</a>
+      <a class="btn" href="https://huggingface.co/phy710/Cyst-X"><i class="fas fa-cube"></i> Models</a>
+      <a class="btn" href="https://osf.io/74vfs/"><i class="fas fa-clone"></i> OSF mirror</a>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="num" data-count="1461">0</div><div class="lbl">T1W and T2W MRI volumes</div></div>
+      <div class="stat"><div class="num" data-count="764">0</div><div class="lbl">patients</div></div>
+      <div class="stat"><div class="num" data-count="7">0</div><div class="lbl">centers in the US, Turkey and the Netherlands</div></div>
+      <div class="stat"><div class="num" data-count="3">0</div><div class="lbl">risk classification tasks</div></div>
+    </div>
+    <div class="scroll-hint">Explore<i class="fas fa-chevron-down"></i></div>
+  </div>
+</header>
 
-    <div class="content-section">
-        <h2>Abstract</h2>
-        <p>Intraductal papillary mucinous neoplasms (IPMNs) are pancreatic cancer precursors, and guideline-based risk stratification both over-treats indolent lesions and misses progression. We present <i>Cyst-X</i>, a public benchmark of 1,461 T1-weighted (T1W) and T2-weighted (T2W) MRI volumes from 764 patients at seven centers, with expert pancreas masks, risk labels, splits and reference AI risk-prediction models. <i>PanSegNet</i> segmented the pancreas with Dice of 86.34% (T1W) and 89.26% (T2W) on held-out centers. For the primary task, high-risk versus low-risk IPMN, a 3D DenseNet-121 achieved cross-validated AUCs of 74.59% and 73.45%; complementary broad binary and three-class tasks reached 78.67–81.28% and 73.47–75.76%. Because patient images often cannot be pooled across institutions, we also simulated federated learning across the seven centers. On T2W MRI, federated FedProx was similar to centralized training in center-averaged external AUC (71.00% versus 71.18%) but not in pooled AUC (62.35% versus 77.49%). Radiologist comparisons showed cohort-dependent sensitivity–specificity tradeoffs. <i>Cyst-X</i> supports reproducible method development and identifies within-IPMN risk discrimination and cross-center score comparability as open challenges.</p>
+<nav class="top">
+  <div class="wrap">
+    <span class="brand">Cyst-X</span>
+    <a class="lnk" href="#overview">Overview</a>
+    <a class="lnk" href="#dataset">Dataset</a>
+    <a class="lnk" href="#pipeline">Pipeline</a>
+    <a class="lnk" href="#segmentation">Segmentation</a>
+    <a class="lnk" href="#classification">Classification</a>
+    <a class="lnk" href="#radiologists">Radiologists</a>
+    <a class="lnk" href="#release">Release</a>
+    <a class="lnk" href="#citation">Citation</a>
+  </div>
+  <div id="progress"></div>
+</nav>
 
-        <h2>Dataset Composition</h2>
-        <p align="center"><img class="fig-narrow" src="figures/distribution.png" alt="Cyst-X dataset composition and label derivation"></p>
-        <ul>
-            <li><strong>Multicenter cohort:</strong> 1,461 MRI volumes (723 T1W, 738 T2W) from 764 patients at seven centers: New York University Langone Health (NYU), Mayo Clinic Florida (MCF), Northwestern University (NU), Allegheny Health Network (AHN), Mayo Clinic Arizona (MCA), Istanbul University Faculty of Medicine (IU) and Erasmus Medical Center (EMC). Scanners span GE, Siemens and Philips at 1.5 T and 3 T.</li>
-            <li><strong>High-risk:</strong> IPMN with high-grade dysplasia or worse, including carcinoma in situ and invasive carcinoma, confirmed by endoscopic-ultrasound-guided biopsy or surgical histopathology.</li>
-            <li><strong>Low-risk:</strong> IPMN with low- or intermediate-grade dysplasia confirmed on resection or tissue sampling, or IPMN without biopsy that remained stable over at least three years of imaging follow-up (growth below 2.5 mm per year, no worrisome features or high-risk stigmata under the Kyoto criteria).</li>
-            <li><strong>No-risk:</strong> normal pancreatic imaging without cystic lesions, or benign cysts not associated with IPMN, as determined on imaging.</li>
-        </ul>
+<main>
+<section id="overview">
+  <div class="wrap reveal">
+    <div class="eyebrow">Overview</div>
+    <h2>A public benchmark for IPMN risk stratification</h2>
+    <div class="abstract"><p>Intraductal papillary mucinous neoplasms (IPMNs) are pancreatic cancer precursors, and guideline-based risk stratification both over-treats indolent lesions and misses progression. We present <i>Cyst-X</i>, a public benchmark of 1,461 T1-weighted (T1W) and T2-weighted (T2W) MRI volumes from 764 patients at seven centers, with expert pancreas masks, risk labels, splits and reference AI risk-prediction models. <i>PanSegNet</i> segmented the pancreas with Dice of 86.34% (T1W) and 89.26% (T2W) on held-out centers. For the primary task, high-risk versus low-risk IPMN, a 3D DenseNet-121 achieved cross-validated AUCs of 74.59% and 73.45%; complementary broad binary and three-class tasks reached 78.67–81.28% and 73.47–75.76%. Because patient images often cannot be pooled across institutions, we also simulated federated learning across the seven centers. On T2W MRI, federated FedProx was similar to centralized training in center-averaged external AUC (71.00% versus 71.18%) but not in pooled AUC (62.35% versus 77.49%). Radiologist comparisons showed cohort-dependent sensitivity–specificity tradeoffs. <i>Cyst-X</i> supports reproducible method development and identifies within-IPMN risk discrimination and cross-center score comparability as open challenges.</p></div>
+    <div class="chips">
+      <span class="chip"><i class="fas fa-draw-polygon"></i>Expert pancreas masks</span>
+      <span class="chip"><i class="fas fa-tags"></i>Histopathology- and follow-up-anchored risk labels</span>
+      <span class="chip"><i class="fas fa-layer-group"></i>Patient-level splits</span>
+      <span class="chip"><i class="fas fa-network-wired"></i>Centralized and federated baselines</span>
+    </div>
+  </div>
+</section>
 
-        <h2>Pipeline</h2>
-        <p align="center"><img src="figures/pipeline.png" style="width: 80%;" alt="Cyst-X pipeline overview"></p>
+<section id="dataset">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow">Dataset</div>
+      <h2>Seven centers, two MRI sequences</h2>
+      <p class="lead">Scanners span GE, Siemens and Philips at 1.5 T and 3 T. Each volume comes with an expert pancreas mask; risk-labeled cases carry a three-tier label.</p>
+    </div>
+    <div class="grid-2 reveal">
+      <div class="card">
+        <div class="ctl-row" style="margin-top:0"><strong>Patients per center</strong><div class="seg-ctl" id="ds-seq"><button class="on" data-v="t1">T1W</button><button data-v="t2">T2W</button></div></div>
+        <div class="center-bars" id="center-bars"></div>
+      </div>
+      <div class="labels">
+        <div class="lab high"><span class="n" id="n-high"></span><b>High-risk IPMN</b><p>High-grade dysplasia or worse, including carcinoma in situ and invasive carcinoma, confirmed by endoscopic-ultrasound-guided biopsy or surgical histopathology.</p></div>
+        <div class="lab low"><span class="n" id="n-low"></span><b>Low-risk IPMN</b><p>Low- or intermediate-grade dysplasia on resection or tissue sampling, or no biopsy and at least three years of stable imaging follow-up (growth below 2.5 mm per year, no worrisome features or high-risk stigmata under the Kyoto criteria).</p></div>
+        <div class="lab no"><span class="n" id="n-no"></span><b>No-risk pancreas</b><p>Normal pancreatic imaging without cystic lesions, or benign cysts not associated with IPMN, as determined on imaging.</p></div>
+        <p class="muted" id="n-note"></p>
+      </div>
+    </div>
+  </div>
+</section>
 
-        <h2>Pancreas Segmentation Benchmark</h2>
-        <p align="center"><img class="fig-narrow" src="figures/segmentation.png" alt="Pancreas segmentation results"></p>
-        <p align="center"><img class="fig-narrow" src="figures/samples.png" alt="Representative segmentation results per center"></p>
+<section id="pipeline" class="soft" style="padding-bottom:70px; margin-top:64px">
+  <div class="wrap reveal">
+    <div class="eyebrow">Pipeline</div>
+    <h2>From multicenter MRI to risk prediction</h2>
+    <p class="lead">Scans are harmonized, the pancreas is segmented with <i>PanSegNet</i>, and the pancreatic region feeds deep-learning and radiomics classifiers trained centrally or across institutional silos with FedAvg and FedProx.</p>
+    <div class="card" style="margin-top:22px"><img src="figures/pipeline.png" alt="Cyst-X pipeline" style="width:100%; display:block; border-radius:8px"></div>
+  </div>
+</section>
 
-        <h2>IPMN Risk Classification Benchmark</h2>
-        <p>The primary task separates high-risk from low-risk IPMN. Two complementary tasks are reported: broad binary (high-risk IPMN versus low-risk IPMN plus no-risk) and three-class classification. Models are evaluated by patient-level five-fold cross-validation and by leave-one-center-out external evaluation, with centralized and federated (FedAvg, FedProx) training.</p>
-        <p align="center"><img class="fig-narrow" src="figures/classification.png" alt="IPMN classification results"></p>
-        <p align="center"><img class="fig-narrow" src="figures/roc_pr.png" alt="ROC and precision-recall curves"></p>
+<section id="segmentation">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow">Benchmark 1</div>
+      <h2>Pancreas segmentation</h2>
+      <p class="lead">One representative case per center. The dashed box on the MRI marks the zoomed region shown for <i>Swin-UNETR</i> and <i>PanSegNet</i>.</p>
+    </div>
+    <div class="reveal">
+      <div class="ctl-row">
+        <div class="seg-ctl" id="sv-seq"><button class="on" data-v="t1">T1W</button><button data-v="t2">T2W</button></div>
+        <div class="seg-ctl" id="sv-center"></div>
+      </div>
+      <div class="viewer">
+        <div class="panel"><img id="sv-img" alt="MRI"><span class="cap">MRI</span></div>
+        <div class="panel"><img id="sv-swin" alt="Swin-UNETR"><span class="cap">Swin-UNETR</span></div>
+        <div class="panel"><img id="sv-pan" alt="PanSegNet"><span class="cap">PanSegNet</span></div>
+      </div>
+      <div class="legend"><span><i style="background:#2e8b3a"></i>Overlap with annotation</span><span><i style="background:#c62828"></i>Missed annotation</span><span><i style="background:#e0a020"></i>Over-segmentation</span></div>
+    </div>
+    <div class="card reveal" style="margin-top:28px">
+      <div class="ctl-row" style="margin-top:0"><strong>Segmentation metrics</strong><div class="seg-ctl" id="sm-seq"><button class="on" data-v="t1">T1W</button><button data-v="t2">T2W</button></div></div>
+      <div class="scroll-x"><table class="t" id="seg-table"></table></div>
+      <p class="muted"><i>PanSegNet</i>: mean ± s.d. across patients pooled over the five cross-validation folds. <i>Swin-UNETR</i> (centralized and federated): mean ± s.d. of the five fold-level means.</p>
+    </div>
+  </div>
+</section>
 
-        <h2>Comparison with Radiologists</h2>
-        <p>Three blinded abdominal radiologists scored the same patients under imaging-only conditions. The comparison is reported as sensitivity and specificity in three cohorts: 629 broad cases, 474 IPMN-only cases and 357 histopathology-confirmed IPMN cases.</p>
-        <p align="center"><img class="fig-narrow" src="figures/radiologists.png" alt="Comparison of radiologist, radiomics and deep-learning performance"></p>
+<section id="classification" class="soft" style="padding-bottom:70px; margin-top:64px">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow">Benchmark 2</div>
+      <h2>IPMN risk classification</h2>
+      <p class="lead">The primary clinical task separates high-risk from low-risk IPMN. Broad binary and three-class tasks add the no-risk group. Models are evaluated with patient-level five-fold cross-validation (internal) and leave-one-center-out evaluation (external), with centralized and federated training.</p>
+    </div>
+    <div class="card reveal">
+      <div class="ctl-row" style="margin-top:0">
+        <div class="seg-ctl" id="cl-task"><button class="on" data-v="primary">IPMN-only (primary)</button><button data-v="broad">Broad binary</button><button data-v="three">Three-class</button></div>
+        <div class="seg-ctl" id="cl-eval"><button class="on" data-v="internal">Internal</button><button data-v="external">External</button></div>
+      </div>
+      <p class="muted" id="cl-desc" style="margin:-4px 0 10px"></p>
+      <div class="scroll-x"><table class="t" id="cl-table"></table></div>
+      <p class="muted" id="cl-note"></p>
+    </div>
+    <div class="reveal" id="curves-block">
+      <h3 id="curves-title"></h3>
+      <div class="curves" id="curves"></div>
+    </div>
+  </div>
+</section>
 
-        <h2>Release</h2>
-        <p>The reported results correspond to code release v2 (commit <a href="https://github.com/NUBagciLab/Cyst-X/tree/cd868f3b75a95373eb06367599eddee8452aa4d6"><code>cd868f3</code></a>), dataset revision v2 (commit <code>03e55ee</code>) and model revision v2 (commit <code>81f4166</code>). The <a href="https://github.com/NUBagciLab/Cyst-X#readme">repository README</a> maps each reported table and figure to its script and run commands.</p>
+<section id="radiologists">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow">Reader study</div>
+      <h2>Comparison with radiologists</h2>
+      <p class="lead">Three blinded abdominal radiologists scored all 629 cases with paired T1W and T2W MRI under imaging-only conditions. Their assessments are compared with radiomics and deep-learning models in three cohorts.</p>
+    </div>
+    <div class="reveal">
+      <div class="ctl-row">
+        <div class="seg-ctl" id="rd-cohort"><button class="on" data-v="0">629 broad cases</button><button data-v="1">474 IPMN-only</button><button data-v="2">357 histopathology-confirmed</button></div>
+        <div class="seg-ctl" id="rd-eval"><button class="on" data-v="int">Models: internal</button><button data-v="ext">Models: external</button></div>
+      </div>
+      <div class="scatter-wrap">
+        <svg class="sc" id="scatter" viewBox="0 0 560 440" role="img" aria-label="Sensitivity versus specificity"></svg>
+        <div class="card" style="padding:12px 14px"><div class="scroll-x"><table class="t" id="rd-table"></table></div></div>
+      </div>
+      <p class="muted">Model values use validation-selected thresholds. Comparisons are exploratory and describe performance at the reported operating points rather than at matched sensitivity or specificity. The radiologist average is the arithmetic mean of the three readers, not a consensus prediction. Model inputs used radiologist-defined pancreas regions of interest.</p>
+    </div>
+  </div>
+</section>
 
-        <h2>BibTeX Citation</h2>
-        <pre>@article{pan2025cyst,
+<section id="release">
+  <div class="wrap reveal">
+    <div class="eyebrow">Release</div>
+    <h2>Data, code and models</h2>
+    <p class="lead">The reported results correspond to the v2 release. The <a href="https://github.com/NUBagciLab/Cyst-X#readme">repository README</a> maps each reported table and figure to its script and run commands.</p>
+    <div class="rel">
+      <a class="card" href="https://github.com/NUBagciLab/Cyst-X/tree/cd868f3b75a95373eb06367599eddee8452aa4d6" style="color:inherit; text-decoration:none"><div class="k"><i class="fab fa-github"></i> Code release v2</div><div class="v mono">cd868f3</div><div class="muted">github.com/NUBagciLab/Cyst-X</div></a>
+      <a class="card" href="https://huggingface.co/datasets/phy710/Cyst-X" style="color:inherit; text-decoration:none"><div class="k"><i class="fas fa-database"></i> Dataset revision v2</div><div class="v mono">03e55ee</div><div class="muted">MRI volumes, masks, labels, splits</div></a>
+      <a class="card" href="https://huggingface.co/phy710/Cyst-X" style="color:inherit; text-decoration:none"><div class="k"><i class="fas fa-cube"></i> Model revision v2</div><div class="v mono">81f4166</div><div class="muted">Model weights and segmentation results</div></a>
+    </div>
+  </div>
+</section>
+
+<section id="citation">
+  <div class="wrap reveal">
+    <div class="eyebrow">Citation</div>
+    <h2>Cite Cyst-X</h2>
+<pre class="cite" id="bib"><button class="copy" id="copy">Copy</button>@article{pan2025cyst,
   title={Cyst-X: A Multi-Center MRI Benchmark and Federated Learning Framework for Malignancy-Risk Stratification of Pancreatic Cystic Neoplasm},
   author={Pan, Hongyi and Durak, Gorkem and Keles, Elif and Hong, Ziliang and Seyithanoglu, Deniz and Zhang, Zheyuan and Medetalibeyoglu, Alpay and Aktas, Halil Ertugrul and Bejar, Andrea Mia and Taktak, Yavuz and others},
   journal={arXiv preprint arXiv:2507.22017},
   year={2025}
 }</pre>
-    </div>
+  </div>
+</section>
+</main>
 
+<footer><div class="wrap">Machine &amp; Hybrid Intelligence Lab, Department of Radiology, Northwestern University</div></footer>
+<div class="sc-tip" id="sc-tip"></div>
+
+<script>
+/* ================= Data (from the revised manuscript) ================= */
+const CENTERS = ['NYU','MCF','NU','AHN','MCA','IU','EMC'];
+const DEMO = {
+  t1: { n:[162,148,206,17,25,74,91], f:[98,81,109,12,14,42,43], m:[64,67,97,5,11,32,48], age:['63.0','65.0','63.9','N/A','71.1','64.1','50.9'] },
+  t2: { n:[162,143,207,27,23,73,103], f:[97,78,109,19,10,41,50], m:[65,65,98,8,13,32,53], age:['62.9','65.4','63.9','N/A','70.1','63.8','52.2'] }
+};
+const VENDOR = ['Siemens, GE','Siemens, GE','Siemens','N/A','Siemens, GE','Siemens, Philips','Siemens, GE'];
+const LABELS = { t1:{high:149, low:339, no:164, hist:222, fu:117}, t2:{high:152, low:344, no:159, hist:227, fu:117} };
+
+const SEG = {
+  t1: [['PanSegNet','86.81±7.30','77.32±9.74','86.56±8.59','87.84±7.80','3.72±8.86','0.74±1.73'],
+       ['Swin-UNETR','79.09±1.40','67.19±1.63','79.09±1.67','81.37±0.74','26.55±8.48','7.58±3.76'],
+       ['+FedAvg','71.26±2.59','58.30±2.74','69.74±3.09','77.13±1.34','43.65±8.60','14.77±5.01'],
+       ['+FedProx (μ=0.3)','57.24±3.41','44.16±2.85','56.85±4.33','62.93±2.80','87.27±8.34','31.99±6.19'],
+       ['+FedProx (μ=0.01)','68.95±3.30','56.09±3.37','67.33±3.37','75.11±2.68','52.82±9.97','18.76±5.41'],
+       ['+FedProx (μ=0.005)','69.77±2.90','56.88±2.98','68.16±2.98','75.82±2.39','49.61±8.55','17.51±5.39']],
+  t2: [['PanSegNet','89.62±6.38','81.73±9.31','90.74±6.45','89.11±8.06','2.51±5.23','0.35±0.65'],
+       ['Swin-UNETR','76.29±0.66','63.77±0.82','78.70±2.14','76.86±1.21','28.53±7.01','7.57±2.60'],
+       ['+FedAvg','69.19±1.51','55.48±1.44','70.52±2.98','71.31±0.95','41.87±5.84','11.74±3.02'],
+       ['+FedProx (μ=0.3)','58.11±2.61','43.85±2.22','59.01±4.38','61.46±1.11','66.68±9.10','20.87±4.81'],
+       ['+FedProx (μ=0.01)','67.25±1.86','53.47±1.77','68.22±2.99','70.23±1.21','48.36±6.51','14.52±3.64'],
+       ['+FedProx (μ=0.005)','67.82±1.44','54.16±1.43','68.63±2.41','70.89±0.84','48.64±5.82','13.99±2.96']]
+};
+
+/* rows: [method, T1 value, T1 CI, T2 value, T2 CI, highlight?] ; external value = pooled (center-averaged) */
+const CLS = {
+  primary: {
+    desc: 'High-risk versus low-risk IPMN. Internal: T1W n=488 (149/339), T2W n=496 (152/344).',
+    internal: [['3D Radiomics','73.19±2.55','[68.21, 78.30]','73.64±2.91','[68.93, 78.18]'],
+               ['DenseNet-121','74.59±3.28','[69.38, 79.76]','73.45±5.28','[68.89, 78.03]',1]],
+    external: [['3D Radiomics','64.56 (65.61)','[59.21, 70.06]','64.66 (61.77)','[58.96, 69.79]'],
+               ['DenseNet-121','66.93 (64.13)','[61.81, 72.00]','69.30 (67.00)','[64.35, 73.82]',1]],
+    curves: ['lvh_t1_roc_mean','lvh_t2_roc_mean','lvh_t1_prc_mean','lvh_t2_prc_mean']
+  },
+  broad: {
+    desc: 'High-risk IPMN versus non-high-risk (low-risk IPMN + no-risk). Internal: T1W n=652 (149/339/164), T2W n=655 (152/344/159).',
+    internal: [['3D Radiomics','78.02±0.97','[73.45, 82.06]','78.91±1.71','[74.20, 82.86]'],
+               ['ResNet-34','76.72±1.65','[72.16, 80.89]','79.44±2.73','[75.26, 83.54]'],
+               ['ResNet-50','77.83±2.50','[73.48, 81.69]','78.96±2.82','[74.80, 82.91]'],
+               ['EfficientNet-B0','76.33±5.34','[71.69, 80.62]','77.10±2.10','[72.38, 81.06]'],
+               ['DenseNet-121','78.67±4.02','[74.41, 82.50]','81.28±2.44','[77.28, 85.22]',1],
+               ['+FedAvg','77.99±4.88','[73.46, 82.11]','76.00±3.70','[71.88, 80.10]'],
+               ['+FedProx (0.1)','79.28±5.15','[74.85, 83.14]','77.51±3.62','[73.42, 81.55]'],
+               ['+FedProx (0.3)','78.86±4.41','[74.62, 82.76]','79.59±3.00','[75.56, 83.34]'],
+               ['DenseNet-121 (PanSegNet ROIs)','77.40±4.80','[73.24, 81.34]','76.36±2.77','[71.87, 80.28]'],
+               ['DenseNet-121 (Swin-UNETR ROIs)','70.48±4.26','[65.72, 75.02]','72.11±2.23','[67.06, 76.77]']],
+    external: [['3D Radiomics','67.82 (68.28)','[62.69, 72.72]','71.53 (66.48)','[66.67, 75.75]'],
+               ['DenseNet-121','71.35 (74.22)','[66.49, 76.20]','77.49 (71.18)','[73.17, 81.44]',1],
+               ['+FedAvg','66.90 (73.12)','[62.28, 71.58]','65.15 (72.28)','[60.39, 69.71]'],
+               ['+FedProx (0.1)','62.54 (73.80)','[57.65, 67.46]','74.18 (68.61)','[69.78, 78.37]'],
+               ['+FedProx (0.3)','65.89 (72.09)','[61.40, 70.32]','62.35 (71.00)','[58.04, 66.83]']],
+    curves: ['t1_roc_mean','t2_roc_mean','t1_prc_mean','t2_prc_mean']
+  },
+  three: {
+    desc: 'High-risk IPMN versus low-risk IPMN versus no-risk (macro-averaged AUC). Internal: T1W n=652 (149/339/164), T2W n=655 (152/344/159).',
+    internal: [['ResNet-34','72.38±4.97','[69.31, 75.43]','74.07±1.73','[71.10, 77.07]'],
+               ['ResNet-50','69.85±3.42','[66.61, 72.90]','75.13±0.75','[72.13, 78.05]'],
+               ['EfficientNet-B0','67.54±3.34','[64.29, 70.76]','73.31±3.82','[70.27, 76.31]'],
+               ['DenseNet-121','73.47±4.49','[70.48, 76.71]','75.76±1.29','[72.42, 78.72]',1],
+               ['DenseNet-121 (PanSegNet ROIs)','71.25±3.36','[67.95, 74.42]','72.11±1.53','[68.98, 75.06]'],
+               ['DenseNet-121 (Swin-UNETR ROIs)','64.74±3.16','[61.38, 68.19]','69.00±2.14','[65.65, 72.18]']],
+    external: null, curves: null
+  }
+};
+
+/* reader study: [label, input, intSens, intSpec, extSens, extSpec] (validation-selected thresholds) */
+const RD = [
+  { name:'629 broad cases', task:'high-risk versus non-high-risk (low-risk + no-risk)', rows:[
+    ['Radiologist 1','T1W+T2W',64.08,89.94],['Radiologist 2','T1W+T2W',32.39,97.13],['Radiologist 3','T1W+T2W',41.55,94.66],['Radiologist average','T1W+T2W',46.01,93.91],
+    ['3D Radiomics','T1W',40.85,90.35,47.18,83.78],['3D Radiomics','T2W',45.07,90.14,30.28,92.61],
+    ['DenseNet-121','T1W',48.59,88.50,48.59,87.47],['DenseNet-121','T2W',57.04,88.50,49.30,87.06],
+    ['Early Fusion','T1W+T2W',45.77,90.76,57.04,82.14],['Late Fusion','T1W+T2W',36.62,89.73,52.82,85.63],
+    ['Siamese Fusion','T1W+T2W',47.18,88.71,42.25,84.39],['Logit Fusion','T1W+T2W',45.07,89.12,44.37,84.19]]},
+  { name:'474 IPMN-only cases', task:'low-risk versus high-risk IPMN', rows:[
+    ['Radiologist 1','T1W+T2W',64.08,86.45],['Radiologist 2','T1W+T2W',32.39,96.08],['Radiologist 3','T1W+T2W',41.55,92.47],['Radiologist average','T1W+T2W',46.01,91.67],
+    ['3D Radiomics','T1W',45.07,86.45,27.46,90.96],['3D Radiomics','T2W',39.44,88.86,31.69,93.07],
+    ['DenseNet-121','T1W',45.77,86.14,36.62,86.75],['DenseNet-121','T2W',41.55,86.75,47.89,88.86],
+    ['Early Fusion','T1W+T2W',45.07,87.05,31.69,90.06],['Late Fusion','T1W+T2W',42.25,85.24,39.44,86.45],
+    ['Siamese Fusion','T1W+T2W',40.14,84.94,34.51,84.94],['Logit Fusion','T1W+T2W',40.85,84.04,33.80,86.75]]},
+  { name:'357 histopathology-confirmed cases', task:'histopathology low-risk versus high-risk IPMN', rows:[
+    ['Radiologist 1','T1W+T2W',64.08,79.53],['Radiologist 2','T1W+T2W',32.39,93.95],['Radiologist 3','T1W+T2W',41.55,88.37],['Radiologist average','T1W+T2W',46.01,87.29],
+    ['3D Radiomics','T1W',21.83,90.23,17.61,89.30],['3D Radiomics','T2W',33.10,84.65,9.86,96.28],
+    ['DenseNet-121','T1W',26.76,86.51,23.94,90.23],['DenseNet-121','T2W',30.28,89.77,64.08,71.16],
+    ['Early Fusion','T1W+T2W',26.76,86.98,30.99,87.91],['Late Fusion','T1W+T2W',35.92,82.33,28.87,86.51],
+    ['Siamese Fusion','T1W+T2W',19.01,87.91,18.31,91.63],['Logit Fusion','T1W+T2W',28.17,90.23,23.24,91.16]]}
+];
+
+/* ================= Helpers ================= */
+const $ = s => document.querySelector(s);
+const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function toggle(id, cb) {
+  const el = document.getElementById(id);
+  el.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    el.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+    cb(b.dataset.v);
+  });
+}
+function grow(scope) { requestAnimationFrame(() => requestAnimationFrame(() => scope.querySelectorAll('[data-w]').forEach(b => b.style.width = b.dataset.w))); }
+const num = s => parseFloat(String(s));
+function pct(v, lo, hi) { return Math.max(2, Math.min(100, (v - lo) / (hi - lo) * 100)).toFixed(1) + '%'; }
+
+/* ================= Hero: federated learning animation ================= */
+(function () {
+  const cv = $('#fl-canvas'), ctx = cv.getContext('2d');
+  let W, H, dpr, nodes = [], hub, pulses = [], t0 = performance.now(), stars = [];
+  function layout() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = cv.clientWidth; H = cv.clientHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const cx = W * 0.5, cy = H * 0.47, rx = Math.max(W * 0.44, 300), ry = H * 0.43;
+    hub = { x: cx, y: cy };
+    nodes = CENTERS.map((c, i) => { const a = -Math.PI / 2 + i * 2 * Math.PI / 7; return { name: c, x: cx + rx * Math.cos(a), y: cy + ry * Math.sin(a), ph: Math.random() * 6 }; });
+    stars = Array.from({ length: Math.round(W * H / 9000) }, () => ({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 1.2 + .2, s: Math.random() * .3 + .05 }));
+  }
+  function spawn(now) {
+    const round = Math.floor((now - t0) / 2600), phase = ((now - t0) % 2600) / 2600;
+    nodes.forEach((n, i) => {
+      if (Math.random() < 0.035) pulses.push({ a: phase < 0.5 ? n : hub, b: phase < 0.5 ? hub : n, t: 0, sp: .008 + Math.random() * .006, up: phase < 0.5 });
+    });
+  }
+  function draw(now) {
+    ctx.clearRect(0, 0, W, H);
+    stars.forEach(s => { s.y -= s.s; if (s.y < 0) s.y = H; ctx.fillStyle = 'rgba(160,190,240,.35)'; ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 7); ctx.fill(); });
+    nodes.forEach(n => {
+      const g = ctx.createLinearGradient(n.x, n.y, hub.x, hub.y); g.addColorStop(0, 'rgba(95,211,196,.14)'); g.addColorStop(1, 'rgba(47,124,246,.05)');
+      ctx.strokeStyle = g; ctx.lineWidth = 1; ctx.setLineDash([3, 6]); ctx.beginPath(); ctx.moveTo(n.x, n.y); ctx.lineTo(hub.x, hub.y); ctx.stroke();
+    });
+    ctx.setLineDash([]);
+    if (!reduce) spawn(now);
+    pulses = pulses.filter(p => p.t <= 1);
+    pulses.forEach(p => {
+      p.t += p.sp; const x = p.a.x + (p.b.x - p.a.x) * p.t, y = p.a.y + (p.b.y - p.a.y) * p.t;
+      const col = p.up ? '95,211,196' : '120,170,255';
+      const gr = ctx.createRadialGradient(x, y, 0, x, y, 9); gr.addColorStop(0, `rgba(${col},.7)`); gr.addColorStop(1, `rgba(${col},0)`);
+      ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(x, y, 9, 0, 7); ctx.fill();
+    });
+    const k = (Math.sin(now / 700) + 1) / 2;
+    const hg = ctx.createRadialGradient(hub.x, hub.y, 0, hub.x, hub.y, 260 + 30 * k); hg.addColorStop(0, `rgba(47,124,246,${.16 + .06 * k})`); hg.addColorStop(1, 'rgba(47,124,246,0)'); ctx.fillStyle = hg; ctx.beginPath(); ctx.arc(hub.x, hub.y, 290, 0, 7); ctx.fill();
+    nodes.forEach(n => {
+      const kk = (Math.sin(now / 600 + n.ph) + 1) / 2;
+      ctx.fillStyle = `rgba(95,211,196,${.07 + .07 * kk})`; ctx.beginPath(); ctx.arc(n.x, n.y, 13 + 4 * kk, 0, 7); ctx.fill();
+      ctx.fillStyle = 'rgba(95,211,196,.75)'; ctx.beginPath(); ctx.arc(n.x, n.y, 3.5, 0, 7); ctx.fill();
+      ctx.fillStyle = 'rgba(200,220,250,.32)'; ctx.font = '600 11px Inter, sans-serif'; ctx.textAlign = 'center'; ctx.fillText(n.name, n.x, n.y - 24);
+    });
+    if (!reduce) requestAnimationFrame(draw);
+  }
+  layout(); addEventListener('resize', layout); requestAnimationFrame(draw);
+})();
+
+/* ================= Counters, reveal, nav ================= */
+function countUp(el) {
+  const target = +el.dataset.count, dur = reduce ? 0 : 1600, st = performance.now();
+  (function f(now) { const p = dur ? Math.min(1, (now - st) / dur) : 1, e = 1 - Math.pow(1 - p, 3); el.textContent = Math.round(target * e).toLocaleString('en-US'); if (p < 1) requestAnimationFrame(f); })(st);
+}
+document.querySelectorAll('[data-count]').forEach(countUp);
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); grow(e.target); io.unobserve(e.target); } }), { threshold: .12 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+const links = [...document.querySelectorAll('nav.top a.lnk')];
+addEventListener('scroll', () => {
+  const h = document.documentElement; $('#progress').style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
+  let cur = ''; document.querySelectorAll('main section').forEach(s => { if (s.getBoundingClientRect().top < 120) cur = s.id; });
+  links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + cur));
+  document.querySelectorAll('.reveal:not(.in)').forEach(el => { if (el.getBoundingClientRect().top < innerHeight * 0.92) { el.classList.add('in'); grow(el); } });
+}, { passive: true });
+
+/* ================= Dataset ================= */
+function renderDataset(seq) {
+  const d = DEMO[seq], max = 210;
+  $('#center-bars').innerHTML = CENTERS.map((c, i) => `
+    <div class="row" title="${c}: ${d.f[i]} female, ${d.m[i]} male; mean age ${d.age[i]}; ${VENDOR[i]}">
+      <span class="name">${c}</span><div class="track"><div class="fill" data-w="${(d.n[i] / max * 100).toFixed(1)}%"></div></div><span class="val">${d.n[i]}</span>
+      <span class="tip">${d.f[i]} F / ${d.m[i]} M · mean age ${d.age[i]} · ${VENDOR[i]}</span>
+    </div>`).join('');
+  const L = LABELS[seq];
+  $('#n-high').textContent = L.high; $('#n-low').textContent = L.low; $('#n-no').textContent = L.no;
+  $('#n-note').textContent = `${seq === 't1' ? 'T1W' : 'T2W'} risk-labeled cohort: low-risk labels come from histopathology (${L.hist}) or ≥3-year imaging follow-up (${L.fu}).`;
+  grow($('#center-bars'));
+}
+renderDataset('t1'); toggle('ds-seq', renderDataset);
+
+/* ================= Segmentation viewer ================= */
+let svSeq = 't1', svCenter = 'NYU';
+$('#sv-center').innerHTML = CENTERS.map((c, i) => `<button data-v="${c}" class="${i ? '' : 'on'}">${c}</button>`).join('');
+function renderViewer() {
+  [['#sv-img', 'image'], ['#sv-swin', 'swin'], ['#sv-pan', 'pansegnet']].forEach(([id, k]) => {
+    const img = $(id); img.style.opacity = 0;
+    const src = `figures/web/seg/${svCenter}_${svSeq}_${k}.jpg`;
+    const pre = new Image(); pre.onload = () => { img.src = src; img.style.opacity = 1; }; pre.src = src;
+  });
+}
+toggle('sv-seq', v => { svSeq = v; renderViewer(); }); toggle('sv-center', v => { svCenter = v; renderViewer(); }); renderViewer();
+CENTERS.forEach(c => ['t1', 't2'].forEach(s => ['image', 'swin', 'pansegnet'].forEach(k => { const i = new Image(); i.src = `figures/web/seg/${c}_${s}_${k}.jpg`; })));
+
+function renderSegTable(seq) {
+  const head = ['Method', 'Dice (%)', 'Jaccard (%)', 'Precision (%)', 'Recall (%)', 'HD95 (mm)', 'ASSD (mm)'];
+  $('#seg-table').innerHTML = `<thead><tr>${head.map(h => `<th>${h}</th>`).join('')}</tr></thead><tbody>` +
+    SEG[seq].map((r, i) => `<tr class="${i === 0 ? 'hl' : ''}"><td><b>${r[0]}</b></td>
+      <td><div class="bar"><span class="v">${r[1]}</span><div class="trk"><div class="b ${i ? 'alt' : ''}" data-w="${pct(num(r[1]), 40, 95)}"></div></div></div></td>
+      ${r.slice(2).map(v => `<td>${v}</td>`).join('')}</tr>`).join('') + '</tbody>';
+  grow($('#seg-table'));
+}
+renderSegTable('t1'); toggle('sm-seq', renderSegTable);
+
+/* ================= Classification ================= */
+let clTask = 'primary', clEval = 'internal';
+function renderCls() {
+  const T = CLS[clTask], rows = T[clEval];
+  $('#cl-eval').style.display = T.external ? '' : 'none';
+  $('#cl-desc').textContent = T.desc;
+  const cell = (v, ci, alt) => `<td><div class="bar"><span class="v">${v}</span><div class="trk"><div class="b ${alt ? 'alt' : ''}" data-w="${pct(num(v), 50, 90)}"></div></div></div></td><td class="ci">${ci}</td>`;
+  $('#cl-table').innerHTML = `<thead><tr><th>Method</th><th>T1W AUC (%)</th><th>95% CI</th><th>T2W AUC (%)</th><th>95% CI</th></tr></thead><tbody>` +
+    rows.map(r => `<tr class="${r[5] ? 'hl' : ''}"><td><b>${r[0]}</b></td>${cell(r[1], r[2], /Fed/.test(r[0]))}${cell(r[3], r[4], /Fed/.test(r[0]))}</tr>`).join('') + '</tbody>';
+  $('#cl-note').innerHTML = clEval === 'internal'
+    ? 'Internal AUCs are mean ± s.d. across the five cross-validation folds, with conditional 95% CIs from a percentile bootstrap of the fold-mean AUC. Unless otherwise indicated, models used radiologist-defined pancreas ROIs.'
+    : 'External AUCs are pooled across all held-out test cases, with the unweighted mean of the seven center-specific AUCs in parentheses; 95% CIs refer to the pooled AUC. The number after FedProx denotes the proximal term coefficient μ.';
+  grow($('#cl-table'));
+  const cb = $('#curves-block');
+  if (T.curves) {
+    cb.style.display = '';
+    $('#curves-title').textContent = (clTask === 'primary' ? 'IPMN-only task' : 'Broad binary task') + ': mean ROC and precision–recall curves across internal folds';
+    const caps = ['T1W ROC', 'T2W ROC', 'T1W PR', 'T2W PR'];
+    $('#curves').innerHTML = T.curves.map((c, i) => `<figure><img src="figures/web/curves/${c}.png" alt="${caps[i]}" loading="lazy"><figcaption>${caps[i]}</figcaption></figure>`).join('');
+  } else cb.style.display = 'none';
+}
+toggle('cl-task', v => { clTask = v; if (!CLS[v].external) clEval = 'internal'; document.querySelectorAll('#cl-eval button').forEach(b => b.classList.toggle('on', b.dataset.v === clEval)); renderCls(); });
+toggle('cl-eval', v => { clEval = v; renderCls(); });
+renderCls();
+
+/* ================= Reader study scatter ================= */
+let rdCohort = 0, rdEval = 'int';
+const svg = $('#scatter'), tip = $('#sc-tip');
+const P = { l: 58, r: 20, t: 22, b: 52, w: 560, h: 440 };
+const sx = v => P.l + (v - 65) / 35 * (P.w - P.l - P.r);
+const sy = v => P.h - P.b - (v - 0) / 80 * (P.h - P.t - P.b);
+function color(name) { return /Radiologist/.test(name) ? '#e5566b' : /Radiomics/.test(name) ? '#f2a33a' : /DenseNet/.test(name) ? '#2f7cf6' : '#19b8a6'; }
+function axes() {
+  let s = '';
+  for (let x = 65; x <= 100; x += 5) s += `<line x1="${sx(x)}" x2="${sx(x)}" y1="${P.t}" y2="${P.h - P.b}" stroke="#eef2f7"/><text x="${sx(x)}" y="${P.h - P.b + 18}" font-size="11" fill="#7a879c" text-anchor="middle">${x}</text>`;
+  for (let y = 0; y <= 80; y += 20) s += `<line x1="${P.l}" x2="${P.w - P.r}" y1="${sy(y)}" y2="${sy(y)}" stroke="#eef2f7"/><text x="${P.l - 8}" y="${sy(y) + 4}" font-size="11" fill="#7a879c" text-anchor="end">${y}</text>`;
+  s += `<text x="${(P.l + P.w - P.r) / 2}" y="${P.h - 12}" font-size="12" fill="#44526a" text-anchor="middle" font-weight="600">Specificity (%)</text>`;
+  s += `<text transform="translate(16 ${(P.t + P.h - P.b) / 2}) rotate(-90)" font-size="12" fill="#44526a" text-anchor="middle" font-weight="600">Sensitivity (%)</text>`;
+  const lg = [['Radiologists', '#e5566b'], ['3D Radiomics', '#f2a33a'], ['DenseNet-121', '#2f7cf6'], ['T1W+T2W fusion', '#19b8a6']];
+  lg.forEach((l, i) => s += `<circle cx="${P.l + 12 + i * 120}" cy="${P.t + 6}" r="5" fill="${l[1]}"/><text x="${P.l + 22 + i * 120}" y="${P.t + 10}" font-size="11" fill="#44526a">${l[0]}</text>`);
+  return s;
+}
+svg.innerHTML = axes() + '<g id="pts"></g>';
+function renderRD() {
+  const C = RD[rdCohort], g = svg.querySelector('#pts');
+  const pts = C.rows.map((r, i) => {
+    const isRad = /Radiologist/.test(r[0]);
+    const sens = isRad || rdEval === 'int' ? r[2] : r[4], spec = isRad || rdEval === 'int' ? r[3] : r[5];
+    return { i, label: r[0] + (isRad ? '' : ` (${r[1]})`), sens, spec, c: color(r[0]), avg: /average/.test(r[0]) };
+  });
+  if (!g.children.length) g.innerHTML = pts.map(p => `<circle class="pt" r="${p.avg ? 9 : 7}" cx="${sx(80)}" cy="${sy(40)}" fill="${p.c}" fill-opacity=".85" stroke="#fff" stroke-width="2"></circle>`).join('');
+  [...g.children].forEach((el, k) => {
+    const p = pts[k]; el.setAttribute('cx', sx(p.spec)); el.setAttribute('cy', sy(p.sens));
+    if (p.avg) { el.setAttribute('stroke', '#0f1b2d'); el.setAttribute('stroke-width', '2.5'); }
+    el.onmousemove = e => { tip.style.opacity = 1; tip.style.left = e.clientX + 12 + 'px'; tip.style.top = e.clientY + 12 + 'px'; tip.textContent = `${p.label}: sensitivity ${p.sens.toFixed(2)}%, specificity ${p.spec.toFixed(2)}%`; };
+    el.onmouseleave = () => tip.style.opacity = 0;
+  });
+  const ext = rdEval === 'ext';
+  $('#rd-table').innerHTML = `<thead><tr><th>${C.name}</th><th>Input</th><th>Sens</th><th>Spec</th></tr></thead><tbody>` +
+    C.rows.map(r => { const isRad = /Radiologist/.test(r[0]); const s = isRad || !ext ? r[2] : r[4], p = isRad || !ext ? r[3] : r[5];
+      return `<tr class="${/average/.test(r[0]) ? 'hl' : ''}"><td><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${color(r[0])};margin-right:8px"></span>${r[0]}</td><td>${r[1]}</td><td>${s.toFixed(2)}</td><td>${p.toFixed(2)}</td></tr>`; }).join('') + '</tbody>';
+}
+toggle('rd-cohort', v => { rdCohort = +v; renderRD(); }); toggle('rd-eval', v => { rdEval = v; renderRD(); });
+const rdObs = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { setTimeout(renderRD, 150); rdObs.disconnect(); } }), { threshold: .3 });
+rdObs.observe(svg); renderRD.call(null);
+/* start points at centre so the first reveal animates */
+svg.querySelectorAll('.pt').forEach(el => { el.setAttribute('cx', sx(80)); el.setAttribute('cy', sy(40)); });
+
+/* ================= Citation copy ================= */
+$('#copy').onclick = () => {
+  const txt = $('#bib').innerText.replace(/^Copy\s*/, '');
+  navigator.clipboard.writeText(txt).then(() => { $('#copy').textContent = 'Copied'; setTimeout(() => $('#copy').textContent = 'Copy', 1600); });
+};
+</script>
 </body>
 </html>
