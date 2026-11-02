@@ -49,8 +49,6 @@ python -m pip install -r requirements.txt
 
 The requirements include the CUDA 12.6 PyTorch wheel source. This environment covers classification with the supplied radiomics features, preprocessing, segmentation metric computation, supplementary analyses, and MRQy plots. Optional radiomics feature extraction requires PyRadiomics; see the [feature extraction instructions](features/README.md#feature-extraction-optional).
 
-The legacy Swin-UNETR scripts still pass `img_size` to `SwinUNETR`, an argument no longer accepted by MONAI 1.6.0. Those scripts need that API adjustment before use with these pins.
-
 # 📂 Repository Structure
 
 ```text

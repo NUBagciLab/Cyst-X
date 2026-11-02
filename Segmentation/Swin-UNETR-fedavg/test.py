@@ -113,7 +113,6 @@ if __name__ == "__main__":
     n_test_ds = sum([len(test_ds[i]) for i in range(n_center)]) 
     
     model = SwinUNETR(
-        img_size=roi,
         in_channels=1,
         out_channels=1,
         feature_size=48,

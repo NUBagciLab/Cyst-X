@@ -135,7 +135,6 @@ if __name__ == "__main__":
     aggregation_weights = [aggregation_weights[i]/sum(aggregation_weights) for i in range(n_center)]
     
     model = SwinUNETR(
-        img_size=roi,
         in_channels=1,
         out_channels=1,
         feature_size=48,
