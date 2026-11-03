@@ -130,6 +130,34 @@ def render(template, results):
     return '\n'.join(output) + '\n'
 
 
+def print_results(results):
+    """Print the same reader and model values used to fill the LaTeX table."""
+    titles = {
+        '2-class': 'Broad cohort',
+        'low_vs_high': 'IPMN-only cohort',
+        'histology': 'Pathology-confirmed IPMN cohort',
+    }
+    methods = [(f'Radiologist {reader}', 'T1W+T2W') for reader in range(1, 4)]
+    methods += [('Average', 'T1W+T2W')]
+    methods += [(name, input_name) for name, input_name, _, _ in METHODS]
+    headers = ['Method', 'Input', 'Internal Sens', 'Internal Spec',
+               'External Sens', 'External Spec']
+    print('\nComparison results (%). Model values: calibrated (fixed 0.50 threshold).')
+    for task in TASKS:
+        rows = [[name, input_name] +
+                ['-' if value == r'\textcolor{blue}{-}' else value
+                 for value in results[(task, name, input_name)]]
+                for name, input_name in methods]
+        widths = [max(len(row[index]) for row in [headers, *rows])
+                  for index in range(len(headers))]
+        print(f'\n{titles[task]} ({task})')
+        for index, row in enumerate([headers, *rows]):
+            print(' | '.join(value.ljust(width) if column < 2 else value.rjust(width)
+                             for column, (value, width) in enumerate(zip(row, widths))))
+            if index == 0:
+                print('-+-'.join('-' * width for width in widths))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--project-root', type=Path, default=HERE.parents[1])
@@ -175,7 +203,6 @@ def main():
                 records.append(record)
                 cells.extend(f'{calibrated[key]:.2f}({uncalibrated[key]:.2f})' for key in ['sens', 'spec'])
             table[(task, name, input_name)] = cells
-            print(f'  {name} {input_name}: ' + ' & '.join(cells))
     completed = render(args.template.read_text(), table)
     args.output_dir.mkdir(parents=True, exist_ok=True)
     output = args.output_dir / 'radiologist_comparison_updated.tex'
@@ -183,6 +210,7 @@ def main():
     pd.DataFrame(records).to_csv(args.output_dir / 'radiologist_comparison_metrics.csv', index=False)
     (args.output_dir / 'radiologist_comparison_cohorts.json').write_text(json.dumps(
         {task: list(group.index) for task, group in groups.items()}, indent=2) + '\n')
+    print_results(table)
     print(f'Updated 36 table rows from 96 saved prediction files: {output}')
 
 

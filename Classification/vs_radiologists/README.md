@@ -27,6 +27,11 @@ than averaged over folds or centers. The table shows saved calibrated
 predictions outside parentheses and the 0.50-threshold results inside.
 Reader averages are arithmetic means of the three reader metrics.
 
+The terminal prints a comparison table for each cohort, including all three
+readers, their average, and every model. Columns show internal and external
+sensitivity and specificity as percentages; model values use
+`calibrated (fixed-0.50)` formatting, matching the saved LaTeX table.
+
 Outputs under `results/tables/`:
 
 - `radiologist_comparison_updated.tex`: completed table.
