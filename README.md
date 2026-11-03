@@ -37,7 +37,7 @@ Pancreatic cancer is projected to be the second-deadliest cancer by 2030, making
 Cyst-X uses separate environments for PaNSegNet training/inference and the other tasks.
 
 - **PaNSegNet:** Follow the [PaNSegNet environment and setup instructions](https://github.com/NUBagciLab/PaNSegNet#pretrained-model), which use nnU-Net v1 with the custom PaNSegNet model and trainer.
-- **Other Cyst-X tasks:** Install the shared dependencies from the root [requirements.txt](requirements.txt). These exact versions were taken from the current `pt` environment: Python 3.14.6, PyTorch 2.13.0 with CUDA 12.6, and MONAI 1.6.0.
+- **Other Cyst-X tasks:** Install the shared dependencies from the root [requirements.txt](requirements.txt). The pinned setup uses Python 3.14.6, PyTorch 2.13.0 with CUDA 12.6, and MONAI 1.6.0.
 
 From the repository root:
 
@@ -86,7 +86,7 @@ Cyst-X/
 ├── figures/                 # Repository illustration assets
 ├── index.html               # Project webpage
 ├── LICENSE.txt
-├── requirements.txt         # Shared dependencies, pinned from the pt environment
+├── requirements.txt         # Pinned shared dependencies
 └── README.md                # Main repository documentation hub
 ```
 

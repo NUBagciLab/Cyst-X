@@ -1,6 +1,6 @@
 # Radiologist comparison
 
-Run with the `pt` environment activated, from the project root:
+Run from the project root:
 
 ```bash
 bash Classification/vs_radiologists/run.sh
@@ -33,5 +33,6 @@ Outputs under `results/tables/`:
 - `radiologist_comparison_metrics.csv`: metrics, confusion counts, and model source paths.
 - `radiologist_comparison_cohorts.json`: patient membership for each cohort.
 
-The supplied table layout is retained in `table_template.tex`. Optional
-arguments include `--project-root`, `--output-dir`, and `--template`.
+`table_template.tex` is a blank table template that the comparison script fills
+with results. Optional arguments include `--project-root`, `--output-dir`, and
+`--template`.
